@@ -182,3 +182,18 @@ button.btn {
 button.btn:hover {
   background-color: #A99C5E;
 }
+/* Estilo para as caixas de tempo */
+.time-box {
+    width: 70px;
+    font-size: 2rem;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 10px;
+    border: 2px solid #A99C5E;
+  }
+  /* Estilo para a linha final com alinhamento inferior no caso botao de confirmar*/
+   .linha-final {
+    display: flex;
+    align-items: flex-end; /* alinha pela parte inferior */
+    gap: 70px;
+}
