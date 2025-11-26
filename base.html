@@ -9,176 +9,7 @@
     <meta name="author" content="Grupo">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>base</title>
-    <!--<link rel="stylesheet" type="text/css" href="style.css"> Precisa alterar-->
-    <style>
-
-        /* estilo para butao */
-.btn-gold {
-  background-color: #A99C5E; /* fundo dourado */
-  color: white; 
-  border: none; 
-  padding: 10px 20px; 
-  font-size: 16px; 
-  border-radius: 50px; 
-  display: flex; 
-  align-items: center; 
-  cursor: pointer; 
-  text-decoration: none; 
-}
-
-.btn-gold i {
-  margin-right: 10px; 
-  font-size: 20px; 
-  line-height: 1; 
-  vertical-align: middle; 
-}
-
-.btn-gold:hover {
-  background-color: #A99C5E; /* muda cor do background quando rato passa por cima */
-}
-
-.btn-gold:focus {
-  outline: none; 
-}
-
-        /* barra dourada em cima */
-.header-bar {
-  height: 30px; /*tamnho do barra */
-  background-color: #A99C5E; 
-  width: 100%; 
-  display: flex; 
-  justify-content: flex-end; 
-  align-items: center; 
-  padding: 0 20px; 
-}
-.header-bar i {
-  margin-left: 15px; /* espaçamento entre icons */
-  font-size: 20px; /*tamanho dos icons */
-  color: white; /* color branco dos icons */
-}
-
-.header-bar i:hover {
-  color: #c7a33c; /* color dos icons quando rato passa por cima */
-}
-
-    
-/* conteiner principal */
-.layout {
-  display: flex;
-}
-
-/* menu do lado */
-.menu {
-  width: 200px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background-color: #f8f9fa;
-  padding-top: 20px;
-  overflow-y: auto;
-}
-
-/* logo */
-.menu__logo {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.menu__logo-img {
-  width: 80%;
-  max-width: 150px;
-}
-
-/* lista menu */
-.menu__list {
-  list-style-type: none;
-  
-  margin: 0;
-}
-
-.menu__item {
-  margin-bottom: 10px;
-  
-}
-
-/* estilo para links */
-.menu__link {
-  display: flex; 
-  align-items: center; 
-  text-decoration: none;
-  padding: 10px 15px;
-  color: #737791;
-  font-size: 16px; 
-}
-
-.menu__link i {
-  margin-right: 10px; /* espaçamento entre icon e texto */
-  font-size: 18px;
-}
-
-.menu__link--active {
-  background-color: #A99C5E;
-  color: white;
-}
-
-.menu__link:hover {
-  background-color: #e0e0e0;
-}
-
-/* content pagina */
-.content {
-  margin-left: 250px;
-  padding: 20px;
-  background-image: url('path-to-your-image.png'); /* Замість цього вкажіть шлях до вашого фону */
-  background-size: cover;
-  width: 100%;
-}
-
-
-.form-container {
-  background-color: rgba(255, 255, 255, 0.8); 
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-
-
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  margin-bottom: 8px;
-  color: #5a5a5a;
-}
-
-input, select {
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button.btn {
-  padding: 10px;
-  background-color: #A99C5E;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button.btn:hover {
-  background-color: #A99C5E;
-}
-
-
-</style>
-    
+    <link rel="stylesheet" type="text/css" href="style.css"> 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -214,9 +45,11 @@ button.btn:hover {
             <i class="bi bi-calendar-week"></i> Remarcar
           </a>
         </li>
-        <button class="btn btn-gold">
-         <i class="bi bi-plus-circle"></i> Criar Conta
-       </button>
+        <li class="menu__item">
+    <a class="menu__link btn-gold" href="#">
+      <i class="bi bi-plus-circle"></i> Criar Conta
+    </a>
+  </li>
 
         <li class="menu__item">
           <a class="menu__link" href="#">
