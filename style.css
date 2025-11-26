@@ -4,7 +4,7 @@
 
 /*  Barra dourada superior */
 .header-bar {
-  height: 30px;
+  height: 50px;
   background-color: #A99C5E;
   width: 100%;
   display: flex;
@@ -15,7 +15,7 @@
 
 .header-bar i {
   margin-left: 15px;
-  font-size: 20px;
+  font-size: 30px;
   color: white;
 }
 body {
