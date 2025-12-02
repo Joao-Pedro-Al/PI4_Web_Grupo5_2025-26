@@ -1,0 +1,79 @@
+
+    /* ===== Fundo com listras ===== */
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #b79b53;
+        font-family: Arial, sans-serif;
+    }
+
+    /* ===== Card central ===== */
+    .login-container {
+        width: 400px;
+        background: #f9f2ef;
+        padding: 40px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+
+    /* ===== Logo ===== */
+    .logo {
+        font-size: 80px;
+        color: #b79b53;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    /* ===== Inputs ===== */
+    input {
+        width: 90%;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #000000;
+        outline: none;
+        text-align: center;
+        
+    }
+    input::placeholder {
+        color: #b79b53;
+        
+    }
+
+    /* ===== Link recuperar ===== */
+    .recover {
+        display: block;
+        margin: 10px 0;
+        font-size: 13px;
+        color: #007acc;
+        text-decoration: none;
+    }
+
+    .recover:hover {
+        text-decoration: underline;
+    }
+
+    /* ===== Botão ===== */
+    button {
+        width: 90%;
+        padding: 12px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 20px;
+        background-color: #b79b53;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .Texto {
+    color: #b79b53;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
