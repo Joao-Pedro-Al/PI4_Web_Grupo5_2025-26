@@ -20,7 +20,7 @@
 }
 body {
   
-  background-image: url('imagens/fundo_dentes.png');
+  background-image: url('../imagens/fundo_dentes.png');
   background-size:100%
 }
 .header-bar i:hover {
@@ -215,5 +215,10 @@ button.btn:hover {
   border-radius: 12px;
   border: 1px solid #ddd;
   max-width: 900px;
+}
+
+.content, 
+.content *:not(button):not(.btn) {
+  color: #A99C5E !important;
 }
 
