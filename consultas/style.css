@@ -39,7 +39,7 @@ body {
   top: 0;
   left: 0;
   bottom: 0;
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   padding-top: 20px;
   overflow-y: auto;
 }
@@ -217,8 +217,12 @@ button.btn:hover {
   max-width: 900px;
 }
 
-.content, 
+/* Texto dourado no center, mas sem alterar fundos */
+.content,
 .content *:not(button):not(.btn) {
   color: #A99C5E !important;
 }
+
+
+
 
