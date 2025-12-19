@@ -19,7 +19,7 @@
   color: white;
 }
 body {
-  
+  min-width: 1200px;
   background-image: url('imagens/fundo_dentes.png');
   background-size:100%
 }
@@ -30,6 +30,7 @@ body {
 /*  Estrutura principal da página (layout) */
 .layout {
   display: flex;
+  min-width: 1200px;
 }
 
 /*  Menu lateral (sidebar) */
@@ -135,49 +136,112 @@ body {
 
 /*  Área principal da página (conteúdo) */
 .content {
-  margin-left: 250px;
+  margin-left: 150px;
   padding: 20px;
   background-image: url('path-to-your-image.png');
   background-size: cover;
   width: 100%;
+  min-width: 900px;
 }
 
 /*  Caixa branca do formulário */
 .form-container {
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 500px;
-  margin: 0 auto;
+  background: white;
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 0;
+}
+.left-column input {
+  background: #ffffff;
+  border: 2px solid #A99C5E;
+  color: #6b6b6b;
 }
 
-/*  Estilo dos elementos do formulário */
-form {
+.right-column select {
+  background-color: #A99C5E;
+  border: none;              /* ← ГОЛОВНЕ */
+  color: #ffffff;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  padding: 12px 40px 12px 16px;
+  border-radius: 10px;       /* м’якше */
+  
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 14px;
+}
+.right-column select:focus {
+  outline: none;
+  box-shadow: none;
+}
+.left-column input:focus {
+  outline: none;
+}
+
+option {
+  background: white;
+  color: black;
+}
+
+
+
+
+
+
+/* Divisiones de esquerda e direita */
+.left-column,
+.right-column {
   display: flex;
   flex-direction: column;
 }
 
-label {
-  margin-bottom: 8px;
-  color: #5a5a5a;
+
+/*  Estilo dos elementos do formulário */
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 120px;
+  row-gap: 25px;
 }
 
-input, select {
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+
+label {
+  font-size: 13px;
+  color: #A99C5E;
+  margin-bottom: 6px;
+  display: block;
 }
+
+
+input,
+select {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
 
 /*  Botão de envio do formulário */
-button.btn {
-  padding: 10px;
+.right-column button {
+  margin-top: 30px;
+  align-self: flex-start;
+
   background-color: #A99C5E;
-  color: white;
+  color: #ffffff;
+
   border: none;
-  border-radius: 4px;
+  padding: 12px 28px;
+  border-radius: 12px;
+
+  font-size: 14px;
   cursor: pointer;
 }
+
 
 button.btn:hover {
   background-color: #A99C5E;
