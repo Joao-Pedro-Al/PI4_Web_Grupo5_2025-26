@@ -197,3 +197,31 @@ button.btn:hover {
     align-items: flex-end; /* alinha pela parte inferior */
     gap: 70px;
 }
+
+
+/* CSS do Alves --- NÃO MEXER PARA NÃO DAR CONFLITOS */
+
+.div--dropdown a:hover{
+  color: white;
+  background-color: #A99C5E;
+}
+
+.div__button--dropdown{
+  border-radius: 10px !important;
+}
+
+.div__input--label{
+  color: #A99C5E;
+}
+
+.div__input--textbox{
+  border: 2px solid #A99C5E !important;
+  border-radius: 10px !important;
+}
+
+.div--cartao--perfil{
+  border: 2px solid #A99C5E !important;
+  border-radius: 15px !important;
+  color: #A99C5E;
+  margin-bottom: 10px;
+}
