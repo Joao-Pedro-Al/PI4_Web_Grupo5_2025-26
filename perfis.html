@@ -82,21 +82,21 @@
           <div class="row align-items-start mb-5">
           
             <!-- Tipo de Conta -->
-            <div class="dropdown div--dropdown px-0 col-3 mt-auto">
-              <button id="dropdownButton" class="btn dropdown-toggle div__button--dropdown text-white col-12" type="button" data-bs-toggle="dropdown">
+            <div class="dropdown div--dropdown px-0 col-4 mt-auto">
+              <button id="dropdownButton" onclick="AbrirDropdown()" class="btn dropdown-toggle div__button--dropdown text-start text-white shadow-none col-12" type="button" data-bs-toggle="dropdown" data-bs-auto-close="inside">
                 Tipo de Conta
               </button>
-              <ul class="dropdown-menu col-12">
-                <li><a class="dropdown-item">Paciente</a></li>
-                <li><a class="dropdown-item">Doutor</a></li>
-                <li><a class="dropdown-item">Todos</a></li>
+              <ul class="dropdown-menu shadow py-0 col-12">
+                <li><a class="dropdown-item ul__li--dropdown">Paciente</a></li>
+                <li><a class="dropdown-item ul__li--dropdown">Doutor</a></li>
+                <li><a class="dropdown-item ul__li--dropdown">Todos</a></li>
               </ul>
             </div>
 
             <!-- Telemovel -->
-            <div class="px-0 col-4 offset-4">
+            <div class="px-0 col-4 offset-3">
               <label for="telefone" class="form-label div__input--label">Telefone</label>
-              <input type="tel" class="form-control div__input--textbox" id="telefone">
+              <input type="tel" placeholder="987123654" class="form-control div__input--textbox shadow-none" id="telefone" pattern="[0-9]{3}[0-9]{3}[0-9]{3}">
             </div>
 
           </div>

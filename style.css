@@ -206,8 +206,27 @@ button.btn:hover {
   background-color: #A99C5E;
 }
 
-.div__button--dropdown{
-  border-radius: 10px !important;
+/* Colocar o .btn depois do nome da classe para fazer override das predefinições do Bootstrap (evita o uso de !important) */
+.div__button--dropdown.btn{
+  border-radius: 10px 10px;
+}
+
+a.active{
+  background-color: #A99C5E !important;
+}
+
+.div__button--dropdown.btn:focus, .div__button--dropdown.btn:active{
+  outline: none;
+}
+
+.div__button--dropdown::after{
+  float: right;
+  margin: 11px 5px;
+}
+
+.ul__li--dropdown{
+  height: 40px;
+  align-content: center;
 }
 
 .div__input--label{
