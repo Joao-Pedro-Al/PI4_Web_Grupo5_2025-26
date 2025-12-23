@@ -1,13 +1,19 @@
 const dropdownItems = document.querySelectorAll('.dropdown-item');
 const dropdownButton = document.getElementById('dropdownButton');
 
+const telInput = document.getElementById('telefone');
+
+const perfisItems = document.querySelectorAll('.div--cartao--perfil');
+
 var Aberto = 0;
+var TipoSelect = "Todos";
 
 //Selecionar a opção clicada
 dropdownItems.forEach(item => {
     item.addEventListener('click', function () {
         //Por texto correspondente no Botão
-        dropdownButton.textContent = this.textContent;
+        TipoSelect = this.textContent;
+        dropdownButton.textContent = TipoSelect;
         //Desativar o último ativo
         dropdownItems.forEach(item => {
             if (item.classList.contains("active")) {
@@ -16,10 +22,78 @@ dropdownItems.forEach(item => {
         });
         //Ativar o item clicado
         item.classList.add("active");
+        // Listar os Selecionados
+        ListarSelecionado(TipoSelect);
         //Fechar Dropdown (expecificamente, adicionar o border radius no fundo)
         AbrirDropdown();
     });
 });
+
+telInput.addEventListener("change", (event) => {
+    const Tipo = TipoSelect.toLowerCase();
+    const Num = telInput.value;
+
+    console.log(Num);
+    if(Num != "")
+    {
+        perfisItems.forEach(item => {
+            if (Tipo != "todos")
+            {
+                if (item.classList.contains(Tipo)) {
+                    const text_tel = item.querySelector("p.card-text").textContent.trim();
+                    // Esconder todos que não tenham
+                    if (text_tel.includes(Num))
+                    {
+                        if(item.classList.contains("d-none"))
+                        {item.classList.toggle("d-none");}
+                    }
+                    else
+                    {
+                        if(item.classList.contains("d-none") == false)
+                        {item.classList.add("d-none");}
+                    }
+                }
+            }
+            else
+            {
+                const text_tel = item.querySelector("p.card-text").textContent.trim();
+                // Esconder todos que não tenham
+                if (text_tel.includes(Num))
+                {
+                    if(item.classList.contains("d-none"))
+                    {item.classList.toggle("d-none");}
+                }
+                else
+                {
+                    if(item.classList.contains("d-none") == false)
+                    {item.classList.add("d-none");}
+                }
+            }
+        });
+    }
+    else
+    {
+        MostrarTodos();
+        //Garantir que segue os filtros
+        ListarSelecionado(dropdownButton.textContent);
+    }
+});
+
+function ListarSelecionado(tipo)
+{
+    if(tipo == "Paciente")
+    {
+        Mostrar1Tipo("paciente");
+    }
+    else if(tipo == "Doutor")
+    {
+        Mostrar1Tipo("doutor");
+    }
+    else
+    {
+        MostrarTodos();
+    }
+}
 
 function AbrirDropdown()
 {
@@ -37,6 +111,49 @@ function AbrirDropdown()
 
 }
 
+// ------------Mostrar e/ou Esconder-----------
 
-// dropdownButton.style.borderBottomLeftRadius = "0px !important";
-// dropdownButton.style.borderBottomRightRadius = "0px !important";
+function Mostrar1(Item_Sel)
+{
+    perfisItems.forEach(item => {
+        if(Item == Item_Sel)
+        {
+            if(item.classList.contains("d-none"))
+            {
+                item.classList.toggle("d-none");
+            }
+        }
+        else
+        {
+            if(item.classList.contains("d-none") == false)
+            {item.classList.add("d-none");}
+        }
+    });
+}
+
+function Mostrar1Tipo(Tipo)
+{
+    perfisItems.forEach(item => {
+        if (item.classList.contains(Tipo)) {
+            if(item.classList.contains("d-none"))
+            {
+                item.classList.toggle("d-none");
+            }
+        }
+        else
+        {
+            if(item.classList.contains("d-none") == false)
+            {item.classList.add("d-none");}
+        }
+    });
+}
+
+function MostrarTodos()
+{
+    perfisItems.forEach(item => {
+        if(item.classList.contains("d-none"))
+        {
+            item.classList.toggle("d-none");
+        }
+    });
+}
