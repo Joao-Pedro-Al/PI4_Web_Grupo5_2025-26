@@ -29,6 +29,23 @@ dropdownItems.forEach(item => {
     });
 });
 
+// Garantir que seja só números
+telInput.addEventListener("keydown", (event) => {
+    const tecla = event.code;
+
+    if(tecla != "Digit1" && tecla != "Digit2" && tecla != "Digit3" && tecla != "Digit4" && tecla != "Digit5" && tecla != "Digit6" && tecla != "Digit7" && tecla != "Digit8" && tecla != "Digit9" && tecla != "Digit0" && tecla != "Backspace")
+    {
+        console.log("A tecla " + tecla + " é inválida!");
+        event.preventDefault();
+    }
+    else if(telInput.value.length > 8 && tecla != "Backspace")
+    {
+        console.log("Número Máximo Atingido");
+        event.preventDefault();
+    }
+});
+
+// Filtrar Número
 telInput.addEventListener("change", (event) => {
     const Tipo = TipoSelect.toLowerCase();
     const Num = telInput.value;
