@@ -118,10 +118,8 @@ function Mostrar1(Item_Sel)
     perfisItems.forEach(item => {
         if(Item == Item_Sel)
         {
-            if(item.classList.contains("d-none"))
-            {
-                item.classList.toggle("d-none");
-            }
+            if(item.classList.contains("d-none")){item.classList.toggle("d-none");}
+            if(item.classList.contains("offset-3")){item.classList.toggle("offset-3");}
         }
         else
         {
@@ -133,11 +131,23 @@ function Mostrar1(Item_Sel)
 
 function Mostrar1Tipo(Tipo)
 {
+    var segundo = 0;
+
     perfisItems.forEach(item => {
         if (item.classList.contains(Tipo)) {
             if(item.classList.contains("d-none"))
             {
                 item.classList.toggle("d-none");
+            }
+            if(segundo == 0)
+            {
+                if(item.classList.contains("offset-3")){item.classList.toggle("offset-3");}
+                segundo = 1;
+            }
+            else if(segundo == 1)
+            {
+                if(item.classList.contains("offset-3") == false){item.classList.toggle("offset-3");}
+                segundo = 0;
             }
         }
         else
@@ -150,10 +160,22 @@ function Mostrar1Tipo(Tipo)
 
 function MostrarTodos()
 {
+    var segundo = 0;
+
     perfisItems.forEach(item => {
         if(item.classList.contains("d-none"))
         {
             item.classList.toggle("d-none");
+        }
+        if(segundo == 0)
+        {
+            if(item.classList.contains("offset-3")){item.classList.toggle("offset-3");}
+            segundo = 1;
+        }
+        else if(segundo == 1)
+        {
+            if(item.classList.contains("offset-3") == false){item.classList.toggle("offset-3");}
+            segundo = 0;
         }
     });
 }
