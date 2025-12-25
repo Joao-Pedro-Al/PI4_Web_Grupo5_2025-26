@@ -33,12 +33,12 @@ dropdownItems.forEach(item => {
 telInput.addEventListener("keydown", (event) => {
     const tecla = event.code;
 
-    if(tecla != "Digit1" && tecla != "Digit2" && tecla != "Digit3" && tecla != "Digit4" && tecla != "Digit5" && tecla != "Digit6" && tecla != "Digit7" && tecla != "Digit8" && tecla != "Digit9" && tecla != "Digit0" && tecla != "Backspace")
+    if(tecla != "Digit1" && tecla != "Digit2" && tecla != "Digit3" && tecla != "Digit4" && tecla != "Digit5" && tecla != "Digit6" && tecla != "Digit7" && tecla != "Digit8" && tecla != "Digit9" && tecla != "Digit0" && tecla != "Backspace" && tecla != "Enter")
     {
         console.log("A tecla " + tecla + " é inválida!");
         event.preventDefault();
     }
-    else if(telInput.value.length > 8 && tecla != "Backspace")
+    else if(telInput.value.length > 8 && tecla != "Backspace" && tecla != "Enter")
     {
         console.log("Número Máximo Atingido");
         event.preventDefault();
@@ -46,7 +46,8 @@ telInput.addEventListener("keydown", (event) => {
 });
 
 // Filtrar Número
-telInput.addEventListener("change", (event) => {
+telInput.addEventListener("input", (event) => {
+    var segundo = 0;
     const Tipo = TipoSelect.toLowerCase();
     const Num = telInput.value;
 
@@ -59,15 +60,25 @@ telInput.addEventListener("change", (event) => {
                 if (item.classList.contains(Tipo)) {
                     const text_tel = item.querySelector("p.card-text").textContent.trim();
                     // Esconder todos que não tenham
-                    if (text_tel.includes(Num))
+                    if (text_tel.includes("Telefone: " + Num))
                     {
                         if(item.classList.contains("d-none"))
                         {item.classList.toggle("d-none");}
+                        if(segundo == 0)
+                        {
+                            if(item.classList.contains("offset-3")){item.classList.toggle("offset-3");}
+                            segundo = 1;
+                        }
+                        else if(segundo == 1)
+                        {
+                            if(item.classList.contains("offset-3") == false){item.classList.toggle("offset-3");}
+                            segundo = 0;
+                        }
                     }
                     else
                     {
                         if(item.classList.contains("d-none") == false)
-                        {item.classList.add("d-none");}
+                        {item.classList.toggle("d-none");}
                     }
                 }
             }
@@ -75,15 +86,25 @@ telInput.addEventListener("change", (event) => {
             {
                 const text_tel = item.querySelector("p.card-text").textContent.trim();
                 // Esconder todos que não tenham
-                if (text_tel.includes(Num))
+                if (text_tel.includes("Telefone: " + Num))
                 {
                     if(item.classList.contains("d-none"))
                     {item.classList.toggle("d-none");}
+                    if(segundo == 0)
+                    {
+                        if(item.classList.contains("offset-3")){item.classList.toggle("offset-3");}
+                        segundo = 1;
+                    }
+                    else if(segundo == 1)
+                    {
+                        if(item.classList.contains("offset-3") == false){item.classList.toggle("offset-3");}
+                        segundo = 0;
+                    }
                 }
                 else
                 {
                     if(item.classList.contains("d-none") == false)
-                    {item.classList.add("d-none");}
+                    {item.classList.toggle("d-none");}
                 }
             }
         });
@@ -95,6 +116,8 @@ telInput.addEventListener("change", (event) => {
         ListarSelecionado(dropdownButton.textContent);
     }
 });
+
+
 
 function ListarSelecionado(tipo)
 {
@@ -149,9 +172,11 @@ function Mostrar1(Item_Sel)
 function Mostrar1Tipo(Tipo)
 {
     var segundo = 0;
+    const Num = telInput.value;
 
     perfisItems.forEach(item => {
-        if (item.classList.contains(Tipo)) {
+        const text_tel = item.querySelector("p.card-text").textContent.trim();
+        if (item.classList.contains(Tipo) && text_tel.includes("Telefone: " + Num)) {
             if(item.classList.contains("d-none"))
             {
                 item.classList.toggle("d-none");
@@ -178,21 +203,26 @@ function Mostrar1Tipo(Tipo)
 function MostrarTodos()
 {
     var segundo = 0;
+    const Num = telInput.value;
 
     perfisItems.forEach(item => {
-        if(item.classList.contains("d-none"))
+        const text_tel = item.querySelector("p.card-text").textContent.trim();
+        if (text_tel.includes("Telefone: " + Num))
         {
-            item.classList.toggle("d-none");
-        }
-        if(segundo == 0)
-        {
-            if(item.classList.contains("offset-3")){item.classList.toggle("offset-3");}
-            segundo = 1;
-        }
-        else if(segundo == 1)
-        {
-            if(item.classList.contains("offset-3") == false){item.classList.toggle("offset-3");}
-            segundo = 0;
+            if(item.classList.contains("d-none"))
+            {
+                item.classList.toggle("d-none");
+            }
+            if(segundo == 0)
+            {
+                if(item.classList.contains("offset-3")){item.classList.toggle("offset-3");}
+                segundo = 1;
+            }
+            else if(segundo == 1)
+            {
+                if(item.classList.contains("offset-3") == false){item.classList.toggle("offset-3");}
+                segundo = 0;
+            }
         }
     });
 }
