@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8">
+    <meta
+      name="description"
+      content="Projeto Integrado 4">
+    <meta name="keywords" content="landingpage, section, forms, navs" >
+    <meta name="author" content="Grupo">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Perfil</title>
+    <link rel="stylesheet" type="text/css" href="style.css"> 
+    <link rel="stylesheet" type="text/css" href="verperfil.css"> 
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+   integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=keyboard_arrow_down">
+
+  </head>
+
+  <body>
+    <div class="header-bar">
+  <i class="bi bi-person-circle"></i>
+  <i class="bi bi-bell"></i>
+  </div> <!-- bara dourada -->
+
+    <div class="layout">
+      <!--menu do lado-->
+      <nav class="menu menu--vertical">
+        <div class="menu__logo">
+          <img src="imagens/logo.png" alt="Logo" class="menu__logo-img">
+        </div>
+        <ul class="menu__list">
+          <li class="menu__item">
+            <a class="menu__link" href="#">
+              <i class="bi bi-house-door-fill"></i> Início
+            </a>
+          </li>
+          <li class="menu__item">
+            <a class="menu__link" href="#">
+              <i class="bi bi-calendar-week"></i> Remarcar
+            </a>
+          </li>
+          <li class="menu__item">
+      <a class="menu__link" href="#">
+        <i class="bi bi-plus-circle"></i> Criar Conta
+      </a>
+    </li>
+
+          <li class="menu__item">
+            <a class="menu__link" href="#">
+              <i class="bi bi-bell-fill"></i> Notificações
+            </a>
+          </li>
+          <li class="menu__item">
+            <a class="menu__link btn-gold" href="#">
+              <i class="bi bi-person-circle"></i> Perfis
+            </a>
+          </li>
+          <li class="menu__item">
+            <a class="menu__link" href="#">
+              <i class="bi bi-journal-medical"></i> Consultas
+            </a>
+          </li>
+          <li class="menu__item">
+            <a class="menu__link" href="#">
+              <i class="bi bi-box-arrow-right"></i> Sign Out
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- Content -->
+      <main class="content">
+        <div class="container-fluid">
+
+          <!------------ Informação Básica ------------>
+          <div class="row align-items-start mb-5">
+
+            <!-- INÍCO: Cartão -->
+            <div class="card div--cartao--perfil d-block col-8">
+              <div class="card-body py-4">
+                <h5 class="card-title fw-bold mb-3">Nome do Perfil</h5>
+                <p class="card-text mb-1"><b>Telefone: </b>987654321</p>
+                <p class="card-text mb-1"><b>Email: </b>perfil@gmail.com</p>
+                <p class="card-text mb-1"><b>Data de Nascimento: </b>01/01/2000</p>
+                <p class="card-text mb-1"><b>NIF/SNS: </b>232323232</p>
+                <p class="card-text mb-1"><b>Sexo: </b>Outro</p>
+                <p class="card-text mb-1"><b>Estado Civil: </b>Solteiro</p>
+                <p class="card-text mb-1"><b>Gravida: </b>Não</p>
+              </div>
+            </div>
+            <!-- FIM: Cartão -->
+
+            <!-- Editar ou Apagar -->
+            <div class="container-fluid offset-1 col-2">
+              <div class="row">
+
+                <button type="button" class="btn text-white shadow-none mb-3 col-12">Alterar Perfil</button>
+                <button type="button" class="btn text-white shadow-none col-12">Apagar Perfil</button>
+                
+              </div>
+            </div>
+
+          </div>
+
+          <!------------ Histórico Médico Geral ------------>
+          <div class="row align-items-start mb-5">
+
+            <!-- INÍCO: Header -->
+            <div class="card div--cartao--header d-block mb-4 col-11">
+              <div class="card-body py-2">
+                <h5 class="card-title fw-bold m-0">Histórico Médico Geral</h5>
+              </div>
+            </div>
+            <!-- FIM: Header -->
+
+            <!-- INÍCO: Cartão -->
+            <div class="card div--cartao--perfil d-block ms-5 col-9">
+              <div class="card-body py-4">
+                <p class="card-text mb-1"><b>Cirurgias Anteriores: </b>Cirurgia de apendicite (2016)</p>
+                <p class="card-text mb-1"><b>Alergias: </b>Alergia a nozes</p>
+                <p class="card-text"><b>Raios-X: </b>N/A</p>
+              </div>
+            </div>
+            <!-- FIM: Cartão -->
+
+          </div>
+
+          <!------------ Histórico Dentário ------------>
+          <div class="row align-items-start mb-3">
+
+            <!-- INÍCO: Header -->
+            <div class="card div--cartao--header d-block mb-4 col-11">
+              <div class="card-body py-2">
+                <h5 class="card-title fw-bold m-0">Histórico Dentário</h5>
+              </div>
+            </div>
+            <!-- FIM: Header -->
+
+            <!-- INÍCO: Cartão -->
+            <div class="card div--cartao--perfil d-block ms-5 col-9">
+              <div class="card-body py-4">
+                <p class="card-text mb-1"><b>Última Consulta Dentária: </b>10/01/2024</p>
+                <p class="card-text mb-1"><b>Motivo da Consulta Inicial: </b>Check-up de rotina e limpeza dentária</p>
+                <p class="card-text mb-1"><b>Experiência com anestesia: </b>Normal, sem reações adversas</p>
+                <p class="card-text mb-1"><b>Condições atuais: </b>Boa higiene oral, pequena retração gengival no dente 11, manchas leves devido ao consumo de café.</p>
+                <p class="card-text"><b>Raios-X: </b><a href="#">Raios-x.pdf</a></p>
+              </div>
+            </div>
+            <!-- FIM: Cartão -->
+
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+.div--dropdown a:hover{
+  color: white;
+  background-color: #A99C5E;
+}
+
+/* Colocar o .btn depois do nome da classe para fazer override das predefinições do Bootstrap (evita o uso de !important) */
+.div__button--dropdown.btn{
+  border-radius: 10px 10px;
+}
+
+a.active{
+  background-color: #A99C5E !important;
+}
+
+.div__button--dropdown.btn:focus, .div__button--dropdown.btn:active{
+  outline: none;
+}
+
+.div__button--dropdown::after{
+  float: right;
+  margin: 11px 5px;
+}
+
+.ul__li--dropdown{
+  height: 40px;
+  align-content: center;
+}
+
+.div__input--label{
+  color: #A99C5E;
+}
+
+.div__input--textbox{
+  border: 2px solid #A99C5E !important;
+  border-radius: 10px !important;
+}
+
+.div--cartao--perfil{
+  border: 2px solid #A99C5E !important;
+  border-radius: 15px !important;
+  color: #A99C5E;
+  margin-bottom: 10px;
+}
+
+.div--cartao--header{
+  border: 2px solid #A99C5E !important;
+  color: #A99C5E;
+  margin-bottom: 10px;
+}
