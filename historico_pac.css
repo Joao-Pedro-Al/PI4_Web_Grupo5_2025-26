@@ -57,6 +57,12 @@ a.active{
   margin: 0px;
 }
 
+.p--data:hover{
+  color: #A99C5E;
+  font-size: 25px;
+  cursor: pointer;
+}
+
 .ano{
   min-width: 70px;
 }
