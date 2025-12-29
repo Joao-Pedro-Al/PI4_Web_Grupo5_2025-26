@@ -70,18 +70,49 @@
         <div class="container-fluid">
 
           <!-- //// Navegação da Data //// -->
-          <div class="row align-items-center mb-5">
+          <div class="row mb-5">
 
-            <div class="col-2 offset-3">
-              <img src="imagens/keyboard_double_arrow_left.svg" alt="Ano Passado">
-              <img src="imagens/keyboard_arrow_left.svg" alt="Mês Passado">
+            <div class="row align-items-center col-3">
+              <div class="card div--cartao--data col-12 px-4 py-3 text-center">
+                <h1 id="data">....</h1>
+              </div>
             </div>
 
-            <h3 class="col-2" id="data">Jan 2026</h3>
+            <span class="span--vr col-sm-auto mx-3"></span>
 
-            <div class="col-2">
-              <img src="imagens/keyboard_arrow_right.svg" alt="Mês Seguinte">
-              <img src="imagens/keyboard_double_arrow_right.svg" alt="Ano Seguinte">
+            <div class="row col-8">
+
+              <div class="row align-items-start col-12">
+                <button class="button--ano col-sm-auto p-0 me-1" id="AnoPas"><img src="imagens/keyboard_arrow_left.svg" class="button__img--ano p-2" alt="Ano Anterior"></button>
+                <p class="h5 col-sm-auto p--data ano" id="data-1">...</p>
+                <p class="h5 col-sm-auto p--data ano" id="data-2">...</p>
+                <p class="h5 col-sm-auto p--data ano" id="data-3">...</p>
+                <p class="h5 col-sm-auto p--data ano" id="data-4">...</p>
+                <p class="h5 col-sm-auto p--data ano" id="data-5">...</p>
+                <p class="h5 col-sm-auto p--data ano" id="data-6">...</p>
+                <p class="h5 col-sm-auto p--data ano" id="data-7">...</p>
+                <p class="h5 col-sm-auto p--data ano" id="data-8">...</p>
+                <p class="h5 col-sm-auto p--data ano" id="data-9">...</p>
+                <button class="button--ano col-sm-auto p-0 ms-1 button--ano--desl" id="AnoFut"><img src="imagens/keyboard_arrow_right.svg" class="button__img--ano p-2" alt="Ano Seguinte"></button>
+              </div>
+
+              <div class="row align-items-end col-12">
+
+                <p class="h5 col-sm-auto p--data mes" id="mes-1">Jan</p>
+                <p class="h5 col-sm-auto p--data mes" id="mes-2">Fev</p>
+                <p class="h5 col-sm-auto p--data mes" id="mes-3">Mar</p>
+                <p class="h5 col-sm-auto p--data mes" id="mes-4">Abr</p>
+                <p class="h5 col-sm-auto p--data mes" id="mes-5">Mai</p>
+                <p class="h5 col-sm-auto p--data mes" id="mes-6">Jun</p>
+                <p class="h5 col-sm-auto p--data mes" id="mes-7">Jul</p>
+                <p class="h5 col-sm-auto p--data mes" id="mes-8">Ago</p>
+                <p class="h5 col-sm-auto p--data mes" id="mes-9">Set</p>
+                <p class="h5 col-sm-auto p--data mes" id="mes-10">Out</p>
+                <p class="h5 col-sm-auto p--data mes" id="mes-11">Nov</p>
+                <p class="h5 col-sm-auto p--data mes" id="mes-12">Dez</p>
+                
+              </div>
+
             </div>
 
           </div>
@@ -89,113 +120,163 @@
           <!-- //// Navegação da Data //// -->
           <div class="row d-flex align-items-start mb-5">
 
-          <div class="col-5">
-            <!-- INÍCO: Cartão Fechado -->
-            <div class="card div--cartao--consulta px-0" id="1-aberto">
-              <div class="card-body div--cartao--consulta px-4 py-3">
-                <div class="row align-items-center">
-                  <div class="col-10">
-                    <h4 class="card-title fw-bold mb-1">Consulta Dentária</h4>
-                    <p class="card-text">23/01 - 15:00</p>
+            <div class="row col-5">
+              <!-- INÍCO: Cartão Fechado -->
+              <div class="card div--cartao--consulta px-0 col-12 mb-3" id="1-aberto">
+                <div class="card-body div--cartao--consulta px-4 py-3">
+                  <div class="row align-items-center">
+                    <div class="col-10">
+                      <h4 class="card-title fw-bold mb-1">Consulta Dentária</h4>
+                      <p class="card-text">23/01 - 15:00</p>
+                    </div>
+                    <img class="col-2" src="imagens/keyboard_arrow_down.svg" alt="Abrir Detalhes da Consulta">
                   </div>
-                  <img class="col-2" src="imagens/keyboard_arrow_down.svg" alt="Abrir Detalhes da Consulta">
                 </div>
               </div>
-            </div>
-            <!-- FIM: Cartão Fechado -->
+              <!-- FIM: Cartão Fechado -->
 
-            <!-- INÍCO: Cartão Aberto -->
-            <div class="card div--cartao--consulta px-0 d-none" id="1-fechado">
-              <div class="card-body div--cartao--consulta px-4 py-3">
+              <!-- INÍCO: Cartão Aberto -->
+              <div class="card div--cartao--consulta px-0 d-none col-12 mb-3" id="1-fechado">
+                <div class="card-body div--cartao--consulta px-4 py-3">
 
-                <div class="row align-items-center">
-                  <div class="col-10">
-                    <h4 class="card-title fw-bold mb-1">Consulta Dentária</h4>
-                    <p class="card-text">23/01 - 15:00</p>
+                  <div class="row align-items-center">
+                    <div class="col-10">
+                      <h4 class="card-title fw-bold mb-1">Consulta Dentária</h4>
+                      <p class="card-text">23/01 - 15:00</p>
+                    </div>
+                    <img class="col-2" src="imagens/keyboard_arrow_right.svg" alt="Fechar Detalhes da Consulta">
                   </div>
-                  <img class="col-2" src="imagens/keyboard_arrow_right.svg" alt="Fechar Detalhes da Consulta">
+
+                  
+                  <div class="row align-items-center">
+
+                    <hr class="hr--cartao mx-3 my-3 col-11">
+
+                    <div class="col-12 mb-2">
+                      <h5 class="fw-bold mb-1">Detalhes:</h5>
+                      <p class="mb-0">Remoção de uma cari no dente carnívoro direito.</p>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                      <h5 class="fw-bold mb-1">Guia de Tratamento:</h5>
+                      <p class="mb-0">Lavar os dentes depois do almoço e do jantar. Evitar bruxamento dos dentes. Diminuir a quantidade de chocolate consumido.</p>
+                    </div>
+
+                    <div class="row m-0">
+                      <button type="button" class="btn shadow-none text-white div__button--presenca px-1 col-6">Declaração de Presença<img src="imagens/download.svg" class="ms-2 button__img--icon"  alt="Baixar Declaração de Presença"></button>
+                      <button type="button" class="btn shadow-none text-white d-flex div__button--presenca px-1 offset-1 col-5">Declaração do Acompanhante<img src="imagens/download.svg" class="me-2 button__img--icon"  alt="Baixar Declaração do Acompanhante"></button>
+                    </div>
+                  </div>
+                  </div>
                 </div>
+              <!-- FIM: Cartão Aberto -->
 
-                
-                <div class="row align-items-center">
 
-                  <hr class="hr--cartao mx-3 my-3 col-11">
-
-                  <div class="col-12 mb-2">
-                    <h5 class="fw-bold mb-1">Detalhes:</h5>
-                    <p class="mb-0">Remoção de uma cari no dente carnívoro direito.</p>
-                  </div>
-
-                  <div class="col-12 mb-3">
-                    <h5 class="fw-bold mb-1">Guia de Tratamento:</h5>
-                    <p class="mb-0">Lavar os dentes depois do almoço e do jantar. Evitar bruxamento dos dentes. Diminuir a quantidade de chocolate consumido.</p>
-                  </div>
-
-                  <div class="row m-0">
-                    <button type="button" class="btn shadow-none text-white div__button--presenca px-1 col-6">Declaração de Presença<img src="imagens/download.svg" class="ms-2 button__img--icon"  alt="Baixar Declaração de Presença"></button>
-                    <button type="button" class="btn shadow-none text-white d-flex div__button--presenca px-1 offset-1 col-5">Declaração do Acompanhante<img src="imagens/download.svg" class="me-2 button__img--icon"  alt="Baixar Declaração do Acompanhante"></button>
+              <!-- INÍCO: Cartão Fechado -->
+                <div class="card div--cartao--consulta px-0 col-12 mb-3" id="3-aberto">
+                  <div class="card-body div--cartao--consulta px-4 py-3">
+                    <div class="row align-items-center">
+                      <div class="col-10">
+                        <h4 class="card-title fw-bold mb-1">Consulta Dentária</h4>
+                        <p class="card-text">04/01 - 12:00</p>
+                      </div>
+                      <img class="col-2" src="imagens/keyboard_arrow_down.svg" alt="Abrir Detalhes da Consulta">
+                    </div>
                   </div>
                 </div>
+                <!-- FIM: Cartão Fechado -->
+
+                <!-- INÍCO: Cartão Aberto -->
+                <div class="card div--cartao--consulta px-0 d-none col-12 mb-3" id="3-fechado">
+                  <div class="card-body div--cartao--consulta px-4 py-3">
+
+                    <div class="row align-items-center">
+                      <div class="col-10">
+                        <h4 class="card-title fw-bold mb-1">Consulta Dentária</h4>
+                        <p class="card-text">04/01 - 12:00</p>
+                      </div>
+                      <img class="col-2" src="imagens/keyboard_arrow_right.svg" alt="Fechar Detalhes da Consulta">
+                    </div>
+
+                    
+                    <div class="row align-items-center">
+
+                      <hr class="hr--cartao mx-3 my-3 col-11">
+
+                      <div class="col-12 mb-2">
+                        <h5 class="fw-bold mb-1">Detalhes:</h5>
+                        <p class="mb-0">Remoção de uma cari no dente carnívoro direito.</p>
+                      </div>
+
+                      <div class="col-12 mb-3">
+                        <h5 class="fw-bold mb-1">Guia de Tratamento:</h5>
+                        <p class="mb-0">Lavar os dentes depois do almoço e do jantar. Evitar bruxamento dos dentes. Diminuir a quantidade de chocolate consumido.</p>
+                      </div>
+
+                      <div class="row m-0">
+                        <button type="button" class="btn shadow-none text-white div__button--presenca px-1 col-6">Declaração de Presença<img src="imagens/download.svg" class="ms-2 button__img--icon"  alt="Baixar Declaração de Presença"></button>
+                        <button type="button" class="btn shadow-none text-white d-flex div__button--presenca px-1 offset-1 col-5">Declaração do Acompanhante<img src="imagens/download.svg" class="me-2 button__img--icon"  alt="Baixar Declaração do Acompanhante"></button>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                <!-- FIM: Cartão Aberto -->
+              </div>
+
+            <!-- /// Próxima Coluna /// -->
+            <div class="row col-5 offset-1">
+              <!-- INÍCO: Cartão Fechado -->
+              <div class="card div--cartao--consulta px-0 col-12 mb-3" id="2-aberto">
+                <div class="card-body div--cartao--consulta px-4 py-3">
+                  <div class="row align-items-center">
+                    <div class="col-10">
+                      <h4 class="card-title fw-bold mb-1">Urgência</h4>
+                      <p class="card-text">13/01 - 18:20</p>
+                    </div>
+                    <img class="col-2" src="imagens/keyboard_arrow_down.svg" alt="Abrir Detalhes da Consulta">
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- FIM: Cartão Aberto -->
+              <!-- FIM: Cartão Fechado -->
 
-          <div class="col-5 offset-1">
-            <!-- INÍCO: Cartão Fechado -->
-            <div class="card div--cartao--consulta px-0" id="2-aberto">
-              <div class="card-body div--cartao--consulta px-4 py-3">
-                <div class="row align-items-center">
-                  <div class="col-10">
-                    <h4 class="card-title fw-bold mb-1">Consulta Dentária</h4>
-                    <p class="card-text">23/01 - 15:00</p>
+              <!-- INÍCO: Cartão Aberto -->
+              <div class="card div--cartao--consulta px-0 d-none col-12 mb-3" id="2-fechado">
+                <div class="card-body div--cartao--consulta px-4 py-3">
+
+                  <div class="row align-items-center">
+                    <div class="col-10">
+                      <h4 class="card-title fw-bold mb-1">Urgência</h4>
+                      <p class="card-text">13/01 - 18:20</p>
+                    </div>
+                    <img class="col-2" src="imagens/keyboard_arrow_right.svg" alt="Fechar Detalhes da Consulta">
                   </div>
-                  <img class="col-2" src="imagens/keyboard_arrow_down.svg" alt="Abrir Detalhes da Consulta">
+
+                  
+                  <div class="row align-items-center">
+
+                    <hr class="hr--cartao mx-3 my-3 col-11">
+
+                    <div class="col-12 mb-2">
+                      <h5 class="fw-bold mb-1">Detalhes:</h5>
+                      <p class="mb-0">Remoção de uma cari no dente carnívoro direito.</p>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                      <h5 class="fw-bold mb-1">Guia de Tratamento:</h5>
+                      <p class="mb-0">Lavar os dentes depois do almoço e do jantar. Evitar bruxamento dos dentes. Diminuir a quantidade de chocolate consumido.</p>
+                    </div>
+
+                    <div class="row m-0">
+                      <button type="button" class="btn shadow-none text-white div__button--presenca px-1 col-6">Declaração de Presença<img src="imagens/download.svg" class="ms-2 button__img--icon"  alt="Baixar Declaração de Presença"></button>
+                      <button type="button" class="btn shadow-none text-white d-flex div__button--presenca px-1 offset-1 col-5">Declaração do Acompanhante<img src="imagens/download.svg" class="me-2 button__img--icon"  alt="Baixar Declaração do Acompanhante"></button>
+                    </div>
+                  </div>
+                  </div>
                 </div>
+              <!-- FIM: Cartão Aberto -->
               </div>
             </div>
-            <!-- FIM: Cartão Fechado -->
-
-            <!-- INÍCO: Cartão Aberto -->
-            <div class="card div--cartao--consulta px-0 d-none" id="2-fechado">
-              <div class="card-body div--cartao--consulta px-4 py-3">
-
-                <div class="row align-items-center">
-                  <div class="col-10">
-                    <h4 class="card-title fw-bold mb-1">Consulta Dentária</h4>
-                    <p class="card-text">23/01 - 15:00</p>
-                  </div>
-                  <img class="col-2" src="imagens/keyboard_arrow_right.svg" alt="Fechar Detalhes da Consulta">
-                </div>
-
-                
-                <div class="row align-items-center">
-
-                  <hr class="hr--cartao mx-3 my-3 col-11">
-
-                  <div class="col-12 mb-2">
-                    <h5 class="fw-bold mb-1">Detalhes:</h5>
-                    <p class="mb-0">Remoção de uma cari no dente carnívoro direito.</p>
-                  </div>
-
-                  <div class="col-12 mb-3">
-                    <h5 class="fw-bold mb-1">Guia de Tratamento:</h5>
-                    <p class="mb-0">Lavar os dentes depois do almoço e do jantar. Evitar bruxamento dos dentes. Diminuir a quantidade de chocolate consumido.</p>
-                  </div>
-
-                  <div class="row m-0">
-                    <button type="button" class="btn shadow-none text-white div__button--presenca px-1 col-6">Declaração de Presença<img src="imagens/download.svg" class="ms-2 button__img--icon"  alt="Baixar Declaração de Presença"></button>
-                    <button type="button" class="btn shadow-none text-white d-flex div__button--presenca px-1 offset-1 col-5">Declaração do Acompanhante<img src="imagens/download.svg" class="me-2 button__img--icon"  alt="Baixar Declaração do Acompanhante"></button>
-                  </div>
-                </div>
-                </div>
-              </div>
-            </div>
-            <!-- FIM: Cartão Aberto -->
-
           </div>
-
-        </div>
       </main>
     </div>
   </body>
