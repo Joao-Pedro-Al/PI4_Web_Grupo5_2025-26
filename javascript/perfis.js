@@ -66,12 +66,12 @@ telInput.addEventListener("input", (event) => {
                         {item.classList.toggle("d-none");}
                         if(segundo == 0)
                         {
-                            if(item.classList.contains("offset-3")){item.classList.toggle("offset-3");}
+                            if(item.classList.contains("offset-xl-3") && item.classList.contains("offset-1")){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-1");}
                             segundo = 1;
                         }
                         else if(segundo == 1)
                         {
-                            if(item.classList.contains("offset-3") == false){item.classList.toggle("offset-3");}
+                            if(item.classList.contains("offset-xl-3") == false && item.classList.contains("offset-1") == false){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-1");}
                             segundo = 0;
                         }
                     }
@@ -92,12 +92,12 @@ telInput.addEventListener("input", (event) => {
                     {item.classList.toggle("d-none");}
                     if(segundo == 0)
                     {
-                        if(item.classList.contains("offset-3")){item.classList.toggle("offset-3");}
+                        if(item.classList.contains("offset-xl-3") && item.classList.contains("offset-1")){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-1");}
                         segundo = 1;
                     }
                     else if(segundo == 1)
                     {
-                        if(item.classList.contains("offset-3") == false){item.classList.toggle("offset-3");}
+                        if(item.classList.contains("offset-xl-3") == false && item.classList.contains("offset-1") == false){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-1");}
                         segundo = 0;
                     }
                 }
@@ -159,7 +159,7 @@ function Mostrar1(Item_Sel)
         if(Item == Item_Sel)
         {
             if(item.classList.contains("d-none")){item.classList.toggle("d-none");}
-            if(item.classList.contains("offset-3")){item.classList.toggle("offset-3");}
+            if(item.classList.contains("offset-xl-3") && item.classList.contains("offset-1")){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-1");}
         }
         else
         {
@@ -183,12 +183,12 @@ function Mostrar1Tipo(Tipo)
             }
             if(segundo == 0)
             {
-                if(item.classList.contains("offset-3")){item.classList.toggle("offset-3");}
+                if(item.classList.contains("offset-xl-3") && item.classList.contains("offset-1")){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-1");}
                 segundo = 1;
             }
             else if(segundo == 1)
             {
-                if(item.classList.contains("offset-3") == false){item.classList.toggle("offset-3");}
+                if(item.classList.contains("offset-xl-3") == false && item.classList.contains("offset-1") == false){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-1");}
                 segundo = 0;
             }
         }
@@ -215,12 +215,12 @@ function MostrarTodos()
             }
             if(segundo == 0)
             {
-                if(item.classList.contains("offset-3")){item.classList.toggle("offset-3");}
+                if(item.classList.contains("offset-xl-3") && item.classList.contains("offset-1")){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-1");}
                 segundo = 1;
             }
             else if(segundo == 1)
             {
-                if(item.classList.contains("offset-3") == false){item.classList.toggle("offset-3");}
+                if(item.classList.contains("offset-xl-3") == false && item.classList.contains("offset-1") == false){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-1");}
                 segundo = 0;
             }
         }
