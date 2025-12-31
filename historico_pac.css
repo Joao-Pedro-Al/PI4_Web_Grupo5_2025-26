@@ -66,6 +66,7 @@ a.active{
 
 .ano{
   min-width: 70px;
+  margin-bottom: 0px !important;
 }
 
 .div__div--meses{
