@@ -101,7 +101,7 @@ meses.forEach(item => {
     item.addEventListener('click', function() {
         if(item.classList.contains("h2") == false)
         {
-            console.log("Mês Anterior: " + idmes);
+            // console.log("Mês Anterior: " + idmes);
 
             const mes_ativo = document.getElementById("mes-" + idmes);
 
@@ -118,21 +118,11 @@ meses.forEach(item => {
             const Id_String = item.id;
             idmes = parseInt(Id_String.substring(Id_String.indexOf("-") + 1));
 
-            console.log("Novo Mês: " + idmes);
+            // console.log("Novo Mês: " + idmes);
 
             AtualizarData();
         }
     })
-});
-
-MenosAno.addEventListener('click', function () {
-    console.log("MenosAno");
-    NavegarData(-2);
-});
-
-MaisAno.addEventListener('click', function () {
-    console.log("MaisAno");
-    NavegarData(2);
 });
 
 function MesString()
@@ -179,9 +169,7 @@ function MesString()
 }
 
 function AtualizarData(){
-    console.log("Antes Mês String: " + mes);
     MesString();
-    console.log("Depois Mês String: " + mes);
     data.textContent = mes + " " + ano;
 }
 
