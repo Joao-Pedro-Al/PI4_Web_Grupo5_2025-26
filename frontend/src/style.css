@@ -18,9 +18,14 @@
   font-size: 30px;
   color: white;
 }
+
+#root{
+  width: 100%;
+}
+
 body {
-  
-  background-image: url('imagens/fundo_dentes.png');
+  display: block;
+  background-image: url('./assets/fundo_dentes.png');
   background-size:100%
 }
 .header-bar i:hover {
