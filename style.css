@@ -261,3 +261,86 @@ button.btn:hover {
     align-items: flex-end; /* alinha pela parte inferior */
     gap: 70px;
 }
+
+/* ===============================
+   REMOVER AZUL NO HOVER DO MENU
+================================ */
+
+/* Hover dos links do menu lateral  */
+.menu__link:hover {
+  color: #A99C5E !important;        
+  background-color: #e0e0e0;        
+}
+
+/* Hover dos icons*/
+.menu__link:hover i {
+  color: #A99C5E !important;
+}
+
+/* Estado ativo / foco (clique ou tab) */
+.menu__link:focus,
+.menu__link:active {
+  color: #A99C5E !important;
+  background-color: #e0e0e0;
+}
+
+/* Remove contorno azul do Bootstrap */
+.menu__link:focus-visible {
+  outline: none !important;
+}
+
+/* ===============================
+   SELECT PERSONALIZADO DOURADO
+   (SEM AZUL)
+================================ */
+/* Container principal do select */
+.custom-select {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Campo visível (valor selecionado) */
+.custom-select__selected {
+  background-color: #A99C5E;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Seta do select */
+.custom-select__selected::after {
+  content: "▾";
+  font-size: 12px;
+}
+
+/* Lista de opções */
+.custom-select__options {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #A99C5E;
+  border-radius: 10px;
+  overflow: hidden;
+  display: none;
+  z-index: 10;
+}
+
+/* Cada opção */
+.custom-select__options div {
+  padding: 10px 16px;
+  color: #000;
+}
+
+/* Hover das opções (dourado) */
+.custom-select__options div:hover {
+  background-color: #A99C5E;
+  color: white;
+}

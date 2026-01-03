@@ -88,22 +88,57 @@
           </div>
 
           <div class="right-column">
-          <label for="account-type">Tipo de Conta</label>
-          <select id="account-type">
-            <option value="paciente">Paciente</option>
-            <option value="medico">Médico</option>
-          </select>
+          <label>Tipo de Conta</label>
+          <div class="custom-select" data-name="account_type">
+            <div class="custom-select__selected">Paciente</div>
+            <div class="custom-select__options">
+            <div data-value="paciente">Paciente</div>
+            <div data-value="medico">Médico</div>
+           </div>
+          </div>
+          <input type="hidden" name="account_type" value="paciente">
 
-          <label for="profile">Perfil de Paciente</label>
-          <select id="profile">
-            <option value="geral">Geral</option>
-            <option value="especifico">Específico</option>
-          </select>
-
+          <label>Perfil de Paciente</label>
+          <div class="custom-select" data-name="profile">
+           <div class="custom-select__selected">Geral</div>
+           <div class="custom-select__options">
+            <div data-value="geral">Geral</div>
+           <div data-value="especifico">Específico</div>
+          </div>
+         </div>
+        <input type="hidden" name="profile" value="geral">
           <button type="submit" class="btn">Associar</button>
+           
           </div>
         </form>
       </div>
     </div>
   </div>
+  <script>
+document.querySelectorAll('.custom-select').forEach(select => {
+  const selected = select.querySelector('.custom-select__selected');
+  const options = select.querySelector('.custom-select__options');
+  const input = select.nextElementSibling;
+
+  selected.addEventListener('click', () => {
+    options.style.display =
+      options.style.display === 'block' ? 'none' : 'block';
+  });
+
+  options.querySelectorAll('div').forEach(option => {
+    option.addEventListener('click', () => {
+      selected.textContent = option.textContent;
+      input.value = option.dataset.value;
+      options.style.display = 'none';
+    });
+  });
+});
+
+document.addEventListener('click', e => {
+  document.querySelectorAll('.custom-select__options').forEach(o => {
+    if (!o.parentElement.contains(e.target)) o.style.display = 'none';
+  });
+});
+</script>
+
 </body>
