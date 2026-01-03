@@ -5,7 +5,8 @@ import logo from './assets/logo.png'
 import './style.css'
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-import Base from './view/Base.jsx'
+import Base from './view/Base.jsx';
+import Perfis from './view/perfis.jsx';
 
 function App() {
   return (
@@ -67,7 +68,7 @@ function App() {
           <div className="content">
             <Routes>
               <Route path="/teste/" element={<Base/>} />
-              {/* <Route path="/perfis/" element={<Perfis/>} /> */}
+              <Route path="/perfis/" element={<Perfis/>} />
             </Routes>
           </div>
       </div>
