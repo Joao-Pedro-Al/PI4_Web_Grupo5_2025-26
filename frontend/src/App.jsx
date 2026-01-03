@@ -5,6 +5,8 @@ import logo from './assets/logo.png'
 import './style.css'
 import "bootstrap-icons/font/bootstrap-icons.css";
 
+import MenuBack from './view/MenuLateral_Backoffice.jsx';
+
 import Base from './view/Base.jsx';
 import Perfis from './view/perfis.jsx';
 
@@ -19,7 +21,7 @@ function App() {
           </div>
 
       <div className="layout">
-          {/* <!--menu do lado--> */}
+          {/* <!--menu do lado-->
           <nav className="menu menu--vertical">
           <div className="menu__logo">
               <img src={logo} alt="Logo" className="menu__logo-img" />
@@ -62,8 +64,9 @@ function App() {
               </Link>
               </li>
           </ul>
-          </nav>
+          </nav> */}
 
+        <MenuBack />
           
           <div className="content">
             <Routes>

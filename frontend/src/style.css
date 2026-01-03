@@ -105,6 +105,33 @@ body {
   z-index: 2;
 }
 
+/* ===============================
+   REMOVER AZUL NO HOVER DO MENU
+================================ */
+
+/* / Hover dos links do menu lateral  / */
+.menu__link:hover {
+  color: #A99C5E !important;
+  background-color: #e0e0e0;
+}
+
+/* / Hover dos icons/ */
+.menu__link:hover i {
+  color: #A99C5E !important;
+}
+
+/* / Estado ativo / foco (clique ou tab) / */
+.menulink:focus,
+.menulink:active {
+  color: #A99C5E !important;
+  background-color: #e0e0e0;
+}
+
+/* / Remove contorno azul do Bootstrap */ */
+.menu__link:focus-visible {
+  outline: none !important;
+}
+
 
 /*---------------------------------------------------
    BLOCO 2 — NÃO PERTENCE AO MENU (FORMULÁRIOS + CONTEÚDO)
