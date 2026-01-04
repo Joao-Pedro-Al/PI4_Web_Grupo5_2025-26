@@ -1,34 +1,28 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-//Configurações
-app.set("port", process.env.PORT || 3000);
-//Middlewares
 app.use(express.json());
-//Rotas
-app.use("/teste", (req, res) => {
-  res.send("Rota TESTE.");
-});
-app.use("/", (req, res) => {
-  res.send("Hello World");
-});
-// importação de rotas [1]
-const utilizadorperfilRouters = require("./routes/utilizadorperfilRoute.js");
-//Rota
-app.use("/utilizadorperfil", utilizadorperfilRouters);
-app.listen(app.get("port"), () => {
-  console.log("Start server on port " + app.get("port"));
-});
+
+const dotenv = require('dotenv');
+dotenv.config();
+
+const notificacaoPool = require('./dbConfig')
+
+app.get('/', (req, res) => {
+    res.send('Simple API homepage');
+})
+
 app.get('/api/notificacao', async(req, res) => {
     try {
         const allNotificacao = await notificacaoPool.query(
-            'SELECT * FROM items'
+            'SELECT * FROM notificacao'
         );
-        res.json({ allNotificacao });
+        res.json({ allNotificacao,rows });
     } catch (error) {
         console.log(error);
         res.status(500).send(error.message)
     }
 })
+
 app.post('/api/notificacao', async (req, res) => {
     const { description } = req.body;
     try {
@@ -36,8 +30,8 @@ app.post('/api/notificacao', async (req, res) => {
             'INSERT INTO notificacao (description) VALUES ($1) RETURNING *',
             [description]
         );
-        res.json({ 
-            message: "New notificacao added!",
+        res.status(201).json({ 
+            message: "New item added!",
             notificacao: newNotificacao.rows
          });
     } catch (error) {
@@ -46,4 +40,6 @@ app.post('/api/notificacao', async (req, res) => {
     }
 })
 
-module.exports = app;
+app.listen(5070, () => {
+    console.log("Server running on port 5070");
+})
