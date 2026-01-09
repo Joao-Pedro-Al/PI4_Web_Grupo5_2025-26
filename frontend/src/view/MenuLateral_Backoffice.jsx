@@ -38,7 +38,7 @@ return (
             </Link>
             </li>
             <li className="menu__item">
-            <Link to="/perfis/" className={location.pathname === '/perfis/' ? 'menu__link btn-gold' : 'menu__link'}>
+            <Link to="/backoffice/perfis/" className={location.pathname === '/backoffice/perfis/' ? 'menu__link btn-gold' : 'menu__link'}>
                 <i className="bi bi-person-circle"></i> Perfis
             </Link>
             </li>
