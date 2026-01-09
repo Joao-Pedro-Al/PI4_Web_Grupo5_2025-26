@@ -22,7 +22,7 @@ return (
             </Link>
           </li>
           <li className="menu__item">
-            <Link to="/historico/" className={location.pathname === '/historico/' ? 'menu__link btn-gold' : 'menu__link'}>
+            <Link to="/historico/" className={location.pathname === '/frontoffice/historico/' ? 'menu__link btn-gold' : 'menu__link'}>
               <i className="bi bi-calendar-week"></i> Agenda
             </Link>
           </li>

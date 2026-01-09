@@ -34,7 +34,12 @@ function App() {
         {
           location.pathname.startsWith('/backoffice/')
           ? <MenuBack />
-          : <MenuFront />
+          : null
+        }
+        {
+          location.pathname.startsWith('/frontoffice/')
+          ? <MenuFront />
+          : null
         }
           
           <div className="content">
@@ -43,7 +48,7 @@ function App() {
               {/* ----------BACKOFFICE----------- */}
               <Route path="/backoffice/perfis/" element={<Perfis/>} />
               {/* ----------FRONTOFFICE----------- */}
-              <Route path="/historico/" element={<Historico_Front/>} />
+              <Route path="/frontoffice/historico/" element={<Historico_Front/>} />
             </Routes>
           </div>
       </div>
