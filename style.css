@@ -2,7 +2,8 @@
    BLOCO 1 — BARRA SUPERIOR + MENU LATERAL
 ---------------------------------------------------*/
 
-/*  Barra dourada superior */
+
+ 
 .header-bar {
   height: 50px;
   background-color: #A99C5E;
@@ -19,7 +20,7 @@
   color: white;
 }
 body {
-  
+
   background-image: url('imagens/fundo_dentes.png');
   background-size:100%
 }
@@ -27,12 +28,12 @@ body {
   color: #c7a33c;
 }
 
-/*  Estrutura principal da página (layout) */
+
 .layout {
   display: flex;
 }
 
-/*  Menu lateral (sidebar) */
+  
 .menu {
   width: 200px;
   position: fixed;
@@ -44,29 +45,29 @@ body {
   overflow-y: auto;
 }
 
-/*  Área do logotipo no menu */
-.menu__logo {
+
+.menulogo {
   text-align: center;
   margin-bottom: 20px;
 }
 
-.menu__logo-img {
+.menulogo-img {
   width: 80%;
   max-width: 150px;
 }
 
-/*  Lista dos itens do menu */
-.menu__list {
+
+.menulist {
   list-style-type: none;
   margin: 0;
 }
 
-.menu__item {
+.menuitem {
   margin-bottom: 10px;
 }
 
-/*  Estilo dos links do menu */
-.menu__link {
+
+.menulink {
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -75,23 +76,22 @@ body {
   font-size: 16px;
 }
 
-.menu__link i {
+.menulink i {
   margin-right: 10px;
   font-size: 18px;
 }
 
-/*  Item ativo do menu */
+
 .menu__link--active {
   background-color: #A99C5E;
   color: white;
 }
 
-/*  Hover nos itens do menu */
+
 .menu__link:hover {
   background-color: #e0e0e0;
 }
 
-/*  Botão dourado DENTRO do menu lateral */
 .menu__link.btn-gold {
   background-color: #A99C5E;
   color: white !important;

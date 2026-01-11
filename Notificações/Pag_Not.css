@@ -1,0 +1,89 @@
+/* Container principal para os cards - AGORA COM GRID */
+.conteudo-notificacoes {
+    margin-left: 280px; /* Para compensar o menu lateral */
+    padding: 20px;
+    width: 1500px;
+    max-width: 1500px; /* Aumentado para comportar 2 colunas */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Duas colunas de tamanho igual */
+    gap: 20px; /* Espaço entre os cards */
+}
+
+/* Estilo dos cards de notificação - AJUSTE DE LARGURA */
+.card.notification {
+    width: 100%; /* Ocupa 100% da coluna do grid */
+    height: 120px;
+    margin: 0; /* Remove margin auto pois o grid controla o layout */
+    border-radius: 12px;
+    border: 1px solid #A99C5E;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: 0.3s;
+}
+
+.card.notification:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Restante do CSS permanece igual */
+.card-body {
+    padding: 20px 25px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: #A99C5E;
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #A99C5E;
+    margin: 0;
+    margin-top: 10px;
+    line-height: 1.1;
+}
+
+.card-text {
+    font-size: 10px;
+    color: #A99C5E;
+    margin: 0;
+    line-height: 1;
+}
+
+.notification-icons {
+    display: flex;
+    gap: 20px;
+}
+
+.notification-icons i {
+    cursor: pointer;
+    font-size: 30px;
+    color: #827847;
+    transition: color 0.2s;
+}
+
+.notification-icons i:hover {
+    color: #555;
+}
+
+.bi-eye {
+    color: #4a6bff;
+}
+
+.bi-eye:hover {
+    color: #3a5bef;
+}
+
+.bi-trash {
+    color: #ff6b6b;
+}
+
+.bi-trash:hover {
+    color: #ff5252;
+}
