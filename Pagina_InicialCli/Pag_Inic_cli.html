@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+ <link rel="stylesheet" href="../style.css">
+     <link rel="stylesheet" href="Pag_Inic_cli.CSS">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+    <script src="Pag_Inic_cli.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/pt-br.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <div class="header-bar">
+            <i class="bi bi-person-circle"></i>
+            <i class="bi bi-bell"></i>
+        </div> <!-- bara dourada -->
+
+        <div class="layout">
+            <!--menu do lado-->
+            <nav class="menu menu--vertical">
+                <div class="menulogo">
+                    <img src="../imagens/logo.png" alt="Logo" class="menulogo-img">
+                </div>
+                <ul class="menulist">
+                    <li class="menuitem">
+                        <a class="menulink" href="#">
+                            <i class="bi bi-house-door-fill"></i> Início
+                        </a>
+                    </li>
+                    <li class="menuitem">
+                        <a class="menulink" href="#">
+                            <i class="bi bi-calendar-week"></i> Remarcar
+                        </a>
+                    </li>
+                    <li class="menuitem">
+                        <a class="menulink btn-gold" href="#">
+                            <i class="bi bi-plus-circle"></i> Criar Conta
+                        </a>
+                    </li>
+
+                    <li class="menuitem">
+                        <a class="menulink" href="#">
+                            <i class="bi bi-bell-fill"></i> Notificações
+                        </a>
+                    </li>
+                    <li class="menuitem">
+                        <a class="menulink" href="#">
+                            <i class="bi bi-person-circle"></i> Perfis
+                        </a>
+                    </li>
+                    <li class="menuitem">
+                        <a class="menulink" href="#">
+                            <i class="bi bi-journal-medical"></i> Consultas
+                        </a>
+                    </li>
+                    <li class="menuitem">
+                        <a class="menulink" href="#">
+                            <i class="bi bi-box-arrow-right"></i> Sign Out
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- Conteúdo principal CORRIGIDO -->
+            <div class="conteudo-notificacoes">
+                <!-- Card 1 Expansível -->
+                <div class="card expandable notification" onclick="toggleCard(this)">
+                    <div class="card-header">
+                        <div class="card-content">
+                            <div class="card-main-info">
+                                <h5 class="card-title-expandable">Consulta Remarcada</h5>
+                                <p class="card-text-expandable">02/05 - 18:30</p>
+                            </div>
+                            <i class="bi bi-chevron-down expand-icon"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Paciente:</span>
+                                <span class="detail-value">João Silva</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Médico:</span>
+                                <span class="detail-value">Dr. Carlos Santos</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Especialidade:</span>
+                                <span class="detail-value">Dentista</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Status:</span>
+                                <span class="detail-value" style="color: #4CAF50;">Confirmada</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Data Original:</span>
+                                <span class="detail-value">01/05 - 14:00</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Motivo:</span>
+                                <span class="detail-value">Disponibilidade do paciente</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-card-action btn-view">
+                                <i class="bi bi-eye"></i> Ver Detalhes
+                            </button>
+                            <button class="btn-card-action btn-edit">
+                                <i class="bi bi-pencil"></i> Editar
+                            </button>
+                            <button class="btn-card-action btn-delete">
+                                <i class="bi bi-trash"></i> Excluir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 Expansível -->
+                <div class="card expandable notification" onclick="toggleCard(this)">
+                    <div class="card-header">
+                        <div class="card-content">
+                            <div class="card-main-info">
+                                <h5 class="card-title-expandable">Consulta Marcada</h5>
+                                <p class="card-text-expandable">04/20 - 9:30</p>
+                            </div>
+                            <i class="bi bi-chevron-down expand-icon"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Paciente:</span>
+                                <span class="detail-value">Maria Oliveira</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Médico:</span>
+                                <span class="detail-value">Dra. Ana Costa</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Especialidade:</span>
+                                <span class="detail-value">Clínico Geral</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Status:</span>
+                                <span class="detail-value" style="color: #FF9800;">Pendente</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Tipo:</span>
+                                <span class="detail-value">Primeira Consulta</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Observações:</span>
+                                <span class="detail-value">Exame de rotina</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-card-action btn-view">
+                                <i class="bi bi-eye"></i> Ver Detalhes
+                            </button>
+                            <button class="btn-card-action btn-edit">
+                                <i class="bi bi-pencil"></i> Editar
+                            </button>
+                            <button class="btn-card-action btn-delete">
+                                <i class="bi bi-trash"></i> Excluir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 Expansível -->
+                <div class="card expandable notification" onclick="toggleCard(this)">
+                    <div class="card-header">
+                        <div class="card-content">
+                            <div class="card-main-info">
+                                <h5 class="card-title-expandable">Consulta Remarcada</h5>
+                                <p class="card-text-expandable">08/09 - 12:40</p>
+                            </div>
+                            <i class="bi bi-chevron-down expand-icon"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Conteúdo similar para os outros cards -->
+                    </div>
+                </div>
+
+                <!-- Card 4 Expansível -->
+                <div class="card expandable notification" onclick="toggleCard(this)">
+                    <div class="card-header">
+                        <div class="card-content">
+                            <div class="card-main-info">
+                                <h5 class="card-title-expandable">Consulta Cancelada</h5>
+                                <p class="card-text-expandable">02/11 - 18:00</p>
+                            </div>
+                            <i class="bi bi-chevron-down expand-icon"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Conteúdo similar para os outros cards -->
+                    </div>
+                </div>
+            </div>
+            <div class="button-group-profile">
+                <button class="btn-profile btn-small">Ver Agenda</button>
+            </div>
+
+        </div>
+        <div class="conteudo-notificacoes2">
+            <!-- Card 1 -->
+            <div class="card notification2">
+                <div class="card-body2">
+                    <div class="text-container">
+                        <h5 class="card-title2">Guia de Tratamento Atual:</h5>
+                        <p class="card-text2">Lavar os dentes depois do almoço e do jantar. Evitar bruxamento dos
+                            dentes. Diminuir a quantidade de chocolate consumido.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </body>
+
+</html>
