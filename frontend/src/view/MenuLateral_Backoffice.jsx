@@ -1,10 +1,9 @@
+import { Link, useLocation } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import React, { useEffect, useState } from "react";
-import { Link, useLocation } from 'react-router-dom';
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 import logo from '../assets/logo.png'
-import "bootstrap-icons/font/bootstrap-icons.css";
 
 import '../style.css';
 

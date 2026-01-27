@@ -1,10 +1,10 @@
+import { useEffect} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 import '../perfis.css';
-// import '../perfis.js';
+
+import CartaoPerfil from "./Cartao_Perfil";
 
 const Perfis = () => {
     useEffect(() => {
@@ -145,22 +145,6 @@ const Perfis = () => {
             }
         }
 
-        // function AbrirDropdown()
-        // {
-
-        //     if(Aberto == 0)
-        //     {
-        //         dropdownButton.style.borderRadius = "10px 10px 0px 0px";
-        //         Aberto = 1;
-        //     }
-        //     else if(Aberto == 1)
-        //     {
-        //         dropdownButton.style.borderRadius = "10px";
-        //         Aberto = 0;
-        //     }
-
-        // }
-
         // ------------Mostrar e/ou Esconder-----------
 
         function Mostrar1(Item_Sel)
@@ -249,15 +233,15 @@ const Perfis = () => {
                 Tipo de Conta{/* <!-- <span className="material-symbols-outlined ms-auto">keyboard_arrow_down</span> --> */}
                 </button>
                 <ul className="dropdown-menu shadow py-0 col-12">
-                <li><a className="dropdown-item ul__li--dropdown">Paciente</a></li>
-                <li><a className="dropdown-item ul__li--dropdown">Doutor</a></li>
-                <li><a className="dropdown-item ul__li--dropdown">Todos</a></li>
+                <li><p className="dropdown-item ul__li--dropdown">Paciente</p></li>
+                <li><p className="dropdown-item ul__li--dropdown">Doutor</p></li>
+                <li><p className="dropdown-item ul__li--dropdown">Todos</p></li>
                 </ul>
             </div>
 
             {/* <!-- Telemovel --> */}
             <div className="px-0 col-sm-5 offset-sm-1 col-xl-4 offset-xl-3">
-                <label for="telefone" className="form-label div__input--label">Telefone</label>
+                <label htmlFor="telefone" className="form-label div__input--label">Telefone</label>
                 <input type="tel" placeholder="987123654" className="form-control div__input--textbox shadow-none" id="telefone" pattern="[0-9]{3}[0-9]{3}[0-9]{3}" />
             </div>
 
@@ -294,6 +278,10 @@ const Perfis = () => {
                 <p className="card-text"><b>Email: </b>perfil@gmail.com</p>
                 </div>
             </div>
+            {/* <!-- FIM: Cartão --> */}
+
+            {/* <!-- INÍCO: Cartão --> */}
+            <CartaoPerfil nome="Niko Bellic" num={956274234} email="nikobell@gmail.com" />;
             {/* <!-- FIM: Cartão --> */}
 
             </div>

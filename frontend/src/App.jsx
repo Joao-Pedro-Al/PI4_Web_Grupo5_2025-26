@@ -1,9 +1,6 @@
-import { useState } from 'react'
-import { BrowserRouter as Router, Route, Link, Routes, useLocation } from "react-router-dom";
-
-import logo from './assets/logo.png'
-import './style.css'
+import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import './style.css'
 
 // ----MENUS LATERAIS----
 import MenuBack from './view/MenuLateral_Backoffice.jsx';
@@ -12,13 +9,13 @@ import MenuFront from './view/MenuLateral_Frontoffice.jsx';
 // ----BACKOFFICE----
 import Base from './view/Base.jsx';
 import Perfis from './view/perfis.jsx';
+import VerPerfil from './view/verperfil.jsx';
+
+// ----FRONTOFFICE----
 import Historico_Front from './view/historico_front.jsx';
 
 
 function App() {
-  // var MenuLateral;
-  // if(location.pathname.startsWith('/back/')){MenuLateral = MenuBack;}
-  // else{MenuLateral = MenuFront}
   return (
     <Router>
       <div>
@@ -47,6 +44,7 @@ function App() {
               <Route path="/teste/" element={<Base/>} />
               {/* ----------BACKOFFICE----------- */}
               <Route path="/backoffice/perfis/" element={<Perfis/>} />
+              <Route path="/backoffice/perfis/detalhe/" element={<VerPerfil/>} />
               {/* ----------FRONTOFFICE----------- */}
               <Route path="/frontoffice/historico/" element={<Historico_Front/>} />
             </Routes>

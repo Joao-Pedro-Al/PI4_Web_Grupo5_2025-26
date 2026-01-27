@@ -1,7 +1,7 @@
+import { useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import React, { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 import '../historico_pac.css';
 
@@ -27,10 +27,7 @@ const Historico_Front = () => {
 
         const cartoes = document.querySelectorAll('.card');
 
-        // console.log("Antes: " + iniciado.current);
         if(iniciado.current == 0){Start(); iniciado.current = 1;}
-        // console.log("Depois: " + iniciado.current);
-        // console.log("Ano no iníco: " + ano);
 
         function Start()
         {
@@ -48,30 +45,16 @@ const Historico_Front = () => {
           Mes.classList.remove("h5");
           Mes.classList.remove("p--data");
           Mes.classList.add("h2");
-
-          // console.log("Executado!!!");
-
-          // anos.forEach(function (currentValue, currentIndex, listObj) {
-          //   console.log(`${currentValue}, ${currentIndex}, ${this}`);
-          // }, "Anos");
-          // console.log("-------------------------------------------------------------");
-          // meses.forEach(function (currentValue, currentIndex, listObj) {
-          //   console.log(`${currentValue}, ${currentIndex}, ${this}`);
-          // }, "Meses");
         }
 
         function ListarAnos()
         {
             const anomax = parseInt(AnoPresente.textContent);
-            // console.log("Anomax no Listar: " + anomax);
-            // console.log("Ano no Listar Anos: " + ano);
-            // console.log("StateAno no Listar Anos: " + stateAno.current);
             var menos = 1;
             
             for(var i = 8; i >= 1; i--){
                 const A = document.getElementById("data-" + i);
                 A.textContent = anomax - menos;
-                // console.log(anomax + " - " + menos + " = " + A.textContent);
                 menos += 1;
             }
 
@@ -80,16 +63,12 @@ const Historico_Front = () => {
 
         function VerificarAnoSel()
         {
-          // console.log("Ano no Verificar Ano Selecionado: " + ano);
             anos.forEach(item => {
-              // console.log("Ano Selecionado: " + ano);
-              // console.log("Texto do Item: " + item.textContent);
                 if(item.textContent == stateAno.current)
                 {
                     item.classList.remove('h5');
                     item.classList.remove('p--data');
                     item.classList.add('h2');
-                    // console.log("Tem Ano! : " + item.outerHTML);
                 }
 
                 if(item.classList.contains('h2') && item.textContent != stateAno.current)
@@ -101,27 +80,7 @@ const Historico_Front = () => {
             })
         }
 
-        // MenosAno.addEventListener('click', function() {
-        //     const anomax = parseInt(AnoPresente.textContent);
-        //     AnoPresente.textContent = anomax - 1;
-        //     ListarAnos();
-
-        //     if(anomax - 1 < anoPre && MaisAno.classList.contains('button--ano--desl'))[MaisAno.classList.toggle('button--ano--desl')]
-        // })
-
-        // MaisAno.addEventListener('click', function() {
-        //     if(MaisAno.classList.contains('button--ano--desl') == false)
-        //     {
-        //         const anomax = parseInt(AnoPresente.textContent);
-        //         AnoPresente.textContent = anomax + 1;
-        //         ListarAnos();
-
-        //         if(anomax + 1 == anoPre)[MaisAno.classList.toggle('button--ano--desl')]
-        //     }
-        // })
-
         const MenosClick = () => {
-          // console.log("Início Click!");
           const anomax = parseInt(AnoPresente.textContent);
           AnoPresente.textContent = anomax - 1;
           ListarAnos();
@@ -129,11 +88,9 @@ const Historico_Front = () => {
           if(anomax - 1 < anoPre && MaisAno.classList.contains('button--ano--desl')) {
               MaisAno.classList.toggle('button--ano--desl');
           }
-          // console.log("Fim Click!");
         };
 
         const MaisClick = () => {
-          // console.log("Início Click!");
           if(MaisAno.classList.contains('button--ano--desl') == false) {
             const anomax = parseInt(AnoPresente.textContent);
             AnoPresente.textContent = anomax + 1;
@@ -143,7 +100,6 @@ const Historico_Front = () => {
                 MaisAno.classList.toggle('button--ano--desl');
             }
           }
-          // console.log("Fim Click!");
         };
 
         MenosAno.addEventListener('click', MenosClick);
@@ -153,14 +109,8 @@ const Historico_Front = () => {
             item.addEventListener('click', function() {
                 if(item.classList.contains("h2") == false)
                 {
-                    // //Ativar Mês Selecionado
-                    // item.classList.toggle("h5");
-                    // item.classList.toggle("p--data");
-                    // item.classList.toggle("h2");
-                    // console.log("Ano antes do click: " + ano);
                     ano = parseInt(item.textContent);
                     stateAno.current = ano;
-                    // console.log("Ano depois do click: " + ano);
                     VerificarAnoSel();
                     AtualizarData();
                 }
@@ -171,11 +121,7 @@ const Historico_Front = () => {
             item.addEventListener('click', function() {
                 if(item.classList.contains("h2") == false)
                 {
-                    // console.log("Mês Anterior: " + idmes);
-
                     const mes_ativo = document.getElementById("mes-" + idmes);
-                    // console.log("Mes Antigo Antes: ", mes_ativo);
-                    // console.log("Mes Novo Antes: ", item);
 
                     //Revreter Mês Ativo
                     mes_ativo.classList.add("h5");
@@ -187,13 +133,8 @@ const Historico_Front = () => {
                     item.classList.remove('p--data');
                     item.classList.add('h2');
 
-                    // console.log("Mes Antigo Agora: ", mes_ativo);
-                    // console.log("Mes Novo Agora: ", item);
-
                     const Id_String = item.id;
                     idmes = parseInt(Id_String.substring(Id_String.indexOf("-") + 1));
-
-                    // console.log("Novo Mês: " + idmes);
 
                     AtualizarData();
                 }
