@@ -12,38 +12,42 @@ app.use("/teste", (req, res) => {
 });
 // importação de rotas [1]
 const utilizadorperfilRouters = require("./routes/utilizadorperfilRoute.js");
+const consultasRouters = require("./routes/consultasRoute.js");
 //Rota
 app.use("/utilizadorperfil", utilizadorperfilRouters);
+app.use("/consultas", consultasRouters);
 app.listen(app.get("port"), () => {
   console.log("Start server on port " + app.get("port"));
 });
-app.get('/api/notificacao', async(req, res) => {
-    try {
-        const allNotificacao = await notificacaoPool.query(
-            'SELECT * FROM items'
-        );
-        res.json({ allNotificacao });
-    } catch (error) {
-        console.log(error);
-        res.status(500).send(error.message)
-    }
-})
-app.post('/api/notificacao', async (req, res) => {
-    const { description } = req.body;
-    try {
-        const newNotificacao = await notificacaoPool.query(
-            'INSERT INTO notificacao (description) VALUES ($1) RETURNING *',
-            [description]
-        );
-        res.json({ 
-            message: "New notificacao added!",
-            notificacao: newNotificacao.rows
-         });
-    } catch (error) {
-        console.log(error);
-        res.status(500).send(error.message)
-    }
-})
+
+// app.get('/api/notificacao', async(req, res) => {
+//     try {
+//         const allNotificacao = await notificacaoPool.query(
+//             'SELECT * FROM items'
+//         );
+//         res.json({ allNotificacao });
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).send(error.message)
+//     }
+// })
+// app.post('/api/notificacao', async (req, res) => {
+//     const { description } = req.body;
+//     try {
+//         const newNotificacao = await notificacaoPool.query(
+//             'INSERT INTO notificacao (description) VALUES ($1) RETURNING *',
+//             [description]
+//         );
+//         res.json({ 
+//             message: "New notificacao added!",
+//             notificacao: newNotificacao.rows
+//          });
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).send(error.message)
+//     }
+// })
+
 app.use("/", (req, res) => {
   res.send("Hello World");
 });

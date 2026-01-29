@@ -1,18 +1,31 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "bootstrap-icons/font/bootstrap-icons.css";
+
+import url from "./url_global";
+
+import axios from "axios";
+const urlAPI = url + "consultas/list";
 
 import '../historico_pac.css';
 
 import ConsultaHistorico from "./Consulta_Historico";
 
 const Historico_Front = () => {
+  const [dataConsul, setdataConsul] = useState([]);
+
   const path_img = 'frontend/src/assets/';
 
   const hoje = new Date;
   const stateAno = useRef(hoje.getFullYear());
   const iniciado = useRef(0);
+
+    // Carregar Consultas
+    useEffect(() => {
+        CarregarConsultas();
+    }, [])
+
     useEffect(() => {
         const data = document.getElementById('data');
         const MenosAno = document.getElementById('AnoPas');
@@ -219,7 +232,22 @@ const Historico_Front = () => {
           });
         };
 
-    }, []);
+    }, [dataConsul]);
+
+    function CarregarConsultas() {
+        axios.get(urlAPI)
+        .then(res => {
+        if(res.data.success){
+        const data = res.data.data;
+        setdataConsul(data);
+        }else{
+        alert("Error Web Service!");
+        }
+        })
+        .catch(error => {
+        alert(error)
+        });
+    }
     return (
         <div className="container-fluid">
 
@@ -278,166 +306,42 @@ const Historico_Front = () => {
           <div className="row d-flex align-items-start mb-5">
 
             <div className="row col-sm-12 col-lg-5">
-              {/* <!-- INÍCO: Cartão Fechado --> */}
-              <div className="card div--cartao--consulta px-0 col-12 mb-3" id="1-aberto">
-                <div className="card-body div--cartao--consulta px-4 py-3">
-                  <div className="row align-items-center">
-                    <div className="col-10">
-                      <h4 className="card-title fw-bold mb-1">Consulta Dentária</h4>
-                      <p className="card-text">23/01 - 15:00</p>
-                    </div>
-                    <i className="bi bi-chevron-down i--cartao--seta text-center fs-2 col-2"></i>
-                  </div>
-                </div>
-              </div>
-              {/* <!-- FIM: Cartão Fechado --> */}
-
-              {/* <!-- INÍCO: Cartão Aberto --> */}
-              <div className="card div--cartao--consulta px-0 d-none col-12 mb-3" id="1-fechado">
-                <div className="card-body div--cartao--consulta px-4 py-3">
-
-                  <div className="row align-items-center">
-                    <div className="col-10">
-                      <h4 className="card-title fw-bold mb-1">Consulta Dentária</h4>
-                      <p className="card-text">23/01 - 15:00</p>
-                    </div>
-                    <i className="bi bi-chevron-right i--cartao--seta text-center fs-2 col-2"></i>
-                  </div>
-
-                  
-                  <div className="row align-items-center">
-
-                    <hr className="hr--cartao mx-3 my-3 col-11" />
-
-                    <div className="col-12 mb-2">
-                      <h5 className="fw-bold mb-1">Detalhes:</h5>
-                      <p className="mb-0">Remoção de uma cari no dente carnívoro direito.</p>
-                    </div>
-
-                    <div className="col-12 mb-3">
-                      <h5 className="fw-bold mb-1">Guia de Tratamento:</h5>
-                      <p className="mb-0">Lavar os dentes depois do almoço e do jantar. Evitar bruxamento dos dentes. Diminuir a quantidade de chocolate consumido.</p>
-                    </div>
-
-                    <div className="row m-0">
-                      <button type="button" className="btn shadow-none text-white div__button--presenca px-1 col-12 mb-2 mb-xl-0 col-xl-6">Declaração de Presença<i className="bi bi-download ms-2 button__img--icon"></i></button>
-                      <button type="button" className="btn shadow-none text-white d-flex justify-content-center div__button--presenca px-1 offset-xl-1 col-xl-5">Declaração do Acompanhante<i className="bi bi-download mx-2 my-auto ms-xl-0 button__img--icon"></i></button>
-                    </div>
-                  </div>
-                  </div>
-                </div>
-              {/* <!-- FIM: Cartão Aberto --> */}
-
-
-              {/* <!-- INÍCO: Cartão Fechado --> */}
-                <div className="card div--cartao--consulta px-0 col-12 mb-3" id="3-aberto">
-                  <div className="card-body div--cartao--consulta px-4 py-3">
-                    <div className="row align-items-center">
-                      <div className="col-10">
-                        <h4 className="card-title fw-bold mb-1">Consulta Dentária</h4>
-                        <p className="card-text">04/01 - 12:00</p>
-                      </div>
-                      <i className="bi bi-chevron-down i--cartao--seta text-center fs-2 col-2"></i>
-                    </div>
-                  </div>
-                </div>
-                {/* <!-- FIM: Cartão Fechado --> */}
-
-                {/* <!-- INÍCO: Cartão Aberto --> */}
-                <div className="card div--cartao--consulta px-0 d-none col-12 mb-3" id="3-fechado">
-                  <div className="card-body div--cartao--consulta px-4 py-3">
-
-                    <div className="row align-items-center">
-                      <div className="col-10">
-                        <h4 className="card-title fw-bold mb-1">Consulta Dentária</h4>
-                        <p className="card-text">04/01 - 12:00</p>
-                      </div>
-                        <i className="bi bi-chevron-right i--cartao--seta text-center fs-2 col-2"></i>
-                    </div>
-
-                    
-                    <div className="row align-items-center">
-
-                      <hr className="hr--cartao mx-3 my-3 col-11" />
-
-                      <div className="col-12 mb-2">
-                        <h5 className="fw-bold mb-1">Detalhes:</h5>
-                        <p className="mb-0">Remoção de uma cari no dente carnívoro direito.</p>
-                      </div>
-
-                      <div className="col-12 mb-3">
-                        <h5 className="fw-bold mb-1">Guia de Tratamento:</h5>
-                        <p className="mb-0">Lavar os dentes depois do almoço e do jantar. Evitar bruxamento dos dentes. Diminuir a quantidade de chocolate consumido.</p>
-                      </div>
-
-                      <div className="row m-0">
-                        <button type="button" className="btn shadow-none text-white div__button--presenca px-1 col-12 mb-2 mb-xl-0 col-xl-6">Declaração de Presença<i className="bi bi-download ms-2 button__img--icon"></i></button>
-                      <button type="button" className="btn shadow-none text-white d-flex justify-content-center div__button--presenca px-1 offset-xl-1 col-xl-5">Declaração do Acompanhante<i className="bi bi-download mx-2 my-auto ms-xl-0 button__img--icon"></i></button>
-                      </div>
-                    </div>
-                    </div>
-                  </div>
-                {/* <!-- FIM: Cartão Aberto --> */}
-              </div>
+              <LoadConsultasDataPar />
+            </div>
 
             {/* <!-- /// Próxima Coluna /// --> */}
             <div className="row col-sm-12 col-lg-5 offset-lg-1">
-              {/* <!-- INÍCO: Cartão Fechado --> */}
-              <div className="card div--cartao--consulta px-0 col-12 mb-3" id="2-aberto">
-                <div className="card-body div--cartao--consulta px-4 py-3">
-                  <div className="row align-items-center">
-                    <div className="col-10">
-                      <h4 className="card-title fw-bold mb-1">Urgência</h4>
-                      <p className="card-text">13/01 - 18:20</p>
-                    </div>
-                    <i className="bi bi-chevron-down i--cartao--seta text-center fs-2 col-2"></i>
-                  </div>
-                </div>
-              </div>
-              {/* <!-- FIM: Cartão Fechado --> */}
-
-              {/* <!-- INÍCO: Cartão Aberto --> */}
-              <div className="card div--cartao--consulta px-0 d-none col-12 mb-3" id="2-fechado">
-                <div className="card-body div--cartao--consulta px-4 py-3">
-
-                  <div className="row align-items-center">
-                    <div className="col-10">
-                      <h4 className="card-title fw-bold mb-1">Urgência</h4>
-                      <p className="card-text">13/01 - 18:20</p>
-                    </div>
-                      <i className="bi bi-chevron-right i--cartao--seta text-center fs-2 col-2"></i>
-                  </div>
-
-                  
-                  <div className="row align-items-center">
-
-                    <hr className="hr--cartao mx-3 my-3 col-11" />
-
-                    <div className="col-12 mb-2">
-                      <h5 className="fw-bold mb-1">Detalhes:</h5>
-                      <p className="mb-0">Remoção de uma cari no dente carnívoro direito.</p>
-                    </div>
-
-                    <div className="col-12 mb-3">
-                      <h5 className="fw-bold mb-1">Guia de Tratamento:</h5>
-                      <p className="mb-0">Lavar os dentes depois do almoço e do jantar. Evitar bruxamento dos dentes. Diminuir a quantidade de chocolate consumido.</p>
-                    </div>
-
-                    <div className="row m-0">
-                      <button type="button" className="btn shadow-none text-white div__button--presenca px-1 col-12 mb-2 mb-xl-0 col-xl-6">Declaração de Presença<i className="bi bi-download ms-2 button__img--icon"></i></button>
-                      <button type="button" className="btn shadow-none text-white d-flex justify-content-center div__button--presenca px-1 offset-xl-1 col-xl-5">Declaração do Acompanhante<i className="bi bi-download mx-2 my-auto ms-xl-0 button__img--icon"></i></button>
-                    </div>
-                  </div>
-                </div>
-            </div>
-            {/* <!-- FIM: Cartão Aberto --> */}
-
-            {/* <!-- INÍCO: Cartão --> */}
-            <ConsultaHistorico titulo="Urgência" horas="15:40" data="28-01" detalhes="Queda de dentes" guia="Parar de trincar pedra (não que possas)." idCon="4" />;
-            {/* <!-- FIM: Cartão --> */}
+              <LoadConsultasDataImpar />
             </div>
         </div>
       </div>
     );
+
+    function LoadConsultasDataPar(){
+      return dataConsul.map((data, index) => {
+        if(index % 2 == 0){
+          const titulo = Titulo(data.tipomarcacao);
+          return (
+              <ConsultaHistorico key={index} titulo={titulo} horas={data.hora} data={data.data} detalhes={data.detalhes} guia={data.guia_tratamento} idCon={data.idconsulta} />
+          );
+        }
+      });
+    }
+
+    function LoadConsultasDataImpar(){
+      return dataConsul.map((data, index) => {
+        if(index % 2 != 0){
+          const titulo = Titulo(data.tipomarcacao);
+          return (
+              <ConsultaHistorico key={index} titulo={titulo} horas={data.hora} data={data.data} detalhes={data.detalhes} guia={data.guia_tratamento} idCon={data.idconsulta} />
+          );
+        }
+      });
+    }
+
+    function Titulo(Tipo){
+      if(Tipo == 1){return "Consulta Dentária"}
+      else{return "Urgência"}
+    }
 }
 export default Historico_Front;
