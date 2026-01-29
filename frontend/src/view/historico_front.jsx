@@ -5,6 +5,8 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 import '../historico_pac.css';
 
+import ConsultaHistorico from "./Consulta_Historico";
+
 const Historico_Front = () => {
   const path_img = 'frontend/src/assets/';
 
@@ -429,6 +431,10 @@ const Historico_Front = () => {
                 </div>
             </div>
             {/* <!-- FIM: Cartão Aberto --> */}
+
+            {/* <!-- INÍCO: Cartão --> */}
+            <ConsultaHistorico titulo="Urgência" horas="15:40" data="28-01" detalhes="Queda de dentes" guia="Parar de trincar pedra (não que possas)." idCon="4" />;
+            {/* <!-- FIM: Cartão --> */}
             </div>
         </div>
       </div>
