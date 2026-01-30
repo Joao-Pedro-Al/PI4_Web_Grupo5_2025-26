@@ -4,9 +4,10 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import url from "./url_global";
+import id_Perfil from "./id_global";
 
 import axios from "axios";
-const urlAPI = url + "consultas/list";
+const urlAPI = url + "consultas/list/" + id_Perfil;
 
 import '../historico_pac.css';
 
@@ -14,8 +15,6 @@ import ConsultaHistorico from "./Consulta_Historico";
 
 const Historico_Front = () => {
   const [dataConsul, setdataConsul] = useState([]);
-
-  const path_img = 'frontend/src/assets/';
 
   const hoje = new Date;
   const stateAno = useRef(hoje.getFullYear());
@@ -249,99 +248,99 @@ const Historico_Front = () => {
         });
     }
     return (
-        <div className="container-fluid">
+      <div className="container-fluid">
 
-          {/* <!-- //// Navegação da Data //// --> */}
-          <div className="row mb-5">
+        {/* <!-- //// Navegação da Data //// --> */}
+        <div className="row mb-5">
 
-            <div className="row align-items-center col-sm-12 col-lg-3 mb-sm-3 mb-lg-0">
-              <div className="div--cartao--data col-12 px-4 py-3 text-center">
-                <h1 id="data">....</h1>
-              </div>
+          <div className="row align-items-center col-sm-12 col-lg-3 mb-sm-3 mb-lg-0">
+            <div className="div--cartao--data col-12 px-4 py-3 text-center">
+              <h1 id="data">....</h1>
+            </div>
+          </div>
+
+          <span className="span--vr col-auto d-none d-lg-block mx-4 px-0"></span>
+
+          <div className="row col-sm-12 col-lg-8">
+
+            <div className="row align-items-start col-12 mx-sm-auto mx-lg-0">
+              <button className="button--ano col-auto px-2 me-auto me-lg-1" id="AnoPas"><i className="bi bi-chevron-left text-white fs-5"></i></button>
+              <p className="h5 col-auto p--data ano d-none d-xl-block" id="data-1">...</p>
+              <p className="h5 col-auto p--data ano d-none d-xl-block" id="data-2">...</p>
+              <p className="h5 col-auto p--data ano d-none d-xl-block" id="data-3">...</p>
+              <p className="h5 col-auto p--data ano d-none d-xl-block" id="data-4">...</p>
+              <p className="h5 col-auto p--data ano d-none d-lg-block" id="data-5">...</p>
+              <p className="h5 col-auto p--data ano" id="data-6">...</p>
+              <p className="h5 col-auto p--data ano" id="data-7">...</p>
+              <p className="h5 col-auto p--data ano" id="data-8">...</p>
+              <p className="h5 col-auto p--data ano" id="data-9">...</p>
+              <button className="button--ano col-auto px-2 ms-auto ms-lg-1 button--ano--desl" id="AnoFut"><i className="bi bi-chevron-right text-white fs-5"></i></button>
             </div>
 
-            <span className="span--vr col-auto d-none d-lg-block mx-4 px-0"></span>
-
-            <div className="row col-sm-12 col-lg-8">
-
-              <div className="row align-items-start col-12 mx-sm-auto mx-lg-0">
-                <button className="button--ano col-auto px-2 me-auto me-lg-1" id="AnoPas"><i className="bi bi-chevron-left text-white fs-5"></i></button>
-                <p className="h5 col-auto p--data ano d-none d-xl-block" id="data-1">...</p>
-                <p className="h5 col-auto p--data ano d-none d-xl-block" id="data-2">...</p>
-                <p className="h5 col-auto p--data ano d-none d-xl-block" id="data-3">...</p>
-                <p className="h5 col-auto p--data ano d-none d-xl-block" id="data-4">...</p>
-                <p className="h5 col-auto p--data ano d-none d-lg-block" id="data-5">...</p>
-                <p className="h5 col-auto p--data ano" id="data-6">...</p>
-                <p className="h5 col-auto p--data ano" id="data-7">...</p>
-                <p className="h5 col-auto p--data ano" id="data-8">...</p>
-                <p className="h5 col-auto p--data ano" id="data-9">...</p>
-                <button className="button--ano col-auto px-2 ms-auto ms-lg-1 button--ano--desl" id="AnoFut"><i className="bi bi-chevron-right text-white fs-5"></i></button>
+            {/* <!-- /// Meses /// --> */}
+            <div className="row align-items-end col-12">
+              <div className="row div__div--meses col-12 col-xl-auto">
+                <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-1">Jan</p>
+                <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-2">Fev</p>
+                <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-3">Mar</p>
+                <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-4">Abr</p>
+                <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-5">Mai</p>
+                <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-6">Jun</p>
               </div>
-
-              {/* <!-- /// Meses /// --> */}
-              <div className="row align-items-end col-12">
-                <div className="row div__div--meses col-12 col-xl-auto">
-                  <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-1">Jan</p>
-                  <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-2">Fev</p>
-                  <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-3">Mar</p>
-                  <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-4">Abr</p>
-                  <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-5">Mai</p>
-                  <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-6">Jun</p>
-                </div>
-                <div className="row div__div--meses col-12 col-xl-auto">
-                  <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-7">Jul</p>
-                  <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-8">Ago</p>
-                  <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-9">Set</p>
-                  <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-10">Out</p>
-                  <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-11">Nov</p>
-                  <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-12">Dez</p>
-                </div>
+              <div className="row div__div--meses col-12 col-xl-auto">
+                <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-7">Jul</p>
+                <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-8">Ago</p>
+                <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-9">Set</p>
+                <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-10">Out</p>
+                <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-11">Nov</p>
+                <p className="h5 col-2 col-xl-auto align-self-end p--data mes" id="mes-12">Dez</p>
               </div>
-
             </div>
 
           </div>
 
-          {/* <!-- //// Navegação da Data //// --> */}
-          <div className="row d-flex align-items-start mb-5">
-
-            <div className="row col-sm-12 col-lg-5">
-              <LoadConsultasDataPar />
-            </div>
-
-            {/* <!-- /// Próxima Coluna /// --> */}
-            <div className="row col-sm-12 col-lg-5 offset-lg-1">
-              <LoadConsultasDataImpar />
-            </div>
         </div>
+
+        {/* <!-- //// Navegação da Data //// --> */}
+        <div className="row d-flex align-items-start mb-5">
+
+          <div className="row col-sm-12 col-lg-5">
+            <LoadConsultasDataPar />
+          </div>
+
+          {/* <!-- /// Próxima Coluna /// --> */}
+          <div className="row col-sm-12 col-lg-5 offset-lg-1">
+            <LoadConsultasDataImpar />
+          </div>
       </div>
-    );
+    </div>
+  );
 
-    function LoadConsultasDataPar(){
-      return dataConsul.map((data, index) => {
-        if(index % 2 == 0){
-          const titulo = Titulo(data.tipomarcacao);
-          return (
-              <ConsultaHistorico key={index} titulo={titulo} horas={data.hora} data={data.data} detalhes={data.detalhes} guia={data.guia_tratamento} idCon={data.idconsulta} />
-          );
-        }
-      });
-    }
+  function LoadConsultasDataPar(){
+    return dataConsul.map((data, index) => {
+      if(index % 2 == 0){
+        const titulo = Titulo(data.tipomarcacao);
+        return (
+            <ConsultaHistorico key={index} titulo={titulo} horas={data.hora} data={data.data} detalhes={data.detalhes} guia={data.guia_tratamento} idCon={data.idconsulta} />
+        );
+      }
+    });
+  }
 
-    function LoadConsultasDataImpar(){
-      return dataConsul.map((data, index) => {
-        if(index % 2 != 0){
-          const titulo = Titulo(data.tipomarcacao);
-          return (
-              <ConsultaHistorico key={index} titulo={titulo} horas={data.hora} data={data.data} detalhes={data.detalhes} guia={data.guia_tratamento} idCon={data.idconsulta} />
-          );
-        }
-      });
-    }
+  function LoadConsultasDataImpar(){
+    return dataConsul.map((data, index) => {
+      if(index % 2 != 0){
+        const titulo = Titulo(data.tipomarcacao);
+        return (
+            <ConsultaHistorico key={index} titulo={titulo} horas={data.hora} data={data.data} detalhes={data.detalhes} guia={data.guia_tratamento} idCon={data.idconsulta} />
+        );
+      }
+    });
+  }
 
-    function Titulo(Tipo){
-      if(Tipo == 1){return "Consulta Dentária"}
-      else{return "Urgência"}
-    }
+  function Titulo(Tipo){
+    if(Tipo == 1){return "Consulta Dentária"}
+    else{return "Urgência"}
+  }
 }
 export default Historico_Front;

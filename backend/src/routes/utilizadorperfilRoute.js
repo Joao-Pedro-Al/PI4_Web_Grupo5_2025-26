@@ -8,4 +8,5 @@ router.get("/save", (req, res) => {
 });
 // router.get("/testdata", utilizadorperfilController.testdata);
 router.get("/list", utilizadorperfilController.list);
+router.get("/list/:id", utilizadorperfilController.listPerfilInteiro);
 module.exports = router;

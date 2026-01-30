@@ -2,6 +2,7 @@ var Utilizadorperfil = require("../model/Utilizadorperfil");
 var Generos = require("../model/Generos");
 var Classe = require("../model/Classe");
 var Estadocivil = require("../model/Estadocivil");
+var ViewPerfilCompleto = require("../model/ViewPerfilCompleto");
 var sequelize = require("../model/database");
 const controllers = {};
 // sequelize.sync();
@@ -57,6 +58,19 @@ controllers.list = async (req, res) => {
         { model: Classe, as: 'classeData' },
         { model: Estadocivil, as: 'estadocivilData' }
       ]
+    });
+    res.json({success: true, data: data});
+  } catch (error) {
+    console.error("Erro durante a listagem:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+controllers.listPerfilInteiro = async (req, res) => {
+  try {
+    const {id} = req.params;
+    const data = await ViewPerfilCompleto.findAll({
+      where: {idperfil: id}
     });
     res.json({success: true, data: data});
   } catch (error) {
