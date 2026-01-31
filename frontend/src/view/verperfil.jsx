@@ -1,15 +1,18 @@
 import { useEffect, useState, useRef } from "react";
+import { BrowserRouter, Routes, Route, Link, useParams } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 
 import url from "./url_global";
-import id_Perfil from "./id_global";
 
 import axios from "axios";
-const urlAPI = url + "utilizadorperfil/list/" + id_Perfil;
 
 import '../verperfil.css';
 const VerPerfil = () => {
+
+    const { id } = useParams();
+    const urlAPI = url + "utilizadorperfil/list/" + id;
+
     const [dataPerfil, setdataPerfil] = useState([]);
     
     const iniciado = useRef(0);

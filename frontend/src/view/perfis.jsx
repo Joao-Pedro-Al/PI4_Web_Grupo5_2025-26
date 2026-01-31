@@ -23,6 +23,8 @@ const Perfis = () => {
 
     useEffect(() => {
         if (dataPerfis.length > 0){
+            setTimeout(() => {
+
             const dropdownItems = document.querySelectorAll('.dropdown-item');
             const dropdownButton = document.getElementById('dropdownButton');
 
@@ -242,6 +244,7 @@ const Perfis = () => {
                     }
                 });
             }
+        }, 100);
 
         }
     }, [dataPerfis])
@@ -289,42 +292,8 @@ const Perfis = () => {
             {/* <!-- //// Perfis //// --> */}
             <div className="row align-items-start mb-4">
 
-            {/* <!-- INÍCO: Cartão --> */}
-            <div className="card div--cartao--perfil d-block col-sm-11 col-lg-5 col-xl-4 paciente">
-                <div className="card-body py-4">
-                <h5 className="card-title fw-bold mb-3">Ricardo Lopes</h5>
-                <p className="card-text mb-2"><b>Telefone: </b>941642771</p>
-                <p className="card-text"><b>Email: </b>ricardo_lopes@gmail.com</p>
-                </div>
-            </div>
-            {/* <!-- FIM: Cartão --> */}
-
-            {/* <!-- INÍCO: Cartão --> */}
-            <div className="card div--cartao--perfil d-block col-sm-11 offset-lg-1 col-lg-5 offset-xl-3 col-xl-4 doutor">
-                <div className="card-body py-4">
-                <h5 className="card-title fw-bold mb-3">Sofia Rita</h5>
-                <p className="card-text mb-2"><b>Telefone: </b>936913753</p>
-                <p className="card-text"><b>Email: </b>sorita@gmail.com</p>
-                </div>
-            </div>
-            {/* <!-- FIM: Cartão --> */}
-
-            {/* <!-- INÍCO: Cartão --> */}
-            <div className="card div--cartao--perfil d-block col-sm-11 col-lg-5 col-xl-4 paciente">
-                <div className="card-body py-4">
-                <h5 className="card-title fw-bold mb-3">Nome do Perfil</h5>
-                <p className="card-text mb-2"><b>Telefone: </b>987654321</p>
-                <p className="card-text"><b>Email: </b>perfil@gmail.com</p>
-                </div>
-            </div>
-            {/* <!-- FIM: Cartão --> */}
-
-            {/* <!-- INÍCO: Cartão --> */}
-            <CartaoPerfil nome="Niko Bellic" num={956274234} email="nikobell@gmail.com" idclasse={2} />;
-            {/* <!-- FIM: Cartão --> */}
-
-            {/* Listar */}
-            <LoadPerfisData/>
+                {/* Listar */}
+                <LoadPerfisData/>
 
             </div>
 
@@ -339,11 +308,11 @@ const Perfis = () => {
     );
 
     function LoadPerfisData() {
-    return dataPerfis.map((data, index) => {
-        return (
-            <CartaoPerfil key={index} nome={data.nome} num={data.contactoprincipal} email={data.gmail} idclasse={data.classe} />
-        );
-    });
+        return dataPerfis.map((data, index) => {
+            return (
+                <CartaoPerfil key={index} nome={data.nome} num={data.contactoprincipal} email={data.gmail} idclasse={data.classe} idperf={data.idutilizadorprefil} />
+            );
+        });
     }
 }
 export default Perfis;

@@ -44,7 +44,7 @@ function App() {
               <Route path="/teste/" element={<Base/>} />
               {/* ----------BACKOFFICE----------- */}
               <Route path="/backoffice/perfis/" element={<Perfis/>} />
-              <Route path="/backoffice/perfis/detalhe/" element={<VerPerfil/>} />
+              <Route path="/backoffice/perfis/:id" element={<VerPerfil/>} />
               {/* ----------FRONTOFFICE----------- */}
               <Route path="/frontoffice/historico/" element={<Historico_Front/>} />
             </Routes>
