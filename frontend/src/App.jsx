@@ -13,7 +13,10 @@ import MenuFront from './view/MenuLateral_Frontoffice.jsx';
 import Base from './view/Base.jsx';
 import Perfis from './view/perfis.jsx';
 import Historico_Front from './view/historico_front.jsx';
-
+import Criarperfil from './view/Criarperfil.jsx';
+import Remarcar from './view/Remarcar.jsx';
+import testedecriar from './view/testedecriar.jsx';
+//import ListarPerfis from './view/ListarPerfis.jsx';
 
 function App() {
   // var MenuLateral;
@@ -49,6 +52,10 @@ function App() {
               <Route path="/backoffice/perfis/" element={<Perfis/>} />
               {/* ----------FRONTOFFICE----------- */}
               <Route path="/frontoffice/historico/" element={<Historico_Front/>} />
+              <Route path="/frontoffice/criarperfil/" element={<Criarperfil/>} />
+              
+             
+              
             </Routes>
           </div>
       </div>
