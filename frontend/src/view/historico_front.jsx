@@ -15,15 +15,23 @@ import ConsultaHistorico from "./Consulta_Historico";
 
 const Historico_Front = () => {
   const [dataConsul, setdataConsul] = useState([]);
+  const [dataConsulMes, setdataConsulMes] = useState([]);
 
   const hoje = new Date;
   const stateAno = useRef(hoje.getFullYear());
   const iniciado = useRef(0);
 
+  const [Ano_Sel, setAno_Sel] = useState(hoje.getFullYear());
+  const [Mes_Sel, setMes_Sel] = useState(hoje.getMonth());
+
     // Carregar Consultas
     useEffect(() => {
         CarregarConsultas();
     }, [])
+
+    useEffect(() => {
+      CarregarConsultasMes();
+    }, [dataConsul, Ano_Sel, Mes_Sel])
 
     useEffect(() => {
         const data = document.getElementById('data');
@@ -201,6 +209,8 @@ const Historico_Front = () => {
         function AtualizarData(){
             MesString();
             data.textContent = mes + " " + ano;
+            setAno_Sel(ano);
+            setMes_Sel(idmes);
         }
 
         const ButaoClicado = (item) => {
@@ -231,22 +241,37 @@ const Historico_Front = () => {
           });
         };
 
-    }, [dataConsul]);
+    }, [dataConsul, dataConsulMes]);
 
     function CarregarConsultas() {
-        axios.get(urlAPI)
-        .then(res => {
-        if(res.data.success){
-        const data = res.data.data;
-        setdataConsul(data);
-        }else{
-        alert("Error Web Service!");
-        }
-        })
-        .catch(error => {
-        alert(error)
-        });
+      axios.get(urlAPI)
+      .then(res => {
+      if(res.data.success){
+      const data = res.data.data;
+      setdataConsul(data);
+      }else{
+      alert("Error Web Service!");
+      }
+      })
+      .catch(error => {
+      alert(error)
+      });
     }
+
+    function CarregarConsultasMes() {
+      const datames = dataConsul.filter((data) => {
+        const dataconsul = new Date(data.data);
+        const consul_mes = dataconsul.getMonth() + 1;
+        const consul_ano = dataconsul.getFullYear();
+
+        return consul_mes == Mes_Sel && consul_ano == Ano_Sel;
+      });
+
+      console.log("Debug: " + datames);
+
+      setdataConsulMes(datames);
+    }
+    
     return (
       <div className="container-fluid">
 
@@ -317,7 +342,7 @@ const Historico_Front = () => {
   );
 
   function LoadConsultasDataPar(){
-    return dataConsul.map((data, index) => {
+    return dataConsulMes.map((data, index) => {
       if(index % 2 == 0){
         const titulo = Titulo(data.tipomarcacao);
         return (
@@ -328,7 +353,7 @@ const Historico_Front = () => {
   }
 
   function LoadConsultasDataImpar(){
-    return dataConsul.map((data, index) => {
+    return dataConsulMes.map((data, index) => {
       if(index % 2 != 0){
         const titulo = Titulo(data.tipomarcacao);
         return (

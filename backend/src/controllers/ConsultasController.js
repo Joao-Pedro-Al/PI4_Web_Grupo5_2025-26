@@ -35,4 +35,15 @@ controllers.listPaciente = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+controllers.listTiposMarca = async (req, res) => {
+  try {
+    const data = await TipoMarcacao.findAll({
+    });
+    res.json({success: true, data: data});
+  } catch (error) {
+    console.error("Erro durante a listagem:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
 module.exports = controllers;

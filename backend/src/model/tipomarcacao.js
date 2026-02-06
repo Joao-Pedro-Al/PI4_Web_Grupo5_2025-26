@@ -13,6 +13,7 @@ var TipoMarcacao = sequelize.define(
   },
   {
     timestamps: false,
+    tableName: "tipomarcacao",
     freezeTableName: true
   }
 );
