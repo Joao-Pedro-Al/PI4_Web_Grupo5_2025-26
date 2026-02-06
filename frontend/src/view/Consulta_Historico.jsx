@@ -1,5 +1,9 @@
 const ConsultaHistorico = ({titulo, horas, data, detalhes, guia, idCon}) => {
 if(guia == null){guia = "N/A"}
+horas= horas.substring(0, 5);
+const data_tempo = new Date(data);
+if(data_tempo.getDate() < 10){data = "0" + data_tempo.getDate() + "/" + data_tempo.getMonth() + 1 + "/" + data_tempo.getFullYear();}
+else{data = data_tempo.getDate() + "/" + data_tempo.getMonth() + 1 + "/" + data_tempo.getFullYear();}
 return (
     <div className=" px-0 col-12 mb-3">
         <div className="card div--cartao--consulta" id={idCon + "-aberto"}>

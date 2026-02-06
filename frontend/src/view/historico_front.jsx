@@ -8,6 +8,7 @@ import id_Perfil from "./id_global";
 
 import axios from "axios";
 const urlAPI = url + "consultas/list/" + id_Perfil;
+const urlAPI_Tipo = url + "consultas/tipomarcacao/list";
 
 import '../historico_pac.css';
 
@@ -16,6 +17,8 @@ import ConsultaHistorico from "./Consulta_Historico";
 const Historico_Front = () => {
   const [dataConsul, setdataConsul] = useState([]);
   const [dataConsulMes, setdataConsulMes] = useState([]);
+  
+  const [dataTipoCon, setdataTipoCon] = useState([]);
 
   const hoje = new Date;
   const stateAno = useRef(hoje.getFullYear());
@@ -27,6 +30,7 @@ const Historico_Front = () => {
     // Carregar Consultas
     useEffect(() => {
         CarregarConsultas();
+        CarregarTipoConta();
     }, [])
 
     useEffect(() => {
@@ -271,6 +275,21 @@ const Historico_Front = () => {
 
       setdataConsulMes(datames);
     }
+
+    function CarregarTipoConta() {
+      axios.get(urlAPI_Tipo)
+      .then(res => {
+      if(res.data.success){
+      const data = res.data.data;
+      setdataTipoCon(data);
+      }else{
+      alert("Error Web Service!");
+      }
+      })
+      .catch(error => {
+      alert(error)
+      });
+    }
     
     return (
       <div className="container-fluid">
@@ -379,6 +398,7 @@ const Historico_Front = () => {
     return dataConsulMes.map((data, index) => {
       if(index % 2 != 0){
         const titulo = Titulo(data.tipomarcacao);
+        console.log("Resultado: " + titulo);
         return (
             <ConsultaHistorico key={index} titulo={titulo} horas={data.hora} data={data.data} detalhes={data.detalhes} guia={data.guia_tratamento} idCon={data.idconsulta} />
         );
@@ -387,8 +407,9 @@ const Historico_Front = () => {
   }
 
   function Titulo(Tipo){
-    if(Tipo == 1){return "Consulta Dentária"}
-    else{return "Urgência"}
+    const tip = dataTipoCon.find((tip) => tip.idtipomarcacao == Tipo);
+    if(tip){return tip.designacao;}
+    return "Erro...";
   }
 }
 export default Historico_Front;
