@@ -1,4 +1,6 @@
 const CartaoPerfil = ({nome, num, email, idclasse, idperf}) => {
+    if(num == null){num = "N/A"}
+    if(email == null){email = "N/A"}
 
     if(idclasse == 1){
         return (

@@ -1,4 +1,5 @@
 const ConsultaHistorico = ({titulo, horas, data, detalhes, guia, idCon}) => {
+if(guia == null){guia = "N/A"}
 return (
     <div className=" px-0 col-12 mb-3">
         <div className="card div--cartao--consulta" id={idCon + "-aberto"}>

@@ -29,6 +29,7 @@ var ViewPerfilCompleto = sequelize.define(
     condicaosaude: Sequelize.STRING,
     alergias: Sequelize.STRING,
     medicamentos: Sequelize.STRING,
+    gravida: Sequelize.BOOLEAN,
     habitoigieneoral: Sequelize.STRING,
     habitosalimentares: Sequelize.STRING,
     consumosubstancia: Sequelize.STRING,

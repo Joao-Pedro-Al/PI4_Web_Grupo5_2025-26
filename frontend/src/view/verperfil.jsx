@@ -43,8 +43,10 @@ const VerPerfil = () => {
 
     function LoadPerfilData() {
     return dataPerfil.map((data, index) => {
-      const anestesia = "Sim";
-      if (data.experienciaanastesia == false){anestesia = "Não"}
+      var anestesia = "Sim";
+      var gravida = "Sim";
+      if (data.experienciaanastesia == false || data.experienciaanastesia == null){anestesia = "Não"}
+      if (data.gravida == false || data.gravida == null){gravida = "Não"}
         return (
         <div className="container-fluid" key={index}>
           <div className="row align-items-start mb-5">
@@ -58,7 +60,7 @@ const VerPerfil = () => {
                 <p className="card-text mb-1"><b>NIF/SNS: </b>{data.nif}</p>
                 <p className="card-text mb-1"><b>Sexo: </b>{data.genero}</p>
                 <p className="card-text mb-1"><b>Estado Civil: </b>{data.estadocivil}</p>
-                <p className="card-text mb-1"><b>Gravida: </b>Não</p> {/* Oopsie Daisy tenho que arranjar */}
+                <p className="card-text mb-1"><b>Gravida: </b>{gravida}</p>
               </div>
             </div>
 

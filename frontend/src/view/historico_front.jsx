@@ -327,19 +327,42 @@ const Historico_Front = () => {
         </div>
 
         {/* <!-- //// Navegação da Data //// --> */}
-        <div className="row d-flex align-items-start mb-5">
+        {/* <div className="row d-flex align-items-start mb-5">
 
           <div className="row col-sm-12 col-lg-5">
             <LoadConsultasDataPar />
           </div>
-
-          {/* <!-- /// Próxima Coluna /// --> */}
           <div className="row col-sm-12 col-lg-5 offset-lg-1">
             <LoadConsultasDataImpar />
           </div>
-      </div>
+      </div> */}
+      <LoadConsultas/>
     </div>
   );
+
+  function LoadConsultas(){
+    if(dataConsulMes.length > 0){
+      return(
+        <div className="row d-flex align-items-start mb-5">
+            <div className="row col-sm-12 col-lg-5">
+              <LoadConsultasDataPar />
+            </div>
+
+            {/* <!-- /// Próxima Coluna /// --> */}
+            <div className="row col-sm-12 col-lg-5 offset-lg-1">
+              <LoadConsultasDataImpar />
+            </div>
+        </div>
+      );
+    }
+    else{
+      return(
+        <div className="row d-flex align-items-center mb-5">
+            <h4 className="text-center mt-5">Não houve consultas neste mês...</h4>
+        </div>
+      );
+    }
+  }
 
   function LoadConsultasDataPar(){
     return dataConsulMes.map((data, index) => {
