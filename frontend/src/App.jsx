@@ -12,6 +12,9 @@ import MenuFront from './view/MenuLateral_Frontoffice.jsx';
 // ----BACKOFFICE----
 import Base from './view/Base.jsx';
 import Perfis from './view/perfis.jsx';
+import CriarConta from './view/criar-conta.jsx';
+
+// ----FRONTOFFICE----
 import Historico_Front from './view/historico_front.jsx';
 
 
@@ -47,6 +50,7 @@ function App() {
               <Route path="/teste/" element={<Base/>} />
               {/* ----------BACKOFFICE----------- */}
               <Route path="/backoffice/perfis/" element={<Perfis/>} />
+              <Route path="/backoffice/conta/criar" element={<CriarConta/>} />
               {/* ----------FRONTOFFICE----------- */}
               <Route path="/frontoffice/historico/" element={<Historico_Front/>} />
             </Routes>

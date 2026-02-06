@@ -1,0 +1,346 @@
+/*--------------------Iryna-------------------------------
+   BLOCO 1 — BARRA SUPERIOR + MENU LATERAL
+---------------------------------------------------*/
+
+/*  Barra dourada superior */
+.header-bar {
+  height: 50px;
+  background-color: #A99C5E;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.header-bar i {
+  margin-left: 15px;
+  font-size: 30px;
+  color: white;
+}
+body {
+  min-width: 1200px;
+  background-image: url('./assets/fundo_dentes.png');
+  background-size:100%
+}
+.header-bar i:hover {
+  color: #c7a33c;
+}
+
+/*  Estrutura principal da página (layout) */
+.layout {
+  display: flex;
+  min-width: 1200px;
+}
+
+/*  Menu lateral (sidebar) */
+.menu {
+  width: 200px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: #ffffff;
+  padding-top: 20px;
+  overflow-y: auto;
+}
+
+/*  Área do logotipo no menu */
+.menu__logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.menu__logo-img {
+  width: 80%;
+  max-width: 150px;
+}
+
+/*  Lista dos itens do menu */
+.menu__list {
+  list-style-type: none;
+  margin: 0;
+}
+
+.menu__item {
+  margin-bottom: 10px;
+}
+
+/*  Estilo dos links do menu */
+.menu__link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 10px 15px;
+  color: #737791;
+  font-size: 16px;
+}
+
+.menu__link i {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+/*  Item ativo do menu */
+.menu__link--active {
+  background-color: #A99C5E;
+  color: white;
+}
+
+/*  Hover nos itens do menu */
+.menu__link:hover {
+  background-color: #e0e0e0;
+}
+
+/*  Botão dourado DENTRO do menu lateral */
+.menu__link.btn-gold {
+  background-color: #A99C5E;
+  color: white !important;
+  border-radius: 50px;
+  position: relative;
+  z-index: 2;
+}
+
+
+/*---------------------------------------------------
+   BLOCO 2 — NÃO PERTENCE AO MENU (FORMULÁRIOS + CONTEÚDO)
+---------------------------------------------------*/
+
+/*  Botão dourado geral (USADO EM FORMULÁRIOS, NÃO NO MENU) */
+.btn-gold {
+  background-color: #A99C5E;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-gold i {
+  margin-right: 10px;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.btn-gold:hover {
+  background-color: #A99C5E;
+}
+
+.btn-gold:focus {
+  outline: none;
+}
+
+/*  Área principal da página (conteúdo) */
+.content {
+  margin-left: 150px;
+  padding: 20px;
+  background-image: url('path-to-your-image.png');
+  background-size: cover;
+  width: 100%;
+  min-width: 900px;
+}
+
+/*  Caixa branca do formulário */
+.form-container {
+  background: white;
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 0;
+}
+.left-column input {
+  background: #ffffff;
+  border: 2px solid #A99C5E;
+  color: #6b6b6b;
+}
+
+.right-column select {
+  background-color: #A99C5E;
+  border: none;              /* ← ГОЛОВНЕ */
+  color: #ffffff;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  padding: 12px 40px 12px 16px;
+  border-radius: 10px;       /* м’якше */
+  
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 14px;
+}
+.right-column select:focus {
+  outline: none;
+  box-shadow: none;
+}
+.left-column input:focus {
+  outline: none;
+}
+
+option {
+  background: white;
+  color: black;
+}
+
+
+
+
+
+
+/* Divisiones de esquerda e direita */
+.left-column,
+.right-column {
+  display: flex;
+  flex-direction: column;
+}
+
+
+/*  Estilo dos elementos do formulário */
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 120px;
+  row-gap: 25px;
+}
+
+
+label {
+  font-size: 13px;
+  color: #A99C5E;
+  margin-bottom: 6px;
+  display: block;
+}
+
+
+input,
+select {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+
+/*  Botão de envio do formulário */
+.right-column button {
+  margin-top: 30px;
+  align-self: flex-start;
+
+  background-color: #A99C5E;
+  color: #ffffff;
+
+  border: none;
+  padding: 12px 28px;
+  border-radius: 12px;
+
+  font-size: 14px;
+  cursor: pointer;
+}
+
+
+button.btn:hover {
+  background-color: #A99C5E;
+}
+/* Estilo para as caixas de tempo */
+.time-box {
+    width: 70px;
+    font-size: 2rem;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 10px;
+    border: 2px solid #A99C5E;
+  }
+  /* Estilo para a linha final com alinhamento inferior no caso botao de confirmar*/
+   .linha-final {
+    display: flex;
+    align-items: flex-end; /* alinha pela parte inferior */
+    gap: 70px;
+}
+
+/* ===============================
+   REMOVER AZUL NO HOVER DO MENU
+================================ */
+
+/* Hover dos links do menu lateral  */
+.menu__link:hover {
+  color: #A99C5E !important;        
+  background-color: #e0e0e0;        
+}
+
+/* Hover dos icons*/
+.menu__link:hover i {
+  color: #A99C5E !important;
+}
+
+/* Estado ativo / foco (clique ou tab) */
+.menu__link:focus,
+.menu__link:active {
+  color: #A99C5E !important;
+  background-color: #e0e0e0;
+}
+
+/* Remove contorno azul do Bootstrap */
+.menu__link:focus-visible {
+  outline: none !important;
+}
+
+/* ===============================
+   SELECT PERSONALIZADO DOURADO
+   (SEM AZUL)
+================================ */
+/* Container principal do select */
+.custom-select {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Campo visível (valor selecionado) */
+.custom-select__selected {
+  background-color: #A99C5E;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Seta do select */
+.custom-select__selected::after {
+  content: "▾";
+  font-size: 12px;
+}
+
+/* Lista de opções */
+.custom-select__options {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #A99C5E;
+  border-radius: 10px;
+  overflow: hidden;
+  display: none;
+  z-index: 10;
+}
+
+/* Cada opção */
+.custom-select__options div {
+  padding: 10px 16px;
+  color: #000;
+}
+
+/* Hover das opções (dourado) */
+.custom-select__options div:hover {
+  background-color: #A99C5E;
+  color: white;
+}
