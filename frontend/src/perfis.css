@@ -1,0 +1,71 @@
+.div--dropdown a:hover{
+  color: white;
+  background-color: #A99C5E;
+}
+
+/* Colocar o .btn depois do nome da classe para fazer override das predefinições do Bootstrap (evita o uso de !important) */
+.div__button--dropdown.btn{
+  border-radius: 10px 10px;
+  border: none;
+  background-color: #A99C5E;
+}
+
+.div__button--dropdown.btn:focus, .div__button--dropdown.btn:active{
+  outline: none;
+}
+
+.div__button--dropdown::after{
+  float: right;
+  margin: 11px 5px;
+}
+
+.div__button--dropdown.btn,
+.div__button--dropdown.btn:hover,
+.div__button--dropdown.btn:focus,
+.div__button--dropdown.btn:active,
+.div__button--dropdown.btn:not(:hover) {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: none !important;
+  background-color: #A99C5E !important;
+}
+
+p.active{
+  background-color: #A99C5E !important;
+}
+
+.ul__li--dropdown{
+  height: 40px;
+  align-content: center;
+  margin: 0px;
+}
+
+.ul__li--dropdown:hover{
+  background-color: #A99C5E;
+  color: white;
+}
+
+.ul__li--dropdown::highlight{
+  background-color: #A99C5E;
+  color: white;
+}
+
+.div__input--label{
+  color: #A99C5E;
+}
+
+.div__input--textbox{
+  border: 2px solid #A99C5E !important;
+  border-radius: 10px !important;
+}
+
+.div--cartao--perfil{
+  border: 2px solid #A99C5E !important;
+  border-radius: 15px !important;
+  color: #A99C5E;
+  margin-bottom: 10px;
+}
+
+.div__a--link{
+  color: #A99C5E;
+}
