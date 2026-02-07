@@ -1,0 +1,212 @@
+/*--------------------Iryna-------------------------------
+   BLOCO 1 — BARRA SUPERIOR + MENU LATERAL
+---------------------------------------------------*/
+
+/*  Barra dourada superior */
+.header-bar {
+  height: 50px;
+  background-color: #A99C5E;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.header-bar i {
+  margin-left: 15px;
+  font-size: 30px;
+  color: white;
+}
+body {
+  
+  background-image: url('../imagens/fundo_dentes.png');
+  background-size:100%
+}
+.header-bar i:hover {
+  color: #c7a33c;
+}
+
+/*  Estrutura principal da página (layout) */
+.layout {
+  display: flex;
+}
+
+/*  Menu lateral (sidebar) */
+.menu {
+  width: 200px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: #ffffff;
+  padding-top: 20px;
+  overflow-y: auto;
+}
+
+/*  Área do logotipo no menu */
+.menu__logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.menu__logo-img {
+  width: 80%;
+  max-width: 150px;
+}
+
+/*  Lista dos itens do menu */
+.menu__list {
+  list-style-type: none;
+  margin: 0;
+}
+
+.menu__item {
+  margin-bottom: 10px;
+}
+
+/*  Estilo dos links do menu */
+.menu__link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 10px 15px;
+  color: #737791;
+  font-size: 16px;
+}
+
+.menu__link i {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+/*  Item ativo do menu */
+.menu__link--active {
+  background-color: #A99C5E;
+  color: white;
+}
+
+/*  Hover nos itens do menu */
+.menu__link:hover {
+  background-color: #e0e0e0;
+}
+
+/*  Botão dourado DENTRO do menu lateral */
+.menu__link.btn-gold {
+  background-color: #A99C5E;
+  color: white !important;
+  border-radius: 50px;
+  position: relative;
+  z-index: 2;
+}
+
+
+/*---------------------------------------------------
+   BLOCO 2 — NÃO PERTENCE AO MENU (FORMULÁRIOS + CONTEÚDO)
+---------------------------------------------------*/
+
+/*  Botão dourado geral (USADO EM FORMULÁRIOS, NÃO NO MENU) */
+.btn-gold {
+  background-color: #A99C5E;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-gold i {
+  margin-right: 10px;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.btn-gold:hover {
+  background-color: #A99C5E;
+}
+
+.btn-gold:focus {
+  outline: none;
+}
+
+/*  Área principal da página (conteúdo) */
+.content {
+  margin-left: 250px;
+  padding: 20px;
+  background-image: url('path-to-your-image.png');
+  background-size: cover;
+  width: 100%;
+}
+
+/*  Caixa branca do formulário */
+.form-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/*  Estilo dos elementos do formulário */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 8px;
+  color: #5a5a5a;
+}
+
+input, select {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/*  Botão de envio do formulário */
+button.btn {
+  padding: 10px;
+  background-color: #A99C5E;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button.btn:hover {
+  background-color: #A99C5E;
+}
+/* Estilo para as caixas de tempo */
+.time-box {
+    width: 70px;
+    font-size: 2rem;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 10px;
+    border: 2px solid #A99C5E;
+  }
+  /* Estilo para a linha final com alinhamento inferior no caso botao de confirmar*/
+   .linha-final {
+    display: flex;
+    align-items: flex-end; /* alinha pela parte inferior */
+    gap: 70px;
+}
+
+
+.consulta-card, 
+.historico-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border: 1.5px solid #A99C5E;   /* dourado */
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}

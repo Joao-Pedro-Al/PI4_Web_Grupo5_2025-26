@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8">
+    <meta
+      name="description"
+      content="Projeto Integrado 4">
+    <meta name="keywords" content="landingpage, section, forms, navs" >
+    <meta name="author" content="Grupo">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>base</title>
+    <link rel="stylesheet" type="text/css" href="style.css"> 
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+   integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+    <div class="header-bar">
+  <i class="bi bi-person-circle"></i>
+  <i class="bi bi-bell"></i>
+</div> <!-- bara dourada -->
+
+  <div class="layout">
+    <!--menu do lado-->
+    <nav class="menu menu--vertical">
+      <div class="menu__logo">
+        <img src="path-to-your-logo.png" alt="Logo" class="menu__logo-img">
+      </div>
+      <ul class="menu__list">
+        <li class="menu__item">
+          <a class="menu__link" href="#">
+            <i class="bi bi-house-door-fill"></i> Início
+          </a>
+        </li>
+        <li class="menu__item">
+          <a class="menu__link" href="#">
+            <i class="bi bi-calendar-week"></i> Remarcar
+          </a>
+        </li>
+        <li class="menu__item">
+    <a class="menu__link btn-gold" href="#">
+      <i class="bi bi-plus-circle"></i> Criar Conta
+    </a>
+  </li>
+
+        <li class="menu__item">
+          <a class="menu__link" href="#">
+            <i class="bi bi-bell-fill"></i> Notificações
+          </a>
+        </li>
+        <li class="menu__item">
+          <a class="menu__link" href="#">
+            <i class="bi bi-person-circle"></i> Perfis
+          </a>
+        </li>
+        <li class="menu__item">
+          <a class="menu__link" href="#">
+            <i class="bi bi-journal-medical"></i> Consultas
+          </a>
+        </li>
+        <li class="menu__item">
+          <a class="menu__link" href="#">
+            <i class="bi bi-box-arrow-right"></i> Sign Out
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Content -->
+    <div class="content">
+      <div class="form-container">
+        
+        <form>
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="Enter Username">
+
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Enter Email">
+
+          <label for="account-type">Tipo de Conta</label>
+          <select id="account-type">
+            <option value="paciente">Paciente</option>
+            <option value="medico">Médico</option>
+          </select>
+
+          <label for="profile">Perfil de Paciente</label>
+          <select id="profile">
+            <option value="geral">Geral</option>
+            <option value="especifico">Específico</option>
+          </select>
+
+          <button type="submit" class="btn">Associar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
