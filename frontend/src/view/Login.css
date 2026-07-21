@@ -1,0 +1,123 @@
+/* Reset e estilos globais */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===== Página de Login ===== */
+.login-page {
+  position: fixed; /* Fixa na tela inteira */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #b79b53;
+  background-image: url('../assets/fundo_dentes.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: Arial, sans-serif;
+}
+
+/* ===== Card central ===== */
+.login-container {
+  width: 400px;
+  background: #f9f2ef;
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  margin: auto; /* Centralização extra */
+}
+
+/* ===== Logo ===== */
+.logo {
+  color: #b79b53;
+  font-weight: bold;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.logo img {
+  width: 80px; /* Tamanho fixo para consistência */
+  height: auto;
+}
+
+/* ===== Formulário ===== */
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===== Inputs ===== */
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #000000;
+  outline: none;
+  text-align: center;
+  font-size: 14px;
+}
+
+input::placeholder {
+  color: #b79b53;
+}
+
+.Texto {
+  color: #b79b53;
+}
+
+/* ===== Link recuperar ===== */
+.recover {
+  display: block;
+  margin: 10px 0;
+  font-size: 13px;
+  color: #007acc;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.recover:hover {
+  text-decoration: underline;
+}
+
+/* ===== Botão ===== */
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 20px;
+  background-color: #b79b53;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+  transition: opacity 0.3s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .login-container {
+    width: 90%;
+    padding: 30px 20px;
+  }
+  
+  input, button {
+    width: 100%;
+  }
+}

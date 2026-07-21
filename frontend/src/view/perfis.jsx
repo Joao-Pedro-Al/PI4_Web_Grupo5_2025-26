@@ -1,4 +1,6 @@
+// src/view/perfis.jsx - VERSÃO COMPLETA
 import { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 
@@ -138,7 +140,7 @@ const Perfis = () => {
                             else
                             {
                                 if(item.classList.contains("d-none") == false)
-                                {item.classList.toggle("d-none");}
+                                {item.classList.add("d-none");}
                             }
                         }
                     });
@@ -263,6 +265,7 @@ const Perfis = () => {
         alert(error)
         });
     }
+    
     return (
         <div className="container-fluid">
 
@@ -299,9 +302,11 @@ const Perfis = () => {
 
             {/* <!-- //// Criar Novo Perfil //// --> */}
             <div className="row align-items-start">
-
-            <button type="button" className="btn text-white col-sm-5 offset-sm-6 col-lg-2 offset-lg-9">Criar Perfil</button>
-
+                <Link to="/backoffice/criarperfil" className="text-decoration-none col-sm-5 offset-sm-6 col-lg-2 offset-lg-9">
+                    <button type="button" className="btn text-white w-100" style={{ backgroundColor: '#A99C5E', borderRadius: '10px' }}>
+                        Criar Perfil
+                    </button>
+                </Link>
             </div>
 
         </div>
@@ -310,7 +315,14 @@ const Perfis = () => {
     function LoadPerfisData() {
         return dataPerfis.map((data, index) => {
             return (
-                <CartaoPerfil key={index} nome={data.nome} num={data.contactoprincipal} email={data.gmail} idclasse={data.classe} idperf={data.idutilizadorprefil} />
+                <CartaoPerfil 
+                    key={index} 
+                    nome={data.nome} 
+                    num={data.contactoprincipal} 
+                    email={data.gmail} 
+                    idclasse={data.classe} 
+                    idperf={data.idutilizadorprefil} 
+                />
             );
         });
     }

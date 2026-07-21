@@ -1,231 +1,308 @@
-/*--------------------Iryna-------------------------------
-   BLOCO 1 — BARRA SUPERIOR + MENU LATERAL
----------------------------------------------------*/
+/* =========================================
+   STYLE.CSS — GLOBAL (Backoffice + Frontoffice)
+   ========================================= */
 
-/*  Barra dourada superior */
-.header-bar {
-  height: 50px;
-  background-color: #A99C5E;
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 0 20px;
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.header-bar i {
-  margin-left: 15px;
-  font-size: 30px;
-  color: white;
-}
-
-#root{
+#root {
   width: 100%;
+  min-height: 100vh;
 }
 
 body {
   display: block;
-  background-image: url('./assets/fundo_dentes.png');
-  background-size:100%
-}
-.header-bar i:hover {
-  color: #c7a33c;
-}
-
-/*  Estrutura principal da página (layout) */
-.layout {
-  display: flex;
-}
-
-/*  Menu lateral (sidebar) */
-.menu {
-  width: 200px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background-color: #ffffff;
-  padding-top: 20px;
-  overflow-y: auto;
-}
-
-/*  Área do logotipo no menu */
-.menu__logo {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.menu__logo-img {
-  width: 80%;
-  max-width: 150px;
-}
-
-/*  Lista dos itens do menu */
-.menu__list {
-  list-style-type: none;
-  margin: 0;
-}
-
-.menu__item {
-  margin-bottom: 10px;
-}
-
-/*  Estilo dos links do menu */
-.menu__link {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  padding: 10px 15px;
-  color: #737791;
-  font-size: 16px;
-}
-
-.menu__link i {
-  margin-right: 10px;
-  font-size: 18px;
-}
-
-/*  Item ativo do menu */
-.menu__link--active {
-  background-color: #A99C5E;
-  color: white;
-}
-
-/*  Hover nos itens do menu */
-.menu__link:hover {
-  background-color: #e0e0e0;
-}
-
-/*  Botão dourado DENTRO do menu lateral */
-.menu__link.btn-gold {
-  background-color: #A99C5E;
-  color: white !important;
-  border-radius: 50px;
-  position: relative;
-  z-index: 2;
-}
-
-/* ===============================
-   REMOVER AZUL NO HOVER DO MENU
-================================ */
-
-/* / Hover dos links do menu lateral  / */
-.menu__link:hover {
-  color: #A99C5E !important;
-  background-color: #e0e0e0;
-}
-
-/* / Hover dos icons/ */
-.menu__link:hover i {
-  color: #A99C5E !important;
-}
-
-/* / Estado ativo / foco (clique ou tab) / */
-.menulink:focus,
-.menulink:active {
-  color: #A99C5E !important;
-  background-color: #e0e0e0;
-}
-
-/* / Remove contorno azul do Bootstrap */ */
-.menu__link:focus-visible {
-  outline: none !important;
-}
-
-
-/*---------------------------------------------------
-   BLOCO 2 — NÃO PERTENCE AO MENU (FORMULÁRIOS + CONTEÚDO)
----------------------------------------------------*/
-
-/*  Botão dourado geral (USADO EM FORMULÁRIOS, NÃO NO MENU) */
-.btn-gold {
-  background-color: #A99C5E;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 50px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.btn-gold i {
-  margin-right: 10px;
-  font-size: 20px;
-  line-height: 1;
-}
-
-.btn-gold:hover {
-  background-color: #A99C5E;
-}
-
-.btn-gold:focus {
-  outline: none;
-}
-
-/*  Área principal da página (conteúdo) */
-.content {
-  margin-left: 250px;
-  padding: 20px;
-  background-image: url('path-to-your-image.png');
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* Fundo de dentes com overlay branco subtil — visível como marca d'água dourada */
+  background-color: #f8f6f0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)),
+    url('./assets/fundo_dentes.png');
   background-size: cover;
-  width: 100%;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-/*  Caixa branca do formulário */
-.form-container {
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-/*  Estilo dos elementos do formulário */
-form {
+.app-container {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-label {
-  margin-bottom: 8px;
-  color: #5a5a5a;
+/* =========================================
+   BARRA SUPERIOR
+   ========================================= */
+.header-bar {
+  height: 60px;
+  background: linear-gradient(135deg, #A99C5E 0%, #c4b476 100%);
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 30px;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 12px rgba(169, 156, 94, 0.35);
 }
 
-input, select {
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.header-bar a,
+.header-bar i {
+  margin-left: 20px;
+  font-size: 22px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
 }
 
-/*  Botão de envio do formulário */
-button.btn {
-  padding: 10px;
-  background-color: #A99C5E;
+.header-bar a:hover,
+.header-bar i:hover {
+  color: #fff8e7;
+  transform: scale(1.15);
+}
+
+/* =========================================
+   LAYOUT PRINCIPAL
+   ========================================= */
+.layout {
+  display: flex;
+  margin-top: 60px;
+  min-height: calc(100vh - 60px);
+}
+
+/* =========================================
+   MENU LATERAL
+   ========================================= */
+.menu {
+  width: 240px;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+  background: #ffffff;
+  padding-top: 24px;
+  overflow-y: auto;
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.08);
+  z-index: 900;
+  border-right: 1px solid #f0ead6;
+}
+
+.menu__logo {
+  text-align: center;
+  margin-bottom: 32px;
+  padding: 0 20px;
+}
+
+.menu__logo-img {
+  width: 75%;
+  max-width: 160px;
+  height: auto;
+}
+
+.menu__list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0 12px;
+}
+
+.menu__item {
+  margin-bottom: 6px;
+}
+
+.menu__link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 13px 18px;
+  color: #6b6b6b;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 12px;
+  transition: all 0.25s ease;
+  gap: 12px;
+}
+
+.menu__link i {
+  font-size: 18px;
+  width: 22px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* Item ativo */
+.menu__link.btn-gold {
+  background: linear-gradient(135deg, #A99C5E 0%, #c4b476 100%);
+  color: white !important;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(169, 156, 94, 0.3);
+}
+
+.menu__link.btn-gold i {
+  color: white !important;
+}
+
+/* Hover */
+.menu__link:hover {
+  background-color: #faf6eb;
+  color: #A99C5E !important;
+}
+
+.menu__link:hover i {
+  color: #A99C5E !important;
+}
+
+.menu__link:focus-visible {
+  outline: none !important;
+}
+
+/* =========================================
+   ÁREA DE CONTEÚDO
+   ========================================= */
+.content {
+  margin-left: 240px;
+  padding: 30px;
+  width: calc(100% - 240px);
+  min-height: calc(100vh - 60px);
+  /* Fundo branco semitransparente — deixa fundo dos dentes visível */
+  background-color: rgba(255, 255, 255, 0.92);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* =========================================
+   BOTÕES GLOBAIS UNIFICADOS
+   ========================================= */
+
+/* Botão principal dourado */
+.btn-gold-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: linear-gradient(135deg, #A99C5E 0%, #c4b476 100%);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 3px 10px rgba(169, 156, 94, 0.3);
+  text-decoration: none;
 }
 
-button.btn:hover {
-  background-color: #A99C5E;
+.btn-gold-primary:hover {
+  background: linear-gradient(135deg, #8a7d44 0%, #a99c5e 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(169, 156, 94, 0.4);
 }
-/* Estilo para as caixas de tempo */
-.time-box {
-    width: 70px;
-    font-size: 2rem;
-    text-align: center;
-    font-weight: 600;
-    border-radius: 10px;
-    border: 2px solid #A99C5E;
-  }
-  /* Estilo para a linha final com alinhamento inferior no caso botao de confirmar*/
-   .linha-final {
-    display: flex;
-    align-items: flex-end; /* alinha pela parte inferior */
-    gap: 70px;
+
+/* Botão secundário (contorno) */
+.btn-gold-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: white;
+  color: #A99C5E;
+  border: 2px solid #A99C5E;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.btn-gold-outline:hover {
+  background: #faf6eb;
+  transform: translateY(-1px);
+}
+
+/* Botão de perigo (remover/cancelar) */
+.btn-danger-soft {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: #fff0f0;
+  color: #c0392b;
+  border: 2px solid #e74c3c;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-danger-soft:hover {
+  background: #e74c3c;
+  color: white;
+}
+
+/* =========================================
+   TÍTULOS DE SECÇÃO (padrão do projeto)
+   ========================================= */
+.section-title {
+  border: 2px solid #A99C5E;
+  padding: 10px 20px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #A99C5E;
+  margin: 10px 0 20px 0;
+  border-radius: 6px;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* =========================================
+   CARDS GENÉRICOS
+   ========================================= */
+.card-golden {
+  background: white;
+  border: 1px solid #e8e0c8;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(169, 156, 94, 0.1);
+  transition: box-shadow 0.25s ease;
+}
+
+.card-golden:hover {
+  box-shadow: 0 4px 18px rgba(169, 156, 94, 0.2);
+}
+
+/* =========================================
+   RESPONSIVIDADE
+   ========================================= */
+@media (max-width: 992px) {
+  .menu { width: 210px; }
+  .content { margin-left: 210px; width: calc(100% - 210px); padding: 20px; }
+}
+
+@media (max-width: 768px) {
+  .menu { width: 190px; }
+  .content { margin-left: 190px; width: calc(100% - 190px); }
+  .header-bar { padding: 0 15px; }
+  .header-bar a, .header-bar i { font-size: 20px; margin-left: 12px; }
+}
+
+@media (max-width: 576px) {
+  .menu { width: 0; overflow: hidden; }
+  .content { margin-left: 0; width: 100%; padding: 15px; }
 }

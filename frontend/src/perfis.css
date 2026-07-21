@@ -1,3 +1,4 @@
+/* src/view/perfis.css */
 .div--dropdown a:hover{
   color: white;
   background-color: #A99C5E;
@@ -57,15 +58,65 @@ p.active{
 .div__input--textbox{
   border: 2px solid #A99C5E !important;
   border-radius: 10px !important;
+  padding: 10px;
+  font-size: 14px;
 }
 
 .div--cartao--perfil{
   border: 2px solid #A99C5E !important;
   border-radius: 15px !important;
   color: #A99C5E;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+}
+
+.div--cartao--perfil:hover {
+  box-shadow: 0 5px 15px rgba(169, 156, 94, 0.2);
+  transform: translateY(-3px);
 }
 
 .div__a--link{
   color: #A99C5E;
+  text-decoration: none;
+}
+
+.div__a--link:hover {
+  color: #8a7542;
+}
+
+/* Estilos para os botões */
+.btn {
+  background-color: #A99C5E;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #8a7542;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Estilos específicos para o botão Criar Perfil */
+.btn-criar-perfil {
+  background: linear-gradient(135deg, #A99C5E, #8a7542);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(169, 156, 94, 0.2);
+}
+
+.btn-criar-perfil:hover {
+  background: linear-gradient(135deg, #8a7542, #6d5e34);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(138, 117, 66, 0.3);
 }
