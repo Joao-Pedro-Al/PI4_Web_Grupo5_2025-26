@@ -28,11 +28,11 @@ const Webpage = () => {
         </div>
       </header>
 
-      <img src={tele} alt="Telemóveis" class="phones"/>
+      <img src={tele} alt="Telemóveis" class="phones" />
 
       <div class="container">
         <p class="info-text">Os seus tratamentos, no seu bolso</p>
-      
+
         <img src={media} alt="Media" />
 
         <a href="caminho/para/app.apk" download="app.apk">
@@ -69,7 +69,7 @@ const Webpage = () => {
 
         <a href="caminho/para/app.apk" download="app.apk">
           <button class="install-btn">
-            <img src="icone-android.png" alt="Android"/> 
+
             Instale Agora
           </button>
         </a>
