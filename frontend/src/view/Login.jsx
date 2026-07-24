@@ -1,4 +1,3 @@
-
 // src/view/Login.jsx - VERSÃO FINAL COM SETA PARA VOLTAR
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -138,28 +137,7 @@ const Login = () => {
       {/* Botão de voltar no canto superior esquerdo */}
       <button
         onClick={handleBackToWebpage}
-        style={{
-          position: 'absolute',
-          top: '20px',
-          left: '20px',
-          background: 'none',
-          border: 'none',
-          color: 'white',
-          fontSize: '28px',
-          cursor: 'pointer',
-          zIndex: 1000,
-          padding: '10px',
-          borderRadius: '50%',
-          transition: 'all 0.3s ease'
-        }}
-        onMouseOver={(e) => {
-          e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
-          e.target.style.transform = 'scale(1.1)';
-        }}
-        onMouseOut={(e) => {
-          e.target.style.backgroundColor = 'transparent';
-          e.target.style.transform = 'scale(1)';
-        }}
+        className="back-button"
         title="Voltar para a página inicial"
       >
         <i className="bi bi-arrow-left"></i>
@@ -167,49 +145,45 @@ const Login = () => {
 
       <div className="login-container">
         <div className="logo">
-          <img src={logo} alt="Logo" style={{ width: '80px', height: 'auto' }} />
+          <img src={logo} alt="Logo" />
         </div>
 
-        <h2 style={{ color: '#b79b53', marginBottom: '10px', fontSize: '1.5rem' }}>
+        <h2 className="login-title">
           Sistema Clínica Dentária
         </h2>
 
         {/* BOTÕES DE DEMONSTRAÇÃO RÁPIDA */}
-        <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-          <div style={{ fontSize: '14px', color: '#666', marginBottom: '12px' }}>
-            <strong>📱 ACESSO RÁPIDO:</strong>
+        <div className="quick-access">
+          <div className="quick-access__label">
+            <i className="bi bi-phone"></i> Acesso rápido
           </div>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+
+          <div className="quick-access__buttons">
             <button
               type="button"
               onClick={handleAccessBackofficeDemo}
               className="demo-btn backoffice-btn"
             >
               <i className="bi bi-person-badge"></i>
-              ACESSAR BACKOFFICE (Médico)
+              Acessar Backoffice (Médico)
             </button>
-            
+
             <button
               type="button"
               onClick={handleAccessFrontofficeDemo}
               className="demo-btn frontoffice-btn"
             >
               <i className="bi bi-person-circle"></i>
-              ACESSAR FRONTOFFICE (Paciente)
+              Acessar Frontoffice (Paciente)
             </button>
           </div>
         </div>
 
         {/* Linha divisória */}
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          margin: '20px 0' 
-        }}>
-          <div style={{ flex: 1, height: '1px', backgroundColor: '#ddd' }}></div>
-          <div style={{ padding: '0 10px', color: '#999', fontSize: '12px' }}>OU</div>
-          <div style={{ flex: 1, height: '1px', backgroundColor: '#ddd' }}></div>
+        <div className="divider">
+          <div className="divider__line"></div>
+          <div className="divider__label">OU</div>
+          <div className="divider__line"></div>
         </div>
 
         {/* Formulário tradicional */}
@@ -245,26 +219,34 @@ const Login = () => {
             disabled={carregando}
             className="submit-btn"
           >
-            {carregando ? '⌛ PROCESSANDO...' : '🚪 ENTRAR NO SISTEMA'}
+            {carregando ? (
+              <><i className="bi bi-hourglass-split"></i> A processar...</>
+            ) : (
+              <><i className="bi bi-box-arrow-in-right"></i> Entrar no Sistema</>
+            )}
           </button>
         </form>
 
         {/* Informações para o professor */}
-        <div className="teacher-info">
-          <div className="teacher-title">💡 INFORMAÇÃO PARA O PROFESSOR</div>
-          <div className="teacher-item">• Botão <strong>"ACESSAR BACKOFFICE"</strong> → Área do médico com calendário</div>
-          <div className="teacher-item">• Botão <strong>"ACESSAR FRONTOFFICE"</strong> → Área do paciente</div>
-          <div className="teacher-item">• Para login tradicional use: <strong>"Santa" / "00000000Nah"</strong> (paciente)</div>
-          <div className="teacher-item">• Ou: <strong>"Herbert Ludwig" / "Archimedes"</strong> (médico)</div>
-        </div>
+        <details className="info-panel">
+          <summary><i className="bi bi-lightbulb"></i> Informação para o professor</summary>
+          <div className="info-panel__body">
+            <div className="teacher-item">• Botão <strong>"Acessar Backoffice"</strong> → Área do médico com calendário</div>
+            <div className="teacher-item">• Botão <strong>"Acessar Frontoffice"</strong> → Área do paciente</div>
+            <div className="teacher-item">• Para login tradicional use: <strong>"Santa" / "00000000Nah"</strong> (paciente)</div>
+            <div className="teacher-item">• Ou: <strong>"Herbert Ludwig" / "Archimedes"</strong> (médico)</div>
+          </div>
+        </details>
 
         {/* Debug info */}
-        <div className="debug-info">
-          <div><strong>Informação do Sistema</strong></div>
-          <div>• idtipoconta=1 → Paciente (Frontoffice)</div>
-          <div>• idtipoconta=2 → Médico (Backoffice)</div>
-          <div>• Clique em "Criar Perfil" no Backoffice para criar novos perfis</div>
-        </div>
+        <details className="info-panel debug-info">
+          <summary><i className="bi bi-gear"></i> Informação do sistema</summary>
+          <div className="info-panel__body">
+            <div>• idtipoconta=1 → Paciente (Frontoffice)</div>
+            <div>• idtipoconta=2 → Médico (Backoffice)</div>
+            <div>• Clique em "Criar Perfil" no Backoffice para criar novos perfis</div>
+          </div>
+        </details>
       </div>
     </div>
   );
