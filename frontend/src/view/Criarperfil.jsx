@@ -56,8 +56,10 @@ const InputField = ({ label, type = "text", value, onChange }) => (
 );
 
 const CheckboxField = ({ label, checked, onChange }) => (
-  <div className="d-flex align-items-center justify-content-between mb-4">
-    <label style={{ color: "#A99C5E", fontSize: "14px", marginRight: "10px" }}>{label}</label>
+  <div className="d-flex align-items-center mb-4" style={{ gap: "8px" }}>
+    <label style={{ color: "#A99C5E", fontSize: "14px", cursor: "pointer", margin: 0 }}>
+      {label}
+    </label>
     <input
       type="checkbox"
       checked={checked}
@@ -67,32 +69,38 @@ const CheckboxField = ({ label, checked, onChange }) => (
         height: "20px",
         accentColor: "#A99C5E",
         cursor: "pointer",
-        border: "1.5px solid #A99C5E"
+        border: "1.5px solid #A99C5E",
+        marginLeft: "4px"
       }}
     />
   </div>
 );
 
-const GoldenButton = ({ label, onClick, type = "button" }) => (
-  <button
-    type={type}
-    onClick={onClick}
-    className="btn shadow-none text-white"
-    style={{
-      backgroundColor: "#A99C5E",
-      borderRadius: "10px",
-      padding: "10px 40px",
-      fontSize: "16px",
-      fontFamily: "Poppins",
-      border: "none",
-      transition: "0.3s opacity"
-    }}
-    onMouseOver={(e) => (e.target.style.opacity = "0.8")}
-    onMouseOut={(e) => (e.target.style.opacity = "1")}
-  >
-    {label}
-  </button>
-);
+const GoldenButton = ({ label, onClick, type = "button", style: styleOverride = {}, className = "" }) => {
+  const baseStyle = {
+    backgroundColor: "#A99C5E",
+    borderRadius: "10px",
+    padding: "10px 40px",
+    fontSize: "16px",
+    fontFamily: "Poppins",
+    border: "none",
+    transition: "0.3s opacity",
+    color: "white",
+    display: "inline-block",
+  };
+  return (
+    <button
+      type={type}
+      onClick={onClick}
+      className={`btn shadow-none text-white ${className}`}
+      style={{ ...baseStyle, ...styleOverride }}
+      onMouseOver={(e) => (e.target.style.opacity = "0.8")}
+      onMouseOut={(e) => (e.target.style.opacity = "1")}
+    >
+      {label}
+    </button>
+  );
+};
 
 /* =======================
    COMPONENTE PRINCIPAL
@@ -162,8 +170,8 @@ function Criarperfil() {
   };
 
   return (
-    <div className="container py-5" style={{ fontFamily: "Poppins" }}>
-      <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+    <div className="container-fluid" style={{ fontFamily: "Poppins", paddingTop: "20px", paddingBottom: "40px" }}>
+      <div style={{ maxWidth: "1100px", width: "100%", margin: "0 auto" }}>
         
         <div style={{ ...titleBarStyle, marginTop: 0 }}>Identificação Pessoal</div>
         <div className="row justify-content-center" style={{ columnGap: "120px" }}>
@@ -252,15 +260,20 @@ function Criarperfil() {
           <div className="col-md-5">
             <InputField label="Resultados de tratamentos anteriores:" value={form.resultadosAnteriores} onChange={(e) => updateForm("resultadosAnteriores", e.target.value)} />
             <div className="mt-2 text-center">
-              <label style={{ color: "#A99C5E", fontSize: "14px", display: "block", marginBottom: "10px" }}>Anexar exames clínicos</label>
-              <GoldenButton label="Anexar" onClick={() => alert("Seletor de ficheiros")} />
+              <a
+                href="#"
+                onClick={(e) => { e.preventDefault(); alert("Seletor de ficheiros"); }}
+                style={{ color: "#0d6efd", textDecoration: "underline", fontWeight: 600, cursor: "pointer", fontSize: "15px" }}
+              >
+                Anexar exames clínicos
+              </a>
             </div>
           </div>
         </div>
 
         {/* BOTÃO DE SALVAR FINAL */}
         <div className="text-center mt-5 mb-5">
-          <GoldenButton label="GUARDAR PERFIL COMPLETO" onClick={handleSave} />
+          <GoldenButton label="GUARDAR PERFIL COMPLETO" onClick={handleSave} style={{ padding: "8px 14px", minWidth: "160px" }} />
         </div>
 
       </div>
