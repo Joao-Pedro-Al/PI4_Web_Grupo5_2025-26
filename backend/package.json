@@ -4,13 +4,15 @@
   "main": "src/App.js",
   "scripts": {
     "start": "node src/App.js",
-    "dev": "nodemon src/App.js"
+    "dev": "nodemon src/App.js",
+    "init-db": "node src/sync_db.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",

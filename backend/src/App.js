@@ -14,15 +14,19 @@ app.use("/teste", (req, res) => {
   res.send("Rota TESTE.");
 });
 
+const bcrypt = require("bcryptjs");
+
 // Importação de rotas
 const utilizadorperfilRouters = require("./routes/utilizadorperfilRoute.js");
 const consultasRouters = require("./routes/consultasRoute.js");
 const notificacaoRouters = require("./routes/notificacaoRoute.js");
+const comprovativoRouters = require("./routes/comprovativoRoute.js");
 
 // Usar as rotas
 app.use("/utilizadorperfil", utilizadorperfilRouters);
 app.use("/consultas", consultasRouters);
 app.use("/notificacao", notificacaoRouters);
+app.use("/comprovativo", comprovativoRouters);
 
 // ========== ENDPOINT DE LOGIN ==========
 const Conta = require("./model/Conta");
@@ -56,8 +60,15 @@ app.post("/api/login", async (req, res) => {
       });
     }
 
-    // Verifica senha (em texto simples no seu código)
-    if (conta.password !== password) {
+    // Verifica senha de forma segura (suporta bcrypt ou fallback em texto simples)
+    let isMatch = false;
+    if (conta.password.startsWith("$2a$") || conta.password.startsWith("$2b$")) {
+      isMatch = bcrypt.compareSync(password, conta.password);
+    } else {
+      isMatch = conta.password === password;
+    }
+
+    if (!isMatch) {
       return res.status(401).json({
         success: false,
         message: "Senha incorreta"
