@@ -58,6 +58,21 @@ CREATE TABLE utilizadorprefil (
     subsistemassaude VARCHAR(100),
     gmail VARCHAR(255),
     classe INT REFERENCES classe(idclasse) ON DELETE SET NULL,
+    alergias VARCHAR(255),
+    medicamentos VARCHAR(255),
+    condicaosaude VARCHAR(255),
+    motivoconsultainicial VARCHAR(255),
+    experienciaanastesia BOOLEAN DEFAULT FALSE,
+    condicoesdentarias VARCHAR(255),
+    habitoigieneoral VARCHAR(255),
+    consumosubstancia VARCHAR(255),
+    historicotratamentosdentariospassados TEXT,
+    historicodor BOOLEAN DEFAULT FALSE,
+    atividadesdesportivas VARCHAR(255),
+    bruxismo VARCHAR(50),
+    gravida BOOLEAN DEFAULT FALSE,
+    infoadicional TEXT,
+    resultadosanteriores TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -146,11 +161,22 @@ INSERT INTO tipomarcacao (desling) VALUES
 ('Implante Dentário');
 
 -- Perfis Exemplo
-INSERT INTO utilizadorprefil (nome, datanascimento, genero, endereco, contactoprincipal, nif, estadocivil, profissao, numeroutente, gmail, classe) 
+INSERT INTO utilizadorprefil (
+    nome, datanascimento, genero, endereco, contactoprincipal, contactosecundario, nif, estadocivil, profissao, numeroutente, subsistemassaude, gmail, classe,
+    alergias, medicamentos, condicaosaude, motivoconsultainicial, experienciaanastesia, condicoesdentarias, habitoigieneoral, consumosubstancia, historicotratamentosdentariospassados, historicodor, atividadesdesportivas, bruxismo, gravida, infoadicional, resultadosanteriores
+) 
 VALUES 
-('Dra. Maria Santos', '1985-04-12', 2, 'Rua Central, Viseu', '912345678', '211223344', 2, 'Médica Dentista', '100200300', 'maria.santos@clinica.pt', 3),
-('João Pedro Silva', '1998-08-20', 1, 'Av. Europa, Viseu', '961234567', '299887766', 1, 'Engenheiro', '400500600', 'joao.silva@email.com', 1),
-('Ana Sofia Martins', '2001-11-05', 2, 'Rua Direita, Porto', '933445566', '255443322', 1, 'Estudante', '700800900', 'ana.martins@email.com', 1);
+('Dra. Maria Santos', '1985-04-12', 2, 'Rua Central, Viseu', '912345678', '912345679', '211223344', 2, 'Médica Dentista', '100200300', 'SNS', 'maria.santos@clinica.pt', 3,
+ 'Nenhuma', 'Nenhum', 'Saudável', 'Check-up de rotina profissional', true, 'Nenhuma', 'Escovagem 3x ao dia + Fio Dentário', 'Não', 'Destartarização anual', false, 'Corrida', 'Não tem', false, 'Médica responsável pela clínica', 'Sem lesões detetadas'),
+
+('João Pedro Silva', '1998-08-20', 1, 'Av. Europa, Viseu', '961234567', '961234568', '299887766', 1, 'Engenheiro', '400500600', 'Multicare', 'joao.silva@email.com', 1,
+ 'Penicilina', 'Ibuprofeno 600mg', 'Sensibilidade dentária em bebidas frias', 'Check-up anual e limpeza', true, 'Restauração antiga no molar superior esquerdo', 'Escovagem 2x ao dia', 'Não', 'Restauração de dente 26 há 2 anos', true, 'Natação', 'Ligeiro bruxismo noturno', false, 'Requer anestesia sem vasoconritor se houver cirurgia', 'Bons resultados em restaurações anteriores'),
+
+('Ana Sofia Martins', '2001-11-05', 2, 'Rua Direita, Porto', '933445566', '933445567', '255443322', 1, 'Estudante', '700800900', 'SNS', 'ana.martins@email.com', 1,
+ 'Látex', 'Nenhum', 'Nenhuma', 'Ortodontia e colocação de aparelho', false, 'Dentes ligeiramente apinhados', 'Escovagem 2x ao dia', 'Não', 'Extração de sisos inferiores', false, 'Ginásio', 'Não tem', false, 'Em tratamento ortodôntico ativo', 'Evolução positiva da arcada dentária'),
+
+('Carlos Manuel Oliveira', '1990-03-15', 1, 'Rua das Flores, Coimbra', '919876543', '919876540', '234567890', 2, 'Arquiteto', '500600700', 'AdvanceCare', 'carlos.oliveira@email.com', 1,
+ 'Nenhuma', 'Paracetamol pontual', 'Hipertensão ligeira controlada', 'Dor intensa no dente siso inferior', true, 'Cárie no 3º molar', 'Escovagem 2x ao dia', 'Fumador ocasional', 'Branqueamento dentário há 1 ano', true, 'Futebol', 'Tem bruxismo noturno', false, 'Necessita de goteira de relaxamento', 'Tratamentos anteriores bem sucedidos');
 
 -- Contas Exemplo (passwords de demonstração: 123456)
 -- Nota: no backend serão tratadas com hash bcrypt

@@ -10,27 +10,65 @@ const controllers = {};
 // sequelize.sync();
 
 controllers.create = async (req, res) => {
-  const { 
-    nome, gmail, nif, profissao, datanascimento,
-    idgenero, idestadocivil, idclasse 
-  } = req.body;
-
   try {
+    const { 
+      nome, gmail, email, nif, profissao, datanascimento,
+      idgenero, genero, idestadocivil, estadocivil, idclasse, classe,
+      contactoprincipal, contactosecundario, endereco, numeroutente, subsistemassaude,
+      alergias, medicamentos, 
+      condicoesSaude, condicaosaude,
+      motivoConsulta, motivoconsultainicial,
+      anestesiaLocal, experienciaanastesia,
+      condicoesDentariasPre, detalhesPreExistentes, condicoesdentarias,
+      habitosHigieneOral, habitoigieneoral,
+      consumoSubstancias, detalhesSubstancias, consumosubstancia,
+      historicoTratamentos, historicotratamentosdentariospassados,
+      dorSensibilidade, historicodor,
+      atividadesDesportivas, atividadesdesportivas,
+      tipoBruxismo, bruxismo,
+      gravidez, gravida,
+      infoAdicional, infoadicional,
+      resultadosAnteriores, resultadosanteriores
+    } = req.body;
+
     const data = await Utilizadorperfil.create({
       nome: nome,
-      gmail: gmail,
-      nif: nif,
-      profissao: profissao,
-      datanascimento: datanascimento,
-      // Estes nomes à esquerda têm de ser IGUAIS ao modelo acima
-      genero: Number(idgenero), 
-      estadocivil: Number(idestadocivil),
-      classe: Number(idclasse)
+      gmail: gmail || email,
+      nif: nif ? String(nif) : null,
+      profissao: profissao || null,
+      datanascimento: datanascimento || null,
+      genero: idgenero ? Number(idgenero) : (genero ? Number(genero) : null), 
+      estadocivil: idestadocivil ? Number(idestadocivil) : (estadocivil ? Number(estadocivil) : null),
+      classe: idclasse ? Number(idclasse) : (classe ? Number(classe) : null),
+      contactoprincipal: contactoprincipal ? String(contactoprincipal) : null,
+      contactosecundario: contactosecundario ? String(contactosecundario) : null,
+      endereco: endereco || null,
+      numeroutente: numeroutente ? String(numeroutente) : null,
+      subsistemassaude: subsistemassaude || null,
+      alergias: alergias || null,
+      medicamentos: medicamentos || null,
+      condicaosaude: condicoesSaude || condicaosaude || null,
+      motivoconsultainicial: motivoConsulta || motivoconsultainicial || null,
+      experienciaanastesia: Boolean(anestesiaLocal ?? experienciaanastesia),
+      condicoesdentarias: detalhesPreExistentes || condicoesdentarias || (condicoesDentariasPre ? "Sim" : null),
+      habitoigieneoral: habitosHigieneOral || habitoigieneoral || null,
+      consumosubstancia: detalhesSubstancias || consumosubstancia || (consumoSubstancias ? "Sim" : null),
+      historicotratamentosdentariospassados: historicoTratamentos || historicotratamentosdentariospassados || null,
+      historicodor: Boolean(dorSensibilidade ?? historicodor),
+      atividadesdesportivas: atividadesDesportivas || atividadesdesportivas || null,
+      bruxismo: tipoBruxismo || bruxismo || null,
+      gravida: Boolean(gravidez ?? gravida),
+      infoadicional: infoAdicional || infoadicional || null,
+      resultadosanteriores: resultadosAnteriores || resultadosanteriores || null
     });
 
-    res.json({ success: true, message: "Registado!", data: data });
+    res.json({ 
+      success: true, 
+      message: "Perfil criado com sucesso!", 
+      data: data 
+    });
   } catch (error) {
-    console.log("Erro detalhado: ", error);
+    console.error("Erro detalhado na criação de perfil: ", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

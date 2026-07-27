@@ -3,12 +3,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../perfis.css";
 import axios from "axios";
-
-
-
+import url from "./url_global";
 
 /* =======================
    COMPONENTES DE ESTILO
@@ -76,7 +74,7 @@ const CheckboxField = ({ label, checked, onChange }) => (
   </div>
 );
 
-const GoldenButton = ({ label, onClick, type = "button", style: styleOverride = {}, className = "" }) => {
+const GoldenButton = ({ label, onClick, type = "button", style: styleOverride = {}, className = "", disabled = false }) => {
   const baseStyle = {
     backgroundColor: "#A99C5E",
     borderRadius: "10px",
@@ -92,10 +90,11 @@ const GoldenButton = ({ label, onClick, type = "button", style: styleOverride = 
     <button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       className={`btn shadow-none text-white ${className}`}
-      style={{ ...baseStyle, ...styleOverride }}
-      onMouseOver={(e) => (e.target.style.opacity = "0.8")}
-      onMouseOut={(e) => (e.target.style.opacity = "1")}
+      style={{ ...baseStyle, ...styleOverride, opacity: disabled ? 0.6 : 1 }}
+      onMouseOver={(e) => { if (!disabled) e.target.style.opacity = "0.8"; }}
+      onMouseOut={(e) => { if (!disabled) e.target.style.opacity = "1"; }}
     >
       {label}
     </button>
@@ -106,6 +105,8 @@ const GoldenButton = ({ label, onClick, type = "button", style: styleOverride = 
    COMPONENTE PRINCIPAL
 ======================= */
 function Criarperfil() {
+  const navigate = useNavigate();
+  const [isSaving, setIsSaving] = useState(false);
   const [form, setForm] = useState({
     nome: "",
     nif: "",
@@ -144,17 +145,27 @@ function Criarperfil() {
   const updateForm = (key, value) => setForm({ ...form, [key]: value });
 
   const handleSave = async () => {
+    if (!form.nome) {
+      alert("Por favor, preencha pelo menos o Nome / Username.");
+      return;
+    }
+
+    setIsSaving(true);
     try {
-      // Enviamos apenas o necessário para o backend
-      // Nota: idgenero, idestadocivil e idclasse já estarão como Números
-      const response = await axios.post("http://localhost:3000/Utilizadorperfil/create", form);
+      const endpoint = url + "utilizadorperfil/create";
+      const response = await axios.post(endpoint, form);
       
       if (response.data.success) {
         alert("Perfil criado com sucesso!");
+        navigate("/backoffice/perfis");
+      } else {
+        alert("Erro ao criar perfil: " + (response.data.message || "Tente novamente"));
       }
     } catch (error) {
       console.error(error);
-      alert("Erro ao guardar dados.");
+      alert("Erro ao guardar dados no servidor: " + (error.response?.data?.message || error.message));
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -273,7 +284,12 @@ function Criarperfil() {
 
         {/* BOTÃO DE SALVAR FINAL */}
         <div className="text-center mt-5 mb-5">
-          <GoldenButton label="GUARDAR PERFIL COMPLETO" onClick={handleSave} style={{ padding: "8px 14px", minWidth: "160px" }} />
+          <GoldenButton 
+            label={isSaving ? "A GUARDAR PERFIL..." : "GUARDAR PERFIL COMPLETO"} 
+            onClick={handleSave} 
+            disabled={isSaving} 
+            style={{ padding: "8px 14px", minWidth: "160px" }} 
+          />
         </div>
 
       </div>
