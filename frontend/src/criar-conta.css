@@ -200,12 +200,11 @@ input::placeholder {
 
 /* ===== Botão ===== */
 .btn {
-  grid-column: 1 / -1;
-  width: 100%;
+  width: auto;
   margin-top: 26px;
-  padding: 14px;
+  padding: 12px 28px;
   border: none;
-  border-radius: 30px;
+  border-radius: 20px;
   background: linear-gradient(135deg, var(--gold-700), var(--gold-600));
   color: var(--white);
   font-weight: 700;
@@ -215,6 +214,8 @@ input::placeholder {
   cursor: pointer;
   box-shadow: var(--shadow-sm);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  justify-self: center;
+  grid-column: 1 / -1;
 }
 
 .btn:hover {
