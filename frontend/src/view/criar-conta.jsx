@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 import urlAPI from './url_global';
 
@@ -12,6 +13,32 @@ const CriarConta = () => {
     const [campnome, setcampnome] = useState("");
     const [campemail, setcampemail] = useState("");
     const [camptipo, setcamptipo] = useState("");
+    const [aGuardar, setAGuardar] = useState(false);
+
+    const SalvarConta = (e) => {
+        e.preventDefault();
+        setAGuardar(true);
+
+        const baseUrl = urlAPI + "conta/criar";
+        const tipoSelecionado = document.querySelector('input[name="account_type"]')?.value || "paciente";
+
+        const datapost = {
+            nome: campnome,
+            email: campemail,
+            tipoconta: tipoSelecionado === "medico" ? 2 : 1
+        };
+
+        axios.post(baseUrl, datapost)
+            .then(response => {
+                alert(response.data.message);
+            })
+            .catch(error => {
+                alert("Error 34 " + error);
+            })
+            .finally(() => {
+                setAGuardar(false);
+            });
+    };
 
 
     useEffect(() => {
@@ -65,9 +92,15 @@ const CriarConta = () => {
         };
     }, []);
 return (
-    <div className="form-container">
-        
-        <form>
+    <div className="criar-conta-page">
+      <div className="form-container">
+        <div className="form-container__header">
+          <div className="form-container__eyebrow">Clínica Dentária</div>
+          <h2 className="form-container__title">Criar Conta</h2>
+          <p className="form-container__subtitle">Associe um novo perfil à clínica</p>
+        </div>
+
+        <form onSubmit={SalvarConta}>
           <div className="left-column">
             <label htmlFor="username">Username</label>
             <input type="text" id="username" placeholder="Enter Username" value={campnome} onChange={value=> setcampnome(value.target.value)}/>
@@ -96,33 +129,14 @@ return (
             </div>
          </div>
             <input type="hidden" name="profile" value="geral"/>
-          <button type="submit" className="btn" onClick={() => SalvarConta()}>Associar</button>
-           
           </div>
+
+          <button type="submit" className="btn" disabled={aGuardar}>
+            {aGuardar ? 'A associar...' : 'Associar'}
+          </button>
         </form>
+      </div>
     </div>
 )
-
-function SalvarConta(){
-    e.preventDefault();
-    const baseUrl = urlAPI + "conta/criar"
-    const datapost = {
-        nome : campnome,
-        email : campemail,
-        tipoconta : 1
-    }
-    axios.post(baseUrl,datapost)
-    .then(response=>{
-    if (response.data.success===true) {
-        alert(response.data.message)
-    }
-    else {
-        alert(response.data.message)
-    }
-    }).catch(error=>{
-        alert("Error 34 "+error)
-    })
-    }
-
 }
 export default CriarConta;

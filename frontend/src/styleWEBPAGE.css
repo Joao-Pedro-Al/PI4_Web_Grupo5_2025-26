@@ -44,7 +44,8 @@
 
 .info-text {
     font-size: 28px;
-    font-weight: bold;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
 }
 
 .user-icon {
@@ -66,7 +67,8 @@
 
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
   color: #333;
   background-color: #ffffff;
   background-image:
@@ -90,6 +92,21 @@ body {
 header h1 {
   font-size: 20px;
   margin-bottom: 20px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+}
+
+p {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+}
+
+button {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
 }
 
 
@@ -136,8 +153,19 @@ section img {
 
 .faixa {
     background: #eaeaea;   
-    padding: 40px 0;       
+    padding: 40px 20px;       
     text-align: center;    
+}
+
+.faixa a {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.faixa .install-btn {
+    display: inline-block;
+    width: auto;
+    padding: 12px 40px;
 }
 
 .faixa h2 {

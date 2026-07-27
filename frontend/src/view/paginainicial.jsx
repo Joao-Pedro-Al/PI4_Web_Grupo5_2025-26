@@ -294,32 +294,17 @@ const PaginaInicial = () => {
     }
   };
 
-  // Estilos do FullCalendar injectados
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      .fc-toolbar-title { color: #A99C5E; font-size: 22px; }
-      .fc-button { background-color: #A99C5E !important; border: none !important; color: white !important; font-weight: bold !important; }
-      .fc-button:hover { background-color: #8a7542 !important; }
-      .fc-col-header-cell { background-color: #f8f9fa; color: #A99C5E; font-weight: bold; }
-      .fc-day-today { background-color: rgba(183,155,83,0.1) !important; }
-      .fc-highlight { background: rgba(183,155,83,0.25) !important; }
-    `;
-    document.head.appendChild(style);
-    return () => document.head.removeChild(style);
-  }, []);
-
   return (
     <div className="pagina-inicial">
 
       {/* Cabeçalho médico */}
-      <div style={{ backgroundColor: '#f0f7ff', border: '2px solid #A99C5E', borderRadius: '10px', padding: '15px', marginBottom: '20px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="welcome-card">
+        <div className="welcome-card__row">
           <div>
-            <h3 style={{ color: '#A99C5E', marginBottom: '10px' }}>
+            <h3 className="welcome-card__title">
               <i className="bi bi-person-badge"></i> Bem-vindo, Dr(a). {user?.nome}!
             </h3>
-            <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+            <div className="welcome-card__meta">
               <div><strong>🩺 ID Conta:</strong> {user?.id}</div>
               <div><strong>📧 Email:</strong> {user?.email}</div>
               <div><strong>🎫 Tipo:</strong> Médico</div>
@@ -328,7 +313,7 @@ const PaginaInicial = () => {
           </div>
           <button
             onClick={() => navigate('/backoffice/notificacoes/')}
-            style={{ backgroundColor: '#A99C5E', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '30px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', fontWeight: 'bold' }}
+            className="btn-notifications"
           >
             <i className="bi bi-bell-fill"></i> Ver Notificações
           </button>
@@ -338,8 +323,8 @@ const PaginaInicial = () => {
       <h2 className="titulo">Agendamentos Clínica Dentária</h2>
 
       {/* Dica de uso */}
-      <div style={{ backgroundColor: '#fffbf0', border: '1px solid #A99C5E', borderRadius: '8px', padding: '10px 16px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', color: '#7a6930' }}>
-        <i className="bi bi-info-circle-fill" style={{ fontSize: '18px', color: '#A99C5E' }}></i>
+      <div className="info-banner">
+        <i className="bi bi-info-circle-fill"></i>
         <span><strong>Como marcar uma consulta:</strong> Clique e arraste sobre um horário na agenda para o selecionar — um formulário irá aparecer automaticamente.</span>
       </div>
 
@@ -378,59 +363,45 @@ const PaginaInicial = () => {
 
       {/* ===== MODAL DE MARCAÇÃO ===== */}
       {showModal && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
-          backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999,
-          display: 'flex', justifyContent: 'center', alignItems: 'center',
-          backdropFilter: 'blur(3px)'
-        }}>
-          <div style={{
-            backgroundColor: 'white', borderRadius: '16px', padding: '32px',
-            width: '480px', maxWidth: '95vw', boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-            position: 'relative', maxHeight: '90vh', overflowY: 'auto'
-          }}>
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal-card" onClick={e => e.stopPropagation()}>
             {/* Header do modal */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+            <div className="modal-header">
               <div>
-                <h3 style={{ color: '#A99C5E', margin: 0, fontSize: '20px', fontWeight: 'bold' }}>
+                <h3 className="modal-title">
                   <i className="bi bi-calendar-plus"></i> Marcar Consulta
                 </h3>
-                <p style={{ color: '#999', margin: '4px 0 0 0', fontSize: '13px' }}>
+                <p className="modal-subtitle">
                   📅 {new Date(modalData.date + 'T00:00:00').toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
                 </p>
               </div>
-              <button onClick={() => setShowModal(false)} style={{
-                background: 'none', border: 'none', fontSize: '22px', cursor: 'pointer',
-                color: '#999', width: '32px', height: '32px', borderRadius: '50%',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                transition: 'all 0.2s'
-              }} onMouseOver={e => e.target.style.backgroundColor = '#f0f0f0'} onMouseOut={e => e.target.style.backgroundColor = 'transparent'}>
+              <button onClick={() => setShowModal(false)} className="modal-close" aria-label="Fechar">
                 ×
               </button>
             </div>
 
             {/* Horário */}
-            <div style={{ display: 'flex', gap: '12px', marginBottom: '20px' }}>
-              <div style={{ flex: 1 }}>
-                <label style={labelStyle}>⏰ Hora Início</label>
+            <div className="modal-row">
+              <div className="modal-field--tight">
+                <label className="modal-label">⏰ Hora Início</label>
                 <input type="time" value={modalData.startTime}
                   onChange={e => setModalData(prev => ({ ...prev, startTime: e.target.value }))}
-                  style={inputStyle} />
+                  className="modal-input" />
               </div>
-              <div style={{ flex: 1 }}>
-                <label style={labelStyle}>⏱ Hora Fim</label>
+              <div className="modal-field--tight">
+                <label className="modal-label">⏱ Hora Fim</label>
                 <input type="time" value={modalData.endTime}
                   onChange={e => setModalData(prev => ({ ...prev, endTime: e.target.value }))}
-                  style={inputStyle} />
+                  className="modal-input" />
               </div>
             </div>
 
             {/* Médico */}
-            <div style={{ marginBottom: '16px' }}>
-              <label style={labelStyle}>🩺 Médico</label>
+            <div className="modal-field">
+              <label className="modal-label">🩺 Médico</label>
               <select value={modalData.doctor}
                 onChange={e => setModalData(prev => ({ ...prev, doctor: e.target.value }))}
-                style={inputStyle}>
+                className="modal-input">
                 {doctors.map(doc => (
                   <option key={doc.id} value={doc.id}>{doc.title}</option>
                 ))}
@@ -438,11 +409,11 @@ const PaginaInicial = () => {
             </div>
 
             {/* Tipo de Consulta */}
-            <div style={{ marginBottom: '16px' }}>
-              <label style={labelStyle}>📋 Tipo de Consulta</label>
+            <div className="modal-field">
+              <label className="modal-label">📋 Tipo de Consulta</label>
               <select value={modalData.consultationType}
                 onChange={e => setModalData(prev => ({ ...prev, consultationType: e.target.value }))}
-                style={inputStyle}>
+                className="modal-input">
                 {consultationTypes.map(type => (
                   <option key={type} value={type}>{type}</option>
                 ))}
@@ -450,14 +421,14 @@ const PaginaInicial = () => {
             </div>
 
             {/* Telefone do Paciente */}
-            <div style={{ marginBottom: '20px' }}>
-              <label style={labelStyle}>📞 Telemóvel do Paciente</label>
+            <div className="modal-field modal-field--phone">
+              <label className="modal-label">📞 Telemóvel do Paciente</label>
               <input
                 type="text"
                 placeholder="ex: 912345678"
                 value={modalData.phoneNumber}
                 onChange={e => setModalData(prev => ({ ...prev, phoneNumber: e.target.value }))}
-                style={inputStyle}
+                className="modal-input"
                 list="modal-pacientes-telefones"
               />
               <datalist id="modal-pacientes-telefones">
@@ -466,7 +437,7 @@ const PaginaInicial = () => {
                 ))}
               </datalist>
               {pacientes.length > 0 && (
-                <div style={{ fontSize: '12px', color: '#888', marginTop: '6px' }}>
+                <div className="patients-hint">
                   Pacientes: {pacientes.map(p => `${p.nome} (${p.contactoprincipal || 'sem tel.'})`).join(' • ')}
                 </div>
               )}
@@ -474,33 +445,18 @@ const PaginaInicial = () => {
 
             {/* Erro */}
             {modalError && (
-              <div style={{ backgroundColor: '#fff3f3', border: '1px solid #ffaaaa', borderRadius: '8px', padding: '10px 14px', marginBottom: '16px', color: '#c0392b', fontSize: '13px', whiteSpace: 'pre-line' }}>
-                ❌ {modalError}
+              <div className="error-banner">
+                <span>❌</span>
+                <span>{modalError}</span>
               </div>
             )}
 
             {/* Botões */}
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <button onClick={handleConfirmarModal} style={{
-                flex: 1, padding: '13px', backgroundColor: '#A99C5E', color: 'white',
-                border: 'none', borderRadius: '10px', fontWeight: 'bold', fontSize: '15px',
-                cursor: 'pointer', transition: 'all 0.2s',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
-              }}
-                onMouseOver={e => e.currentTarget.style.backgroundColor = '#8a7542'}
-                onMouseOut={e => e.currentTarget.style.backgroundColor = '#A99C5E'}
-              >
+            <div className="modal-actions">
+              <button onClick={handleConfirmarModal} className="btn-confirm">
                 <i className="bi bi-check-circle-fill"></i> Confirmar
               </button>
-              <button onClick={() => setShowModal(false)} style={{
-                flex: 1, padding: '13px', backgroundColor: 'white', color: '#A99C5E',
-                border: '2px solid #A99C5E', borderRadius: '10px', fontWeight: 'bold', fontSize: '15px',
-                cursor: 'pointer', transition: 'all 0.2s',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
-              }}
-                onMouseOver={e => { e.currentTarget.style.backgroundColor = '#f9f5ec'; }}
-                onMouseOut={e => { e.currentTarget.style.backgroundColor = 'white'; }}
-              >
+              <button onClick={() => setShowModal(false)} className="btn-cancel">
                 <i className="bi bi-x-circle"></i> Cancelar
               </button>
             </div>
@@ -509,27 +465,6 @@ const PaginaInicial = () => {
       )}
     </div>
   );
-};
-
-// Estilos reutilizáveis para o modal
-const labelStyle = {
-  display: 'block',
-  fontSize: '13px',
-  fontWeight: '600',
-  color: '#555',
-  marginBottom: '6px',
-};
-
-const inputStyle = {
-  width: '100%',
-  padding: '10px 14px',
-  borderRadius: '8px',
-  border: '1.5px solid #ddd',
-  fontSize: '14px',
-  color: '#333',
-  outline: 'none',
-  boxSizing: 'border-box',
-  transition: 'border-color 0.2s',
 };
 
 export default PaginaInicial;

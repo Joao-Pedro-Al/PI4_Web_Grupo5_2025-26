@@ -1,346 +1,258 @@
-/*--------------------Iryna-------------------------------
-   BLOCO 1 — BARRA SUPERIOR + MENU LATERAL
----------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-/*  Barra dourada superior */
-.header-bar {
-  height: 50px;
-  background-color: #A99C5E;
+:root {
+  --gold-900: #6b5a32;
+  --gold-800: #8a7542;
+  --gold-700: #a99c5e;
+  --gold-600: #b79b53;
+  --gold-100: #f3ecd9;
+  --gold-50:  #fbf8f1;
+  --ink-900: #2a271d;
+  --ink-600: #6f6a58;
+  --ink-300: #a49d87;
+  --white: #ffffff;
+  --danger: #c0392b;
+
+  --font-display: "Poppins", "Segoe UI", sans-serif;
+  --font-body: "Inter", "Segoe UI", sans-serif;
+
+  --shadow-sm: 0 2px 8px rgba(42, 39, 29, 0.08);
+  --shadow-md: 0 10px 30px rgba(42, 39, 29, 0.12);
+  --shadow-lg: 0 30px 60px rgba(42, 39, 29, 0.20);
+}
+
+/* ===== Página ===== */
+.criar-conta-page {
+  min-height: 100vh;
   width: 100%;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
-  padding: 0 20px;
+  justify-content: center;
+  padding: 40px 20px;
+  background: radial-gradient(circle at top left, var(--gold-100) 0%, var(--gold-50) 45%, #f4efe4 100%);
+  font-family: var(--font-body);
+  box-sizing: border-box;
 }
 
-.header-bar i {
-  margin-left: 15px;
-  font-size: 30px;
-  color: white;
-}
-body {
-  min-width: 1200px;
-  background-image: url('./assets/fundo_dentes.png');
-  background-size:100%
-}
-.header-bar i:hover {
-  color: #c7a33c;
-}
-
-/*  Estrutura principal da página (layout) */
-.layout {
-  display: flex;
-  min-width: 1200px;
-}
-
-/*  Menu lateral (sidebar) */
-.menu {
-  width: 200px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background-color: #ffffff;
-  padding-top: 20px;
-  overflow-y: auto;
-}
-
-/*  Área do logotipo no menu */
-.menu__logo {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.menu__logo-img {
-  width: 80%;
-  max-width: 150px;
-}
-
-/*  Lista dos itens do menu */
-.menu__list {
-  list-style-type: none;
-  margin: 0;
-}
-
-.menu__item {
-  margin-bottom: 10px;
-}
-
-/*  Estilo dos links do menu */
-.menu__link {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  padding: 10px 15px;
-  color: #737791;
-  font-size: 16px;
-}
-
-.menu__link i {
-  margin-right: 10px;
-  font-size: 18px;
-}
-
-/*  Item ativo do menu */
-.menu__link--active {
-  background-color: #A99C5E;
-  color: white;
-}
-
-/*  Hover nos itens do menu */
-.menu__link:hover {
-  background-color: #e0e0e0;
-}
-
-/*  Botão dourado DENTRO do menu lateral */
-.menu__link.btn-gold {
-  background-color: #A99C5E;
-  color: white !important;
-  border-radius: 50px;
-  position: relative;
-  z-index: 2;
-}
-
-
-/*---------------------------------------------------
-   BLOCO 2 — NÃO PERTENCE AO MENU (FORMULÁRIOS + CONTEÚDO)
----------------------------------------------------*/
-
-/*  Botão dourado geral (USADO EM FORMULÁRIOS, NÃO NO MENU) */
-.btn-gold {
-  background-color: #A99C5E;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 50px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.btn-gold i {
-  margin-right: 10px;
-  font-size: 20px;
-  line-height: 1;
-}
-
-.btn-gold:hover {
-  background-color: #A99C5E;
-}
-
-.btn-gold:focus {
-  outline: none;
-}
-
-/*  Área principal da página (conteúdo) */
-.content {
-  margin-left: 150px;
-  padding: 20px;
-  background-image: url('path-to-your-image.png');
-  background-size: cover;
-  width: 100%;
-  min-width: 900px;
-}
-
-/*  Caixa branca do formulário */
+/* ===== Cartão ===== */
 .form-container {
-  background: white;
-  max-width: 900px;
-  margin: 60px auto;
-  padding: 0;
-}
-.left-column input {
-  background: #ffffff;
-  border: 2px solid #A99C5E;
-  color: #6b6b6b;
-}
-
-.right-column select {
-  background-color: #A99C5E;
-  border: none;              /* ← ГОЛОВНЕ */
-  color: #ffffff;
-
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  padding: 12px 40px 12px 16px;
-  border-radius: 10px;       /* м’якше */
-  
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M7 10l5 5 5-5z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 16px center;
-  background-size: 14px;
-}
-.right-column select:focus {
-  outline: none;
-  box-shadow: none;
-}
-.left-column input:focus {
-  outline: none;
+  width: 100%;
+  max-width: 720px;
+  background: var(--white);
+  border-radius: 22px;
+  padding: 40px 44px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--gold-100);
+  box-sizing: border-box;
 }
 
-option {
-  background: white;
-  color: black;
+.form-container__header {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-
-
-
-
-
-/* Divisiones de esquerda e direita */
-.left-column,
-.right-column {
-  display: flex;
-  flex-direction: column;
+.form-container__eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold-700);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
 }
 
+.form-container__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--gold-900);
+  margin-bottom: 8px;
+}
 
-/*  Estilo dos elementos do formulário */
+.form-container__subtitle {
+  font-size: 14px;
+  color: var(--ink-600);
+}
+
+/* ===== Formulário em grelha ===== */
 form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 120px;
-  row-gap: 25px;
+  column-gap: 28px;
 }
 
+.left-column,
+.right-column {
+  display: grid;
+  grid-auto-rows: min-content;
+  row-gap: 6px;
+}
 
 label {
-  font-size: 13px;
-  color: #A99C5E;
-  margin-bottom: 6px;
-  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink-600);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-top: 14px;
 }
 
+label:first-child {
+  margin-top: 0;
+}
 
-input,
-select {
+/* ===== Inputs de texto ===== */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
   width: 100%;
-  padding: 12px 16px;
+  padding: 12px 15px;
   border-radius: 12px;
+  border: 1.5px solid var(--gold-100);
+  background: var(--gold-50);
+  color: var(--ink-900);
   font-size: 14px;
+  font-family: var(--font-body);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-
-/*  Botão de envio do formulário */
-.right-column button {
-  margin-top: 30px;
-  align-self: flex-start;
-
-  background-color: #A99C5E;
-  color: #ffffff;
-
-  border: none;
-  padding: 12px 28px;
-  border-radius: 12px;
-
-  font-size: 14px;
-  cursor: pointer;
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: var(--gold-700);
+  background: var(--white);
 }
 
-
-button.btn:hover {
-  background-color: #A99C5E;
-}
-/* Estilo para as caixas de tempo */
-.time-box {
-    width: 70px;
-    font-size: 2rem;
-    text-align: center;
-    font-weight: 600;
-    border-radius: 10px;
-    border: 2px solid #A99C5E;
-  }
-  /* Estilo para a linha final com alinhamento inferior no caso botao de confirmar*/
-   .linha-final {
-    display: flex;
-    align-items: flex-end; /* alinha pela parte inferior */
-    gap: 70px;
+input::placeholder {
+  color: var(--ink-300);
 }
 
-/* ===============================
-   REMOVER AZUL NO HOVER DO MENU
-================================ */
-
-/* Hover dos links do menu lateral  */
-.menu__link:hover {
-  color: #A99C5E !important;        
-  background-color: #e0e0e0;        
-}
-
-/* Hover dos icons*/
-.menu__link:hover i {
-  color: #A99C5E !important;
-}
-
-/* Estado ativo / foco (clique ou tab) */
-.menu__link:focus,
-.menu__link:active {
-  color: #A99C5E !important;
-  background-color: #e0e0e0;
-}
-
-/* Remove contorno azul do Bootstrap */
-.menu__link:focus-visible {
-  outline: none !important;
-}
-
-/* ===============================
-   SELECT PERSONALIZADO DOURADO
-   (SEM AZUL)
-================================ */
-/* Container principal do select */
+/* ===== Select customizado ===== */
 .custom-select {
   position: relative;
   width: 100%;
-  cursor: pointer;
   user-select: none;
 }
 
-/* Campo visível (valor selecionado) */
 .custom-select__selected {
-  background-color: #A99C5E;
-  color: white;
-  padding: 12px 16px;
+  width: 100%;
+  padding: 12px 40px 12px 15px;
   border-radius: 12px;
+  border: 1.5px solid var(--gold-100);
+  background: var(--gold-50);
+  color: var(--ink-900);
   font-size: 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  cursor: pointer;
+  box-sizing: border-box;
+  position: relative;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-/* Seta do select */
 .custom-select__selected::after {
-  content: "▾";
-  font-size: 12px;
-}
-
-/* Lista de opções */
-.custom-select__options {
+  content: "";
   position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  right: 0;
-  background: white;
-  border: 1px solid #A99C5E;
-  border-radius: 10px;
-  overflow: hidden;
+  right: 16px;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--gold-700);
+  border-bottom: 2px solid var(--gold-700);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+.custom-select__selected:hover {
+  border-color: var(--gold-700);
+}
+
+.custom-select__options {
   display: none;
-  z-index: 10;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  background: var(--white);
+  border: 1px solid var(--gold-100);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  z-index: 50;
 }
 
-/* Cada opção */
 .custom-select__options div {
-  padding: 10px 16px;
-  color: #000;
+  padding: 11px 15px;
+  font-size: 14px;
+  color: var(--ink-900);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
 }
 
-/* Hover das opções (dourado) */
 .custom-select__options div:hover {
-  background-color: #A99C5E;
-  color: white;
+  background-color: var(--gold-50);
+  color: var(--gold-800);
+}
+
+.custom-select__options div + div {
+  border-top: 1px solid var(--gold-50);
+}
+
+/* ===== Botão ===== */
+.btn {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-top: 26px;
+  padding: 14px;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(135deg, var(--gold-700), var(--gold-600));
+  color: var(--white);
+  font-weight: 700;
+  font-size: 15px;
+  font-family: var(--font-body);
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Foco acessível */
+input:focus-visible,
+.custom-select__selected:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid var(--gold-700);
+  outline-offset: 2px;
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 640px) {
+  .form-container {
+    padding: 30px 24px;
+    border-radius: 18px;
+  }
+
+  form {
+    grid-template-columns: 1fr;
+    row-gap: 4px;
+  }
+
+  .right-column {
+    margin-top: 8px;
+  }
+
+  .btn {
+    margin-top: 22px;
+  }
 }
