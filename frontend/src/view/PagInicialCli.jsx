@@ -283,17 +283,7 @@ const PagInicialCli = () => {
                         </button>
                       )}
                       
-                      {notificacao.status !== 'Cancelada' && notificacao.status !== 'Remarcada' && (
-  <button 
-    className="btn-action btn-cancel"
-    onClick={(e) => {
-      e.stopPropagation();
-      handleAction('cancel', notificacao);
-    }}
-  >
-    <i className="bi bi-x-circle-fill"></i> Cancelar
-  </button>
-)}
+    {notificacao.status !== 'Cancelada' && notificacao.status !== 'Remarcada' && (
                         <>
                           <button 
                             className="btn-action btn-reschedule"

@@ -412,4 +412,8 @@ const Historico_Front = () => {
     return "Erro...";
   }
 }
+<div className="row d-flex flex-column align-items-center justify-content-center mb-5" style={{minHeight: "300px"}}>
+  <i className="bi bi-calendar-x" style={{fontSize: "48px", color: "#A99C5E", opacity: 0.6}}></i>
+  <h4 className="text-center mt-3 text-secondary">Não houve consultas neste mês...</h4>
+</div>
 export default Historico_Front;

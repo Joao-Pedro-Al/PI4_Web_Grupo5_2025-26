@@ -1,14 +1,9 @@
-
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../perfis.css";
 import axios from "axios";
-
-
-
 
 /* =======================
    COMPONENTES DE ESTILO
@@ -73,6 +68,26 @@ const CheckboxField = ({ label, checked, onChange }) => (
         marginLeft: "4px"
       }}
     />
+  </div>
+);
+
+// Novo: substitui o CheckboxField nos campos sim/não (mais legível numa ficha longa)
+const ToggleField = ({ label, checked, onChange }) => (
+  <div className="toggle-campo">
+    <label className="toggle-campo__label">{label}</label>
+    <span className="toggle-switch">
+      <input type="checkbox" checked={checked} onChange={onChange} />
+      <span className="toggle-switch__track"></span>
+    </span>
+  </div>
+);
+
+// Novo: título de secção numerado — dá noção de progresso num formulário longo
+const SectionTitle = ({ step, title }) => (
+  <div className="secao-perfil__titulo">
+    <span className="secao-perfil__numero">{String(step).padStart(2, "0")}</span>
+    <h2 className="secao-perfil__nome">{title}</h2>
+    <div className="secao-perfil__linha"></div>
   </div>
 );
 
@@ -141,14 +156,43 @@ function Criarperfil() {
     resultadosAnteriores: ""
   });
 
+  // Ficheiros anexados (exames clínicos)
+  const [ficheiros, setFicheiros] = useState([]);
+  const fileInputRef = React.useRef(null);
+
+  const handleFileChange = (e) => {
+    const novos = Array.from(e.target.files);
+    setFicheiros((prev) => [...prev, ...novos]);
+  };
+
+  const removerFicheiro = (index) => {
+    setFicheiros((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const updateForm = (key, value) => setForm({ ...form, [key]: value });
 
   const handleSave = async () => {
     try {
-      // Enviamos apenas o necessário para o backend
-      // Nota: idgenero, idestadocivil e idclasse já estarão como Números
-      const response = await axios.post("http://localhost:3000/Utilizadorperfil/create", form);
-      
+      const formData = new FormData();
+
+      // Campos de texto/número do formulário
+      Object.entries(form).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+          formData.append(key, value);
+        }
+      });
+
+      // Ficheiros anexados (o backend deve ler pelo campo "exames")
+      ficheiros.forEach((file) => {
+        formData.append("exames", file);
+      });
+
+      const response = await axios.post(
+        "http://localhost:3000/Utilizadorperfil/create",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
       if (response.data.success) {
         alert("Perfil criado com sucesso!");
       }
@@ -158,115 +202,140 @@ function Criarperfil() {
     }
   };
 
-  const titleBarStyle = {
-    border: "1.5px solid #A99C5E",
-    borderRadius: "6px",
-    padding: "6px 16px",
-    color: "#A99C5E",
-    fontSize: "18px",
-    marginBottom: "40px",
-    marginTop: "40px",
-    fontFamily: "Poppins"
-  };
-
   return (
     <div className="container-fluid" style={{ fontFamily: "Poppins", paddingTop: "20px", paddingBottom: "40px" }}>
       <div style={{ maxWidth: "1100px", width: "100%", margin: "0 auto" }}>
         
-        <div style={{ ...titleBarStyle, marginTop: 0 }}>Identificação Pessoal</div>
-        <div className="row justify-content-center" style={{ columnGap: "120px" }}>
-          <div className="col-md-5">
-            <InputField label="Username" value={form.nome} onChange={(e) => updateForm("nome", e.target.value)} />
-            <InputField label="Email" value={form.gmail} onChange={(e) => updateForm("gmail", e.target.value)} />
-            <InputField label="Profissão" value={form.profissao} onChange={(e) => updateForm("profissao", e.target.value)} />
-            
-            <SelectButton 
-              label="Estado Civil" 
-              options={["Solteiro", "Casado", "Divorciado"]} 
-              value={form.estadoCivilLabel} 
-              onChange={(val) => {
-                const map = { "Solteiro": 1, "Casado": 2, "Divorciado": 3 };
-                setForm({...form, idestadocivil: map[val], estadoCivilLabel: val});
-              }} 
-            />
-          </div>
-          <div className="col-md-5">
-            <InputField label="NIF / SNS" value={form.nif} onChange={(e) => updateForm("nif", e.target.value)} />
-            <InputField label="Data de Nascimento" type="date" value={form.datanascimento} onChange={(e) => updateForm("datanascimento", e.target.value)} />
-            
-            <SelectButton 
-              label="Tipo de Conta" 
-              options={["Paciente", "Doutor"]} 
-              value={form.classeLabel} 
-              onChange={(val) => {
-                const map = { "Paciente": 1, "Doutor": 2 };
-                setForm({...form, idclasse: map[val], classeLabel: val});
-              }} 
-            />
-            <SelectButton 
-              label="Género" 
-              options={["Masculino", "Feminino", "Outro"]} 
-              value={form.generoLabel} 
-              onChange={(val) => {
-                const map = { "Masculino": 1, "Feminino": 2, "Outro": 3 };
-                setForm({...form, idgenero: map[val], generoLabel: val});
-              }} 
-            />
-            <CheckboxField label="Gravidez:" checked={form.gravidez} onChange={(e) => updateForm("gravidez", e.target.checked)} />
+        <div className="secao-perfil" style={{ marginTop: 0 }}>
+          <SectionTitle step={1} title="Identificação pessoal" />
+          <div className="grid-campos">
+            <div>
+              <InputField label="Username" value={form.nome} onChange={(e) => updateForm("nome", e.target.value)} />
+              <InputField label="Email" value={form.gmail} onChange={(e) => updateForm("gmail", e.target.value)} />
+              <InputField label="Profissão" value={form.profissao} onChange={(e) => updateForm("profissao", e.target.value)} />
+
+              <SelectButton
+                label="Estado Civil"
+                options={["Solteiro", "Casado", "Divorciado"]}
+                value={form.estadoCivilLabel}
+                onChange={(val) => {
+                  const map = { "Solteiro": 1, "Casado": 2, "Divorciado": 3 };
+                  setForm({...form, idestadocivil: map[val], estadoCivilLabel: val});
+                }}
+              />
+            </div>
+            <div>
+              <InputField label="NIF / SNS" value={form.nif} onChange={(e) => updateForm("nif", e.target.value)} />
+              <InputField label="Data de Nascimento" type="date" value={form.datanascimento} onChange={(e) => updateForm("datanascimento", e.target.value)} />
+
+              <SelectButton
+                label="Tipo de Conta"
+                options={["Paciente", "Doutor"]}
+                value={form.classeLabel}
+                onChange={(val) => {
+                  const map = { "Paciente": 1, "Doutor": 2 };
+                  setForm({...form, idclasse: map[val], classeLabel: val});
+                }}
+              />
+              <SelectButton
+                label="Género"
+                options={["Masculino", "Feminino", "Outro"]}
+                value={form.generoLabel}
+                onChange={(val) => {
+                  const map = { "Masculino": 1, "Feminino": 2, "Outro": 3 };
+                  setForm({...form, idgenero: map[val], generoLabel: val});
+                }}
+              />
+              <ToggleField label="Gravidez" checked={!!form.gravidez} onChange={(e) => updateForm("gravidez", e.target.checked)} />
+            </div>
           </div>
         </div>
 
-        <div style={titleBarStyle}>Histórico Médico Geral</div>
-        <div className="row justify-content-center" style={{ columnGap: "120px" }}>
-          <div className="col-md-5">
-            <InputField label="Alergias" value={form.alergias} onChange={(e) => updateForm("alergias", e.target.value)} />
-            <InputField label="Medicamentos" value={form.medicamentos} onChange={(e) => updateForm("medicamentos", e.target.value)} />
-          </div>
-          <div className="col-md-5">
-            <InputField label="Condições de Saúde" value={form.condicoesSaude} onChange={(e) => updateForm("condicoesSaude", e.target.value)} />
-          </div>
-        </div>
-
-        <div style={titleBarStyle}>Histórico Dentário</div>
-        <div className="row justify-content-center" style={{ columnGap: "120px" }}>
-          <div className="col-md-5">
-            <InputField label="Motivo da consulta inicial:" value={form.motivoConsulta} onChange={(e) => updateForm("motivoConsulta", e.target.value)} />
-            <CheckboxField label="Experiência com anestesias locais:" checked={form.anestesiaLocal} onChange={(e) => updateForm("anestesiaLocal", e.target.checked)} />
-            <CheckboxField label="Condições Dentárias Pré-existentes:" checked={form.condicoesDentariasPre} onChange={(e) => updateForm("condicoesDentariasPre", e.target.checked)} />
-            <InputField label="Se Tem, escreva abaixo:" value={form.detalhesPreExistentes} onChange={(e) => updateForm("detalhesPreExistentes", e.target.value)} />
-            <InputField label="Habitos de Higiene Oral:" value={form.habitosHigieneOral} onChange={(e) => updateForm("habitosHigieneOral", e.target.value)} />
-            <CheckboxField label="Consumo de substâncias:" checked={form.consumoSubstancias} onChange={(e) => updateForm("consumoSubstancias", e.target.checked)} />
-            <InputField label="Se usa, escreva abaixo:" value={form.detalhesSubstancias} onChange={(e) => updateForm("detalhesSubstancias", e.target.value)} />
-          </div>
-          <div className="col-md-5">
-            <InputField label="Histórico de tratamentos passados:" value={form.historicoTratamentos} onChange={(e) => updateForm("historicoTratamentos", e.target.value)} />
-            <CheckboxField label="Histórico de dor ou sensibilidade:" checked={form.dorSensibilidade} onChange={(e) => updateForm("dorSensibilidade", e.target.checked)} />
-            <InputField label="Atividades Desportivas:" value={form.atividadesDesportivas} onChange={(e) => updateForm("atividadesDesportivas", e.target.value)} />
-            <SelectButton 
-              label="Bruxismo" 
-              options={["Não tem", "Tem"]} 
-              value={form.tipoBruxismo} 
-              onChange={(val) => updateForm("tipoBruxismo", val)} 
-            />
+        <div className="secao-perfil">
+          <SectionTitle step={2} title="Histórico médico geral" />
+          <div className="grid-campos">
+            <div>
+              <InputField label="Alergias" value={form.alergias} onChange={(e) => updateForm("alergias", e.target.value)} />
+              <InputField label="Medicamentos" value={form.medicamentos} onChange={(e) => updateForm("medicamentos", e.target.value)} />
+            </div>
+            <div>
+              <InputField label="Condições de Saúde" value={form.condicoesSaude} onChange={(e) => updateForm("condicoesSaude", e.target.value)} />
+            </div>
           </div>
         </div>
 
-        <div style={titleBarStyle}>Tratamentos Anteriores e Resultados</div>
-        <div className="row justify-content-center" style={{ columnGap: "120px" }}>
-          <div className="col-md-5">
-            <InputField label="Histórico de tratamentos realizados:" value={form.historicoClinica} onChange={(e) => updateForm("historicoClinica", e.target.value)} />
-            <InputField label="Informação adicional relevante:" value={form.infoAdicional} onChange={(e) => updateForm("infoAdicional", e.target.value)} />
+        <div className="secao-perfil">
+          <SectionTitle step={3} title="Histórico dentário" />
+          <div className="grid-campos">
+            <div>
+              <InputField label="Motivo da consulta inicial:" value={form.motivoConsulta} onChange={(e) => updateForm("motivoConsulta", e.target.value)} />
+              <ToggleField label="Experiência com anestesias locais" checked={form.anestesiaLocal} onChange={(e) => updateForm("anestesiaLocal", e.target.checked)} />
+              <ToggleField label="Condições dentárias pré-existentes" checked={form.condicoesDentariasPre} onChange={(e) => updateForm("condicoesDentariasPre", e.target.checked)} />
+              <InputField label="Se Tem, escreva abaixo:" value={form.detalhesPreExistentes} onChange={(e) => updateForm("detalhesPreExistentes", e.target.value)} />
+              <InputField label="Habitos de Higiene Oral:" value={form.habitosHigieneOral} onChange={(e) => updateForm("habitosHigieneOral", e.target.value)} />
+              <ToggleField label="Consumo de substâncias" checked={form.consumoSubstancias} onChange={(e) => updateForm("consumoSubstancias", e.target.checked)} />
+              <InputField label="Se usa, escreva abaixo:" value={form.detalhesSubstancias} onChange={(e) => updateForm("detalhesSubstancias", e.target.value)} />
+            </div>
+            <div>
+              <InputField label="Histórico de tratamentos passados:" value={form.historicoTratamentos} onChange={(e) => updateForm("historicoTratamentos", e.target.value)} />
+              <ToggleField label="Histórico de dor ou sensibilidade" checked={form.dorSensibilidade} onChange={(e) => updateForm("dorSensibilidade", e.target.checked)} />
+              <InputField label="Atividades Desportivas:" value={form.atividadesDesportivas} onChange={(e) => updateForm("atividadesDesportivas", e.target.value)} />
+              <SelectButton
+                label="Bruxismo"
+                options={["Não tem", "Tem"]}
+                value={form.tipoBruxismo}
+                onChange={(val) => updateForm("tipoBruxismo", val)}
+              />
+            </div>
           </div>
-          <div className="col-md-5">
-            <InputField label="Resultados de tratamentos anteriores:" value={form.resultadosAnteriores} onChange={(e) => updateForm("resultadosAnteriores", e.target.value)} />
-            <div className="mt-2 text-center">
-              <a
-                href="#"
-                onClick={(e) => { e.preventDefault(); alert("Seletor de ficheiros"); }}
-                style={{ color: "#0d6efd", textDecoration: "underline", fontWeight: 600, cursor: "pointer", fontSize: "15px" }}
-              >
-                Anexar exames clínicos
-              </a>
+        </div>
+
+        <div className="secao-perfil">
+          <SectionTitle step={4} title="Tratamentos anteriores e resultados" />
+          <div className="grid-campos">
+            <div>
+              <InputField label="Histórico de tratamentos realizados:" value={form.historicoClinica} onChange={(e) => updateForm("historicoClinica", e.target.value)} />
+              <InputField label="Informação adicional relevante:" value={form.infoAdicional} onChange={(e) => updateForm("infoAdicional", e.target.value)} />
+            </div>
+            <div>
+              <InputField label="Resultados de tratamentos anteriores:" value={form.resultadosAnteriores} onChange={(e) => updateForm("resultadosAnteriores", e.target.value)} />
+
+              <div className="mt-2 text-center">
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  multiple
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  style={{ display: "none" }}
+                  onChange={handleFileChange}
+                />
+
+                <a
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); fileInputRef.current.click(); }}
+                  style={{ color: "#0d6efd", textDecoration: "underline", fontWeight: 600, cursor: "pointer", fontSize: "15px" }}
+                >
+                  Anexar exames clínicos
+                </a>
+
+                {ficheiros.length > 0 && (
+                  <ul className="list-unstyled mt-2 mb-0" style={{ fontSize: "13px", color: "#6b6248" }}>
+                    {ficheiros.map((f, i) => (
+                      <li key={i} className="d-flex justify-content-between align-items-center">
+                        {f.name}
+                        <button
+                          type="button"
+                          onClick={() => removerFicheiro(i)}
+                          className="btn btn-sm p-0 ms-2"
+                          style={{ color: "#D85A30", background: "none", border: "none" }}
+                        >
+                          ✕
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -281,4 +350,4 @@ function Criarperfil() {
   );
 }
 
-export default Criarperfil;
+export default Criarperfil; 
