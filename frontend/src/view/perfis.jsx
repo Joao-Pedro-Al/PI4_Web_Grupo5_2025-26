@@ -15,7 +15,7 @@ import CartaoPerfil from "./Cartao_Perfil";
 
 const Perfis = () => {
     const [dataPerfis, setdataPerfis] = useState([]);
-    
+
     const iniciado = useRef(0);
 
     // Carregar Perfis
@@ -24,287 +24,248 @@ const Perfis = () => {
     }, [])
 
     useEffect(() => {
-        if (dataPerfis.length > 0){
+        if (dataPerfis.length > 0) {
             setTimeout(() => {
 
-            const dropdownItems = document.querySelectorAll('.dropdown-item');
-            const dropdownButton = document.getElementById('dropdownButton');
+                const dropdownItems = document.querySelectorAll('.dropdown-item');
+                const dropdownButton = document.getElementById('dropdownButton');
 
-            const telInput = document.getElementById('telefone');
+                const telInput = document.getElementById('telefone');
 
-            const perfisItems = document.querySelectorAll('.div--cartao--perfil');
+                const perfisItems = document.querySelectorAll('.div--cartao--perfil');
 
-            var Aberto = 0;
-            var TipoSelect = "Todos";
+                var Aberto = 0;
+                var TipoSelect = "Todos";
 
-            if(iniciado.current == 0){Start(); iniciado.current = 1;}
+                if (iniciado.current == 0) { Start(); iniciado.current = 1; }
 
-            function Start()
-            {
-                MostrarTodos();
-            }
+                function Start() {
+                    MostrarTodos();
+                }
 
-            //Selecionar a opção clicada
-            dropdownItems.forEach(item => {
-                item.addEventListener('click', function () {
-                    //Por texto correspondente no Botão
-                    TipoSelect = this.textContent;
-                    dropdownButton.textContent = TipoSelect;
-                    //Desativar o último ativo
-                    dropdownItems.forEach(item => {
-                        if (item.classList.contains("active")) {
-                            item.classList.toggle("active");
-                        }
+                //Selecionar a opção clicada
+                dropdownItems.forEach(item => {
+                    item.addEventListener('click', function () {
+                        //Por texto correspondente no Botão
+                        TipoSelect = this.textContent;
+                        dropdownButton.textContent = TipoSelect;
+                        //Desativar o último ativo
+                        dropdownItems.forEach(item => {
+                            if (item.classList.contains("active")) {
+                                item.classList.toggle("active");
+                            }
+                        });
+                        //Ativar o item clicado
+                        item.classList.add("active");
+                        // Listar os Selecionados
+                        ListarSelecionado(TipoSelect);
+                        //Fechar Dropdown (expecificamente, adicionar o border radius no fundo)
+                        // AbrirDropdown();
                     });
-                    //Ativar o item clicado
-                    item.classList.add("active");
-                    // Listar os Selecionados
-                    ListarSelecionado(TipoSelect);
-                    //Fechar Dropdown (expecificamente, adicionar o border radius no fundo)
-                    // AbrirDropdown();
                 });
-            });
 
-            // Garantir que seja só números
-            telInput.addEventListener("keydown", (event) => {
-                const tecla = event.code;
+                // Garantir que seja só números
+                telInput.addEventListener("keydown", (event) => {
+                    const tecla = event.code;
 
-                if(tecla != "Digit1" && tecla != "Digit2" && tecla != "Digit3" && tecla != "Digit4" && tecla != "Digit5" && tecla != "Digit6" && tecla != "Digit7" && tecla != "Digit8" && tecla != "Digit9" && tecla != "Digit0" && tecla != "Backspace" && tecla != "Enter")
-                {
-                    console.log("A tecla " + tecla + " é inválida!");
-                    event.preventDefault();
-                }
-                else if(telInput.value.length > 8 && tecla != "Backspace" && tecla != "Enter")
-                {
-                    console.log("Número Máximo Atingido");
-                    event.preventDefault();
-                }
-            });
+                    if (tecla != "Digit1" && tecla != "Digit2" && tecla != "Digit3" && tecla != "Digit4" && tecla != "Digit5" && tecla != "Digit6" && tecla != "Digit7" && tecla != "Digit8" && tecla != "Digit9" && tecla != "Digit0" && tecla != "Backspace" && tecla != "Enter") {
+                        console.log("A tecla " + tecla + " é inválida!");
+                        event.preventDefault();
+                    }
+                    else if (telInput.value.length > 8 && tecla != "Backspace" && tecla != "Enter") {
+                        console.log("Número Máximo Atingido");
+                        event.preventDefault();
+                    }
+                });
 
-            // Filtrar Número
-            telInput.addEventListener("input", (event) => {
-                var segundo = 0;
-                const Tipo = TipoSelect.toLowerCase();
-                const Num = telInput.value;
+                // Filtrar Número
+                telInput.addEventListener("input", (event) => {
+                    var segundo = 0;
+                    const Tipo = TipoSelect.toLowerCase();
+                    const Num = telInput.value;
 
-                console.log(Num);
-                if(Num != "")
-                {
-                    perfisItems.forEach(item => {
-                        if (Tipo != "todos")
-                        {
-                            if (item.classList.contains(Tipo)) {
+                    console.log(Num);
+                    if (Num != "") {
+                        perfisItems.forEach(item => {
+                            if (Tipo != "todos") {
+                                if (item.classList.contains(Tipo)) {
+                                    const text_tel = item.querySelector("p.card-text").textContent.trim();
+                                    // Esconder todos que não tenham
+                                    if (text_tel.includes("Telefone: " + Num)) {
+                                        if (item.classList.contains("d-none")) { item.classList.toggle("d-none"); }
+                                        if (segundo == 0) {
+                                            if (item.classList.contains("offset-xl-3") && item.classList.contains("offset-lg-1")) { item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1"); }
+                                            segundo = 1;
+                                        }
+                                        else if (segundo == 1) {
+                                            if (item.classList.contains("offset-xl-3") == false && item.classList.contains("offset-lg-1") == false) { item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1"); }
+                                            segundo = 0;
+                                        }
+                                    }
+                                    else {
+                                        if (item.classList.contains("d-none") == false) { item.classList.toggle("d-none"); }
+                                    }
+                                }
+                            }
+                            else {
                                 const text_tel = item.querySelector("p.card-text").textContent.trim();
                                 // Esconder todos que não tenham
-                                if (text_tel.includes("Telefone: " + Num))
-                                {
-                                    if(item.classList.contains("d-none"))
-                                    {item.classList.toggle("d-none");}
-                                    if(segundo == 0)
-                                    {
-                                        if(item.classList.contains("offset-xl-3") && item.classList.contains("offset-lg-1")){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
+                                if (text_tel.includes("Telefone: " + Num)) {
+                                    if (item.classList.contains("d-none")) { item.classList.toggle("d-none"); }
+                                    if (segundo == 0) {
+                                        if (item.classList.contains("offset-xl-3") && item.classList.contains("offset-lg-1")) { item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1"); }
                                         segundo = 1;
                                     }
-                                    else if(segundo == 1)
-                                    {
-                                        if(item.classList.contains("offset-xl-3") == false && item.classList.contains("offset-lg-1") == false){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
+                                    else if (segundo == 1) {
+                                        if (item.classList.contains("offset-xl-3") == false && item.classList.contains("offset-lg-1") == false) { item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1"); }
                                         segundo = 0;
                                     }
                                 }
-                                else
-                                {
-                                    if(item.classList.contains("d-none") == false)
-                                    {item.classList.toggle("d-none");}
+                                else {
+                                    if (item.classList.contains("d-none") == false) { item.classList.add("d-none"); }
                                 }
+                            }
+                        });
+                    }
+                    else {
+                        MostrarTodos();
+                        //Garantir que segue os filtros
+                        ListarSelecionado(dropdownButton.textContent);
+                    }
+                });
+
+
+
+                function ListarSelecionado(tipo) {
+                    if (tipo == "Paciente") {
+                        Mostrar1Tipo("paciente");
+                    }
+                    else if (tipo == "Doutor") {
+                        Mostrar1Tipo("doutor");
+                    }
+                    else {
+                        MostrarTodos();
+                    }
+                }
+
+                // ------------Mostrar e/ou Esconder-----------
+
+                function Mostrar1(Item_Sel) {
+                    perfisItems.forEach(item => {
+                        if (Item == Item_Sel) {
+                            if (item.classList.contains("d-none")) { item.classList.toggle("d-none"); }
+                            if (item.classList.contains("offset-xl-3") && item.classList.contains("offset-lg-1")) { item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1"); }
+                        }
+                        else {
+                            if (item.classList.contains("d-none") == false) { item.classList.add("d-none"); }
+                        }
+                    });
+                }
+
+                function Mostrar1Tipo(Tipo) {
+                    var segundo = 0;
+                    const Num = telInput.value;
+
+                    perfisItems.forEach(item => {
+                        const text_tel = item.querySelector("p.card-text").textContent.trim();
+                        if (item.classList.contains(Tipo) && text_tel.includes("Telefone: " + Num)) {
+                            if (item.classList.contains("d-none")) {
+                                item.classList.toggle("d-none");
+                            }
+                            if (segundo == 0) {
+                                if (item.classList.contains("offset-xl-3") && item.classList.contains("offset-lg-1")) { item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1"); }
+                                segundo = 1;
+                            }
+                            else if (segundo == 1) {
+                                if (item.classList.contains("offset-xl-3") == false && item.classList.contains("offset-lg-1") == false) { item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1"); }
+                                segundo = 0;
                             }
                         }
-                        else
-                        {
-                            const text_tel = item.querySelector("p.card-text").textContent.trim();
-                            // Esconder todos que não tenham
-                            if (text_tel.includes("Telefone: " + Num))
-                            {
-                                if(item.classList.contains("d-none"))
-                                {item.classList.toggle("d-none");}
-                                if(segundo == 0)
-                                {
-                                    if(item.classList.contains("offset-xl-3") && item.classList.contains("offset-lg-1")){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
-                                    segundo = 1;
-                                }
-                                else if(segundo == 1)
-                                {
-                                    if(item.classList.contains("offset-xl-3") == false && item.classList.contains("offset-lg-1") == false){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
-                                    segundo = 0;
-                                }
+                        else {
+                            if (item.classList.contains("d-none") == false) { item.classList.add("d-none"); }
+                        }
+                    });
+                }
+
+                function MostrarTodos() {
+                    var segundo = 0;
+                    const Num = telInput.value;
+
+                    perfisItems.forEach(item => {
+                        const text_tel = item.querySelector("p.card-text").textContent.trim();
+                        if (text_tel.includes("Telefone: " + Num)) {
+                            if (item.classList.contains("d-none")) {
+                                item.classList.toggle("d-none");
                             }
-                            else
-                            {
-                                if(item.classList.contains("d-none") == false)
-                                {item.classList.add("d-none");}
+                            if (segundo == 0) {
+                                if (item.classList.contains("offset-xl-3") && item.classList.contains("offset-lg-1")) { item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1"); }
+                                segundo = 1;
+                            }
+                            else if (segundo == 1) {
+                                if (item.classList.contains("offset-xl-3") == false && item.classList.contains("offset-lg-1") == false) { item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1"); }
+                                segundo = 0;
                             }
                         }
                     });
                 }
-                else
-                {
-                    MostrarTodos();
-                    //Garantir que segue os filtros
-                    ListarSelecionado(dropdownButton.textContent);
-                }
-            });
-
-
-
-            function ListarSelecionado(tipo)
-            {
-                if(tipo == "Paciente")
-                {
-                    Mostrar1Tipo("paciente");
-                }
-                else if(tipo == "Doutor")
-                {
-                    Mostrar1Tipo("doutor");
-                }
-                else
-                {
-                    MostrarTodos();
-                }
-            }
-
-            // ------------Mostrar e/ou Esconder-----------
-
-            function Mostrar1(Item_Sel)
-            {
-                perfisItems.forEach(item => {
-                    if(Item == Item_Sel)
-                    {
-                        if(item.classList.contains("d-none")){item.classList.toggle("d-none");}
-                        if(item.classList.contains("offset-xl-3") && item.classList.contains("offset-lg-1")){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
-                    }
-                    else
-                    {
-                        if(item.classList.contains("d-none") == false)
-                        {item.classList.add("d-none");}
-                    }
-                });
-            }
-
-            function Mostrar1Tipo(Tipo)
-            {
-                var segundo = 0;
-                const Num = telInput.value;
-
-                perfisItems.forEach(item => {
-                    const text_tel = item.querySelector("p.card-text").textContent.trim();
-                    if (item.classList.contains(Tipo) && text_tel.includes("Telefone: " + Num)) {
-                        if(item.classList.contains("d-none"))
-                        {
-                            item.classList.toggle("d-none");
-                        }
-                        if(segundo == 0)
-                        {
-                            if(item.classList.contains("offset-xl-3") && item.classList.contains("offset-lg-1")){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
-                            segundo = 1;
-                        }
-                        else if(segundo == 1)
-                        {
-                            if(item.classList.contains("offset-xl-3") == false && item.classList.contains("offset-lg-1") == false){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
-                            segundo = 0;
-                        }
-                    }
-                    else
-                    {
-                        if(item.classList.contains("d-none") == false)
-                        {item.classList.add("d-none");}
-                    }
-                });
-            }
-
-            function MostrarTodos()
-            {
-                var segundo = 0;
-                const Num = telInput.value;
-
-                perfisItems.forEach(item => {
-                    const text_tel = item.querySelector("p.card-text").textContent.trim();
-                    if (text_tel.includes("Telefone: " + Num))
-                    {
-                        if(item.classList.contains("d-none"))
-                        {
-                            item.classList.toggle("d-none");
-                        }
-                        if(segundo == 0)
-                        {
-                            if(item.classList.contains("offset-xl-3") && item.classList.contains("offset-lg-1")){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
-                            segundo = 1;
-                        }
-                        else if(segundo == 1)
-                        {
-                            if(item.classList.contains("offset-xl-3") == false && item.classList.contains("offset-lg-1") == false){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
-                            segundo = 0;
-                        }
-                    }
-                });
-            }
-        }, 100);
+            }, 100);
 
         }
     }, [dataPerfis])
 
     function CarregarPerfis() {
         axios.get(urlAPI)
-        .then(res => {
-        if(res.data.success){
-        const data = res.data.data;
-        setdataPerfis(data);
-        }else{
-        alert("Error Web Service!");
-        }
-        })
-        .catch(error => {
-        alert(error)
-        });
+            .then(res => {
+                if (res.data.success) {
+                    const data = res.data.data;
+                    setdataPerfis(data);
+                } else {
+                    alert("Error Web Service!");
+                }
+            })
+            .catch(error => {
+                alert(error)
+            });
     }
-    
+
     return (
         <div className="container-fluid">
 
             {/* <!-- //// Filtros //// --> */}
-            <div className="row align-items-start mb-5">
-            
-            {/* <!-- Tipo de Conta --> */}
-            <div className="dropdown div--dropdown px-0 col-sm-5 col-xl-4 mt-auto">
-                <button id="dropdownButton" className="btn dropdown-toggle div__button--dropdown text-start text-white shadow-none opacity-100 col-12" type="button" data-bs-toggle="dropdown" data-bs-auto-close="inside">
-                Todos{/* <!-- <span className="material-symbols-outlined ms-auto">keyboard_arrow_down</span> --> */}
-                </button>
-                <ul className="dropdown-menu shadow py-0 col-12">
-                <li><p className="dropdown-item ul__li--dropdown">Paciente</p></li>
-                <li><p className="dropdown-item ul__li--dropdown">Doutor</p></li>
-                <li><p className="dropdown-item ul__li--dropdown active">Todos</p></li>
-                </ul>
-            </div>
+            <div className="row align-items-end mb-5 gy-3">
+                {/* <!-- Tipo de Conta --> */}
+                <div className="dropdown div--dropdown px-0 col-md-4 col-lg-3 mt-auto">
+                    <button id="dropdownButton" className="btn dropdown-toggle div__button--dropdown text-start text-white shadow-none opacity-100 col-12" type="button" data-bs-toggle="dropdown" data-bs-auto-close="inside">
+                        Todos{/* <!-- <span className="material-symbols-outlined ms-auto">keyboard_arrow_down</span> --> */}
+                    </button>
+                    <ul className="dropdown-menu shadow py-0 col-12">
+                        <li><p className="dropdown-item ul__li--dropdown">Paciente</p></li>
+                        <li><p className="dropdown-item ul__li--dropdown">Doutor</p></li>
+                        <li><p className="dropdown-item ul__li--dropdown active">Todos</p></li>
+                    </ul>
+                </div>
 
-            {/* <!-- Telemovel --> */}
-            <div className="px-0 col-sm-5 offset-sm-1 col-xl-4 offset-xl-3">
-                <label htmlFor="telefone" className="form-label div__input--label">Telefone</label>
-                <input type="tel" placeholder="987123654" className="form-control div__input--textbox shadow-none" id="telefone" pattern="[0-9]{3}[0-9]{3}[0-9]{3}" />
-            </div>
+                {/* <!-- Telemovel --> */}
+                <div className="col-md-8 col-lg-5 ms-auto">
+                    <label htmlFor="telefone" className="form-label div__input--label">Telefone</label>
+                    <input type="tel" placeholder="Pesquisar por telefone..." className="form-control div__input--textbox shadow-none" id="telefone" pattern="[0-9]{3}[0-9]{3}[0-9]{3}" />
+                </div>
 
             </div>
 
             {/* <!-- //// Perfis //// --> */}
-            <div className="row align-items-start mb-4">
-
+            <div className="perfis-grid mb-4">
                 {/* Listar */}
-                <LoadPerfisData/>
+                <LoadPerfisData />
 
             </div>
 
             {/* <!-- //// Criar Novo Perfil //// --> */}
             <div className="row align-items-start">
                 <Link to="/backoffice/criarperfil" className="text-decoration-none col-sm-5 offset-sm-6 col-lg-2 offset-lg-9">
-                    <button type="button" className="btn text-white w-100" style={{ backgroundColor: '#A99C5E', borderRadius: '10px' }}>
-                        Criar Perfil
+                    <button
+                        type="button"
+                        className="btn btn-criar-perfil w-100">                        Criar Perfil
                     </button>
                 </Link>
             </div>
@@ -315,13 +276,13 @@ const Perfis = () => {
     function LoadPerfisData() {
         return dataPerfis.map((data, index) => {
             return (
-                <CartaoPerfil 
-                    key={index} 
-                    nome={data.nome} 
-                    num={data.contactoprincipal} 
-                    email={data.gmail} 
-                    idclasse={data.classe} 
-                    idperf={data.idutilizadorprefil} 
+                <CartaoPerfil
+                    key={index}
+                    nome={data.nome}
+                    num={data.contactoprincipal}
+                    email={data.gmail}
+                    idclasse={data.classe}
+                    idperf={data.idutilizadorprefil}
                 />
             );
         });

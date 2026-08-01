@@ -72,21 +72,30 @@
 }
 
 .notif-actions {
-    width: 100%;
-    flex-wrap: nowrap;
-    overflow-x: auto;
+      display: flex !important;
+    flex-direction: row !important;
+    gap: 8px !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    width: auto !important;
 }
 
 /* ===== BOTÕES ===== */
 .btn {
-    flex: 0 0 auto;
-    padding: 6px 10px;
+     width: auto !important;
+    flex: 0 0 auto !important;
+    display: inline-flex !important;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 10px;
+    cursor: pointer;
     font-size: 12px;
+    align-items: center;
     gap: 4px;
     white-space: nowrap;
 }
  .btn i {
-        font-size: 14px;
+        font-size: 13px;
     }
 .btn:hover:not(:disabled) {
     filter: brightness(0.92);

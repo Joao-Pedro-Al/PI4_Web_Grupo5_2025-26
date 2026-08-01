@@ -1,21 +1,26 @@
 /* src/view/perfis.css */
-.div--dropdown a:hover{
+.div--dropdown a:hover {
   color: white;
   background-color: #A99C5E;
 }
 
+body {
+  background-color: #F8F8F5;
+}
+
 /* Colocar o .btn depois do nome da classe para fazer override das predefinições do Bootstrap (evita o uso de !important) */
-.div__button--dropdown.btn{
+.div__button--dropdown.btn {
   border-radius: 10px 10px;
   border: none;
   background-color: #A99C5E;
 }
 
-.div__button--dropdown.btn:focus, .div__button--dropdown.btn:active{
+.div__button--dropdown.btn:focus,
+.div__button--dropdown.btn:active {
   outline: none;
 }
 
-.div__button--dropdown::after{
+.div__button--dropdown::after {
   float: right;
   margin: 11px 5px;
 }
@@ -31,51 +36,95 @@
   background-color: #A99C5E !important;
 }
 
-p.active{
+p.active {
   background-color: #A99C5E !important;
 }
 
-.ul__li--dropdown{
-  height: 40px;
+.ul__li--dropdown {
+  height: 140px;
   align-content: center;
   margin: 0px;
 }
 
-.ul__li--dropdown:hover{
+.ul__li--dropdown:hover {
+  background-color: #A99C5E;
+  color: white;
+}
+.email-perfil{
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+}
+.ul__li--dropdown::highlight {
   background-color: #A99C5E;
   color: white;
 }
 
-.ul__li--dropdown::highlight{
-  background-color: #A99C5E;
-  color: white;
-}
-
-.div__input--label{
+.div__input--label {
   color: #A99C5E;
 }
 
-.div__input--textbox{
+.div__input--textbox {
+
   border: 2px solid #A99C5E !important;
-  border-radius: 10px !important;
-  padding: 10px;
-  font-size: 14px;
+
+  border-radius: 12px !important;
+
+  padding: 14px;
+
+  font-size: 16px;
+
+  transition: .3s;
 }
 
-.div--cartao--perfil{
-  border: 2px solid #A99C5E !important;
-  border-radius: 15px !important;
+.div__input--textbox:focus {
+
+  border-color: #8a7542 !important;
+
+  box-shadow: 0 0 0 .25rem rgba(169, 156, 94, .25);
+
+
+}
+
+.nome-perfil {
+
+  font-size: 30px;
+
+  font-weight: 700;
+
+  line-height: 1.1;
+
+  margin-bottom: 25px;
+
+}
+
+.div--cartao--perfil {
+  border: 2px solid #A99C5E;
+  border-radius: 18px;
   color: #A99C5E;
-  margin-bottom: 15px;
-  transition: all 0.3s ease;
+
+  padding: 8px;
+
+  background: white;
+
+  transition: .3s;
 }
 
 .div--cartao--perfil:hover {
-  box-shadow: 0 5px 15px rgba(169, 156, 94, 0.2);
-  transform: translateY(-3px);
+
+  transform: translateY(-8px);
+
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, .08);
+
+  border-color: #BDA85D;
 }
 
-.div__a--link{
+.div__a--link {
   color: #A99C5E;
   text-decoration: none;
 }
@@ -119,4 +168,243 @@ p.active{
   background: linear-gradient(135deg, #8a7542, #6d5e34);
   transform: translateY(-3px);
   box-shadow: 0 6px 15px rgba(138, 117, 66, 0.3);
+}
+
+/* =======================
+   NOVO: Cartões de secção
+======================= */
+.secao-perfil {
+  background: white;
+  border-radius: 16px;
+  padding: 32px 40px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 12px rgba(169, 156, 94, 0.08);
+  border: 1px solid rgba(169, 156, 94, 0.15);
+}
+
+@media (max-width: 576px) {
+  .secao-perfil {
+    padding: 20px;
+  }
+}
+
+/* =======================
+   NOVO: Título de secção com numeração
+======================= */
+.secao-perfil__titulo {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.secao-perfil__numero {
+  color: #A99C5E;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.secao-perfil__nome {
+  color: #3a3428;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.secao-perfil__linha {
+  flex: 1;
+  height: 1px;
+  background-color: rgba(169, 156, 94, 0.25);
+}
+
+/* =======================
+   NOVO: Grid responsivo (substitui columnGap inline)
+======================= */
+.grid-campos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px 64px;
+}
+
+/* =======================
+   NOVO: Labels com mais contraste
+======================= */
+.campo-label {
+  color: #6b6248;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* =======================
+   NOVO: Toggle switch (substitui checkbox nos campos sim/não)
+======================= */
+.toggle-campo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0eee6;
+}
+
+.toggle-campo__label {
+  color: #6b6248;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 22px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-switch__track {
+  position: absolute;
+  inset: 0;
+  background-color: #e2ddc9;
+  border-radius: 11px;
+  transition: .2s;
+  cursor: pointer;
+}
+
+.toggle-switch__track::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 2px;
+  top: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: .2s;
+}
+
+.toggle-switch input:checked + .toggle-switch__track {
+  background-color: #A99C5E;
+}
+
+.toggle-switch input:checked + .toggle-switch__track::before {
+  transform: translateX(16px);
+}
+
+.toggle-switch input:focus-visible + .toggle-switch__track {
+  box-shadow: 0 0 0 .2rem rgba(169, 156, 94, .35);
+}
+
+/* =======================
+   NOVO: Estado de erro em inputs
+======================= */
+.div__input--textbox.erro,
+.form-control.erro {
+  border-color: #D85A30 !important;
+}
+
+.campo-erro-texto {
+  color: #D85A30;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* =======================
+   NOVO: Cartão de perfil (Cartao_Perfil.jsx)
+======================= */
+
+/* Força o corpo do cartão a ser sempre uma coluna vertical, independente
+   de qualquer display:flex herdado do Bootstrap .card — resolve o bug em
+   que badge/nome/telefone/email apareciam todos numa única linha e o
+   texto quebrava letra a letra por falta de espaço. */
+.div--cartao--perfil .card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Nome do perfil dentro do cartão da lista — altura fixa para alinhar
+   telefone/email entre cartões com nomes de 1 ou 2 linhas */
+.cartao-perfil__nome {
+  min-height: 54px;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  color: #8a7542;
+}
+
+/* Cada linha (telefone / email): ícone com largura fixa + texto que
+   ocupa o resto da largura disponível, sempre dentro do cartão */
+.info-contacto {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  margin-bottom: 2px;
+}
+
+.info-contacto__icon {
+  flex: 0 0 16px;
+  width: 16px;
+  text-align: center;
+}
+
+.info-contacto__texto {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Placeholder para contactos em falta — substitui o "N/A" cru */
+.sem-contacto {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: #c9c2a8;
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Badge de classe (Paciente / Doutor) no canto do cartão */
+.badge-classe {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 4px;
+}
+
+.badge-classe--paciente {
+  background-color: rgba(169, 156, 94, 0.15);
+  color: #8a7542;
+}
+
+.badge-classe--doutor {
+  background-color: rgba(133, 79, 11, 0.12);
+  color: #854f0b;
+}
+.perfis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px 64px;
 }
