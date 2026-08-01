@@ -19,8 +19,8 @@ const Utilizadorperfil = sequelize.define(
       type: Sequelize.INTEGER,
       allowNull: true,
       references: {
-        model: "utilizadorperfil",      // <- usa o nome da tabela/modelo (string)
-        key: "idutilizadorperfil",      // <- aponta ao PK
+        model: "utilizadorprefil",      // <- aponta para a tabela utilizadorprefil
+        key: "idutilizadorprefil",      // <- aponta ao PK
       },
     },
 

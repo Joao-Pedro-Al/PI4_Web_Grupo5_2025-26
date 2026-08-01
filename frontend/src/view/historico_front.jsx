@@ -1,13 +1,13 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import url from "./url_global";
 import id_Perfil from "./id_global";
+import { AuthContext } from "../App.jsx";
 
 import axios from "axios";
-const urlAPI = url + "consultas/list/" + id_Perfil;
 const urlAPI_Tipo = url + "consultas/tipomarcacao/list";
 
 import '../historico_pac.css';
@@ -15,6 +15,10 @@ import '../historico_pac.css';
 import ConsultaHistorico from "./Consulta_Historico";
 
 const Historico_Front = () => {
+  const { user } = useContext(AuthContext);
+  const perfilId = user?.idprefil || id_Perfil;
+  const urlAPI = url + "consultas/list/" + perfilId;
+
   const [dataConsul, setdataConsul] = useState([]);
   const [dataConsulMes, setdataConsulMes] = useState([]);
   

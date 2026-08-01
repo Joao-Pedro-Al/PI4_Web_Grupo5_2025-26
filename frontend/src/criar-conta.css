@@ -199,11 +199,18 @@ input::placeholder {
 }
 
 /* ===== Botão ===== */
-.btn {
+.btn-container {
   grid-column: 1 / -1;
-  width: 100%;
+  display: flex;
+  justify-content: center;
   margin-top: 26px;
-  padding: 14px;
+}
+
+.btn {
+  width: auto;
+  min-width: 260px;
+  max-width: 340px;
+  padding: 14px 32px;
   border: none;
   border-radius: 30px;
   background: linear-gradient(135deg, var(--gold-700), var(--gold-600));
