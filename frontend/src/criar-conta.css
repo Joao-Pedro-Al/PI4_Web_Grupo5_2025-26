@@ -199,10 +199,7 @@ input::placeholder {
 }
 
 /* ===== Botão ===== */
-.btn {
-  width: auto;
-  margin-top: 26px;
-  padding: 12px 28px;
+
   border: none;
   border-radius: 20px;
   background: linear-gradient(135deg, var(--gold-700), var(--gold-600));

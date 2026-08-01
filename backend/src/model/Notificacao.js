@@ -26,11 +26,10 @@ const Notificacao = sequelize.define(
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     },
-    // REMOVA ou COMENTE esta linha se a coluna não existe:
-    // data_criacao: {
-    //   type: Sequelize.DATE,
-    //   defaultValue: Sequelize.NOW,
-    // },
+    data_criacao: {
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW,
+    },
   },
   {
     timestamps: false,
@@ -38,5 +37,11 @@ const Notificacao = sequelize.define(
     tableName: "notificacao"
   }
 );
+
+const Utilizadorperfil = require("./Utilizadorperfil");
+Notificacao.belongsTo(Utilizadorperfil, {
+  as: "PerfilData",
+  foreignKey: "prefil",
+});
 
 module.exports = Notificacao;
