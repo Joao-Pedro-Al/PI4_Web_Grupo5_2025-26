@@ -69,6 +69,9 @@ const Utilizadorperfil = sequelize.define(
     gravida: Sequelize.BOOLEAN,
     infoadicional: Sequelize.TEXT,
     resultadosanteriores: Sequelize.TEXT,
+
+    // Guarda um array JSON com os nomes dos ficheiros anexados (exames, raios-x, etc.)
+    ficheirosanexos: Sequelize.TEXT,
   },
   {
     timestamps: false,

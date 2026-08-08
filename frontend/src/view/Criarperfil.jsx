@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../perfis.css";
 import axios from "axios";
+import url from "./url_global";
 
 
 /* =======================
@@ -72,47 +73,25 @@ const CheckboxField = ({ label, checked, onChange }) => (
   </div>
 );
 
+const ToggleField = ({ label, checked, onChange }) => (
+  <div className="toggle-campo">
+    <p className="toggle-campo__label">{label}</p>
+    <label className="toggle-switch">
+      <input type="checkbox" checked={checked} onChange={onChange} />
+      <span className="toggle-switch__track"></span>
+    </label>
+  </div>
+);
 
 const SectionTitle = ({ step, title }) => (
-  <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px" }}>
-    <div style={{
-      backgroundColor: "#A99C5E",
-      color: "white",
-      borderRadius: "50%",
-      width: "32px",
-      height: "32px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      fontWeight: "bold",
-      fontSize: "14px",
-      flexShrink: 0
-    }}>{step}</div>
-    <h5 style={{ color: "#A99C5E", margin: 0, fontFamily: "Poppins", fontWeight: 600 }}>{title}</h5>
+  <div className="secao-perfil__titulo">
+    <span className="secao-perfil__numero">{`0${step}`}</span>
+    <h4 className="secao-perfil__nome">{title}</h4>
+    <div className="secao-perfil__linha"></div>
   </div>
 );
 
-const ToggleField = ({ label, checked, onChange }) => (
-  <div className="d-flex align-items-center mb-4" style={{ gap: "8px" }}>
-    <label style={{ color: "#A99C5E", fontSize: "14px", cursor: "pointer", margin: 0 }}>
-      {label}
-    </label>
-    <input
-      type="checkbox"
-      checked={checked}
-      onChange={onChange}
-      style={{
-        width: "20px",
-        height: "20px",
-        accentColor: "#A99C5E",
-        cursor: "pointer",
-        marginLeft: "4px"
-      }}
-    />
-  </div>
-);
-
-const GoldenButton = ({ label, onClick, disabled = false, className = "", styleOverride = {} }) => {
+const GoldenButton = ({ label, onClick, disabled = false, type = "button", className = "", style: styleOverride = {} }) => {
   const baseStyle = {
     backgroundColor: "#A99C5E",
     borderRadius: "10px",
@@ -126,19 +105,18 @@ const GoldenButton = ({ label, onClick, disabled = false, className = "", styleO
   };
   return (
     <button
-      type="button"
+      type={type}
       onClick={onClick}
       disabled={disabled}
       className={`btn shadow-none text-white ${className}`}
       style={{ ...baseStyle, ...styleOverride, opacity: disabled ? 0.6 : 1 }}
-      onMouseOver={(e) => { if (!disabled) e.currentTarget.style.opacity = "0.8"; }}
-      onMouseOut={(e) => { if (!disabled) e.currentTarget.style.opacity = "1"; }}
+      onMouseOver={(e) => { if (!disabled) e.target.style.opacity = "0.8"; }}
+      onMouseOut={(e) => { if (!disabled) e.target.style.opacity = "1"; }}
     >
       {label}
     </button>
   );
 };
-
 
 /* =======================
    COMPONENTE PRINCIPAL
@@ -204,6 +182,20 @@ function Criarperfil() {
 
     setIsSaving(true);
     try {
+      // Usamos FormData (em vez de JSON) porque também vamos enviar ficheiros
+      const formData = new FormData();
+      Object.entries(form).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+          formData.append(key, value);
+        }
+      });
+      ficheiros.forEach((ficheiro) => {
+        formData.append("ficheiros", ficheiro);
+      });
+
+      const response = await axios.post(url + "utilizadorperfil/create", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
 
       if (response.data.success) {
         alert("Perfil criado com sucesso!");
@@ -372,4 +364,4 @@ function Criarperfil() {
   );
 }
 
-export default Criarperfil; 
+export default Criarperfil;

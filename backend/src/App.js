@@ -1,6 +1,16 @@
 const express = require("express");
 var cors = require('cors');
 const app = express();
+const path = require("path");
+
+// Serve os ficheiros anexados (exames, raios-x, etc.) e força o download
+// no browser em vez de os abrir. A pasta 'uploads' está em backend/uploads,
+// um nível acima deste ficheiro (backend/src/App.js) — por isso '../uploads'.
+app.use('/uploads', express.static(path.join(__dirname, '../uploads'), {
+  setHeaders: (res, filePath) => {
+    res.setHeader('Content-Disposition', 'attachment; filename="' + path.basename(filePath) + '"');
+  }
+}));
 app.use(cors());
 
 // Configurações
@@ -26,9 +36,7 @@ const contaRouters = require("./routes/contaRoute.js");
 // Usar as rotas
 app.use("/utilizadorperfil", utilizadorperfilRouters);
 app.use("/consultas", consultasRouters);
-app.use("/api/consultas", consultasRouters);
 app.use("/notificacao", notificacaoRouters);
-app.use("/api/notificacoes", notificacaoRouters);
 app.use("/comprovativo", comprovativoRouters);
 app.use("/conta", contaRouters);
 app.use("/api/conta", contaRouters);

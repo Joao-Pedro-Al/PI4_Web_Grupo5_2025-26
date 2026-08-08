@@ -31,6 +31,12 @@ controllers.create = async (req, res) => {
       resultadosAnteriores, resultadosanteriores
     } = req.body;
 
+    // req.files vem do multer (upload.array('ficheiros', 10) na rota).
+    // Guardamos só os nomes gerados no disco, como array JSON em texto.
+    const ficheirosanexos = (req.files && req.files.length > 0)
+      ? JSON.stringify(req.files.map(f => f.filename))
+      : null;
+
     const data = await Utilizadorperfil.create({
       nome: nome,
       gmail: gmail || email,
@@ -59,7 +65,8 @@ controllers.create = async (req, res) => {
       bruxismo: tipoBruxismo || bruxismo || null,
       gravida: Boolean(gravidez ?? gravida),
       infoadicional: infoAdicional || infoadicional || null,
-      resultadosanteriores: resultadosAnteriores || resultadosanteriores || null
+      resultadosanteriores: resultadosAnteriores || resultadosanteriores || null,
+      ficheirosanexos: ficheirosanexos
     });
 
     res.json({ 
@@ -135,8 +142,13 @@ controllers.list = async (req, res) => {
 controllers.listPerfilInteiro = async (req, res) => {
   try {
     const {id} = req.params;
-    const data = await ViewPerfilCompleto.findAll({
-      where: {idperfil: id}
+    const data = await Utilizadorperfil.findAll({
+      include: [
+        { model: Generos, as: 'generoData' },
+        { model: Classe, as: 'classeData' },
+        { model: Estadocivil, as: 'estadocivilData' }
+      ],
+      where: {idutilizadorprefil: id}
     });
     res.json({success: true, data: data});
   } catch (error) {
