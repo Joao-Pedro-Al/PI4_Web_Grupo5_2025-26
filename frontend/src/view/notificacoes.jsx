@@ -2,30 +2,39 @@ import { useState, useEffect, useCallback, useContext } from 'react';
 import { AuthContext } from '../App.jsx';
 import './Pag_Not.css';
 
+const BASE_URL = 'http://localhost:3000';
+
 const Notificacoes = () => {
   const { user } = useContext(AuthContext);
 
   const [notificacoes, setNotificacoes] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
-  const [usandoDadosMock, setUsandoDadosMock] = useState(false);
+  const [criando, setCriando] = useState(false);
   const [toasts, setToasts] = useState([]);
+  const [perfis, setPerfis] = useState([]); // lista de perfis para o médico selecionar
+  const [carregandoPerfis, setCarregandoPerfis] = useState(false);
+
   const [novaNotificacao, setNovaNotificacao] = useState({
-    titulo: "Consulta Marcada",
-    data: "",
-    hora: ""
+    titulo: 'Consulta Marcada',
+    descricao: '',
+    prefil: '' // id do perfil destinatário ("" = Geral / Todos)
   });
 
   const tiposNotificacao = [
-    "Consulta Marcada",
-    "Consulta Remarcada",
-    "Consulta Cancelada",
-    "Consulta Confirmada",
-    "Lembrete de Consulta",
-    "Resultados Disponíveis"
+    'Consulta Marcada',
+    'Consulta Remarcada',
+    'Consulta Cancelada',
+    'Consulta Confirmada',
+    'Lembrete de Consulta',
+    'Resultados Disponíveis',
+    'Mensagem do Médico',
+    'Informação Geral'
   ];
 
-  // 🍞 SISTEMA DE TOASTS (substitui alert())
+  const isMedico = user?.idtipoconta === 2 || user?.idtipoconta === 1;
+
+  // 🍞 SISTEMA DE TOASTS
   const mostrarToast = useCallback((mensagem, tipo = 'success') => {
     const id = Date.now();
     setToasts(prev => [...prev, { id, mensagem, tipo }]);
@@ -35,227 +44,229 @@ const Notificacoes = () => {
   }, []);
 
   // 📅 FORMATAR DATA
-  const formatarData = (data) => {
+  const formatarData = (dataBackend) => {
+    if (!dataBackend) return '—';
+    const data = new Date(dataBackend);
+    if (isNaN(data)) return '—';
     const dia = String(data.getDate()).padStart(2, '0');
     const mes = String(data.getMonth() + 1).padStart(2, '0');
+    const ano = data.getFullYear();
     const hora = String(data.getHours()).padStart(2, '0');
     const minutos = String(data.getMinutes()).padStart(2, '0');
-    return `${dia}/${mes} - ${hora}:${minutos}`;
+    return `${dia}/${mes}/${ano} - ${hora}:${minutos}`;
   };
 
-  const formatarDataBackend = (dataBackend) => {
-    const data = new Date(dataBackend);
-    return formatarData(data);
-  };
-
-  // 📋 FUNÇÃO PARA GERAR NOTIFICAÇÕES MOCKADAS BASEADAS NO TIPO DE USUÁRIO
-  const getMockNotificacoes = useCallback(() => {
-    const hoje = new Date();
-    const amanha = new Date(hoje);
-    amanha.setDate(hoje.getDate() + 1);
-
-    if (user?.tipo === 'medico') {
-      return [
-        {
-          id: 'mock-1',
-          titulo: "Nova Consulta Marcada",
-          data: formatarData(hoje),
-          vista: false,
-          removing: false,
-          detalhes: "Paciente: João Silva às 10:30"
-        },
-        {
-          id: 'mock-2',
-          titulo: "Consulta Remarcada",
-          data: formatarData(hoje),
-          vista: true,
-          removing: false,
-          detalhes: "Maria Santos para amanhã 14:00"
-        },
-        {
-          id: 'mock-3',
-          titulo: "Resultados de Exames Disponíveis",
-          data: formatarData(amanha),
-          vista: false,
-          removing: false,
-          detalhes: "Raio-X do paciente Carlos disponível"
-        },
-        {
-          id: 'mock-4',
-          titulo: "Lembrete de Reunião",
-          data: formatarData(hoje),
-          vista: true,
-          removing: false,
-          detalhes: "Reunião de equipe às 16:00"
+  // 📋 BUSCAR PERFIS (para o médico escolher o destinatário)
+  const buscarPerfis = useCallback(async () => {
+    if (!isMedico) return;
+    setCarregandoPerfis(true);
+    try {
+      const resposta = await fetch(`${BASE_URL}/utilizadorperfil/list`);
+      if (resposta.ok) {
+        const dados = await resposta.json();
+        if (dados.success) {
+          setPerfis(dados.data);
         }
-      ];
-    }
-
-    return [
-      {
-        id: 'mock-1',
-        titulo: "Consulta Confirmada",
-        data: formatarData(hoje),
-        vista: false,
-        removing: false,
-        detalhes: "Consulta com Dr. Carlos amanhã às 10:00"
-      },
-      {
-        id: 'mock-2',
-        titulo: "Lembrete de Consulta",
-        data: formatarData(amanha),
-        vista: true,
-        removing: false,
-        detalhes: "Sua consulta está marcada para amanhã"
-      },
-      {
-        id: 'mock-3',
-        titulo: "Resultados de Exames",
-        data: formatarData(hoje),
-        vista: false,
-        removing: false,
-        detalhes: "Seus resultados de exames estão disponíveis"
-      },
-      {
-        id: 'mock-4',
-        titulo: "Mensagem do Médico",
-        data: formatarData(hoje),
-        vista: true,
-        removing: false,
-        detalhes: "Dr. Carlos enviou uma mensagem sobre seu tratamento"
       }
-    ];
-  }, [user?.tipo]);
-
-  // 🔄 FUNÇÃO PARA BUSCAR NOTIFICAÇÕES DA API
-  const buscarNotificacoes = useCallback(async () => {
-    if (!user?.id) {
-      setNotificacoes(getMockNotificacoes());
-      setUsandoDadosMock(true);
-      setCarregando(false);
-      return;
+    } catch (erro) {
+      console.error('Erro ao buscar perfis:', erro);
+    } finally {
+      setCarregandoPerfis(false);
     }
+  }, [isMedico]);
 
+  // 🔄 BUSCAR NOTIFICAÇÕES DA API
+  const buscarNotificacoes = useCallback(async () => {
     setCarregando(true);
     try {
-      const resposta = await fetch(`http://localhost:3000/api/notificacoes/list/${user.id}`);
-
-      if (!resposta.ok) {
-        throw new Error('API não disponível');
+      // O médico/admin vê TODAS; o paciente vê as suas especificas e gerais
+      let url;
+      if (isMedico) {
+        url = `${BASE_URL}/api/notificacoes/list`;
+      } else if (user?.idprefil) {
+        url = `${BASE_URL}/api/notificacoes/list/${user.idprefil}`;
+      } else {
+        setNotificacoes([]);
+        setCarregando(false);
+        return;
       }
 
+      const resposta = await fetch(url);
+      if (!resposta.ok) throw new Error(`HTTP ${resposta.status}`);
       const dados = await resposta.json();
 
       if (dados.success) {
-        const notificacoesFormatadas = dados.data.map(notif => ({
+        const formatadas = dados.data.map(notif => ({
           id: notif.idnotificacao,
           titulo: notif.titulo,
-          data: formatarDataBackend(notif.data_criacao || new Date()),
+          descricao: notif.descricao || '',
+          data: formatarData(notif.data_criacao),
           vista: notif.visto,
+          perfilNome: notif.PerfilData?.nome || 'Geral (Todos)',
           removing: false
         }));
-
-        setNotificacoes(notificacoesFormatadas);
-        setUsandoDadosMock(false);
+        setNotificacoes(formatadas);
       } else {
-        console.error('Erro ao buscar notificações:', dados.error);
-        setNotificacoes(getMockNotificacoes());
-        setUsandoDadosMock(true);
+        mostrarToast('Erro ao carregar notificações.', 'error');
       }
     } catch (erro) {
-      console.error('Erro de conexão, usando dados mockados:', erro);
-      setNotificacoes(getMockNotificacoes());
-      setUsandoDadosMock(true);
+      console.error('Erro ao buscar notificações:', erro);
+      mostrarToast('Não foi possível carregar notificações. Verifique se o servidor está ativo.', 'error');
     } finally {
       setCarregando(false);
     }
-  }, [user?.id, getMockNotificacoes]);
+  }, [isMedico, user?.idprefil, mostrarToast]);
 
-  // 📥 BUSCAR NOTIFICAÇÕES QUANDO O COMPONENTE CARREGA
+  // Carregar dados ao montar
   useEffect(() => {
     buscarNotificacoes();
-  }, [buscarNotificacoes]);
+    buscarPerfis();
+  }, [buscarNotificacoes, buscarPerfis]);
 
-  // 👁️ MARCAR COMO VISTA
-  const toggleVista = (id) => {
-    setNotificacoes(prev => prev.map(notif =>
-      notif.id === id ? { ...notif, vista: !notif.vista } : notif
-    ));
+  // 👁️ MARCAR COMO VISTA / NÃO VISTA (API)
+  const toggleVista = async (id, vistaAtual) => {
+    try {
+      const novaVisibilidade = !vistaAtual;
+      const resposta = await fetch(`${BASE_URL}/api/notificacoes/vista/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ visto: novaVisibilidade })
+      });
+
+      if (!resposta.ok) throw new Error('Erro ao marcar notificação');
+
+      // Atualizar localmente
+      setNotificacoes(prev => prev.map(notif =>
+        notif.id === id ? { ...notif, vista: novaVisibilidade } : notif
+      ));
+    } catch (erro) {
+      console.error('Erro ao atualizar visibilidade:', erro);
+      mostrarToast('Erro ao marcar notificação.', 'error');
+    }
   };
 
-  // 🗑️ REMOVER NOTIFICAÇÃO
-  const removerNotificacao = (id) => {
+  // 🗑️ REMOVER NOTIFICAÇÃO (API)
+  const removerNotificacao = async (id) => {
     setNotificacoes(prev => prev.map(notif =>
       notif.id === id ? { ...notif, removing: true } : notif
     ));
 
-    setTimeout(() => {
-      setNotificacoes(prev => prev.filter(notif => notif.id !== id));
-    }, 400);
+    try {
+      const resposta = await fetch(`${BASE_URL}/api/notificacoes/delete/${id}`, {
+        method: 'DELETE'
+      });
+      if (!resposta.ok) throw new Error('Erro ao eliminar');
+
+      setTimeout(() => {
+        setNotificacoes(prev => prev.filter(notif => notif.id !== id));
+      }, 400);
+    } catch (erro) {
+      console.error('Erro ao remover notificação:', erro);
+      setNotificacoes(prev => prev.map(notif =>
+        notif.id === id ? { ...notif, removing: false } : notif
+      ));
+      mostrarToast('Erro ao remover notificação.', 'error');
+    }
   };
 
-  // 🗑️ REMOVER TODAS
-  const removerTodas = () => {
+  // 🗑️ REMOVER TODAS (API)
+  const removerTodas = async () => {
     if (notificacoes.length === 0) return;
 
     setNotificacoes(prev => prev.map(notif => ({ ...notif, removing: true })));
 
-    setTimeout(() => {
-      setNotificacoes([]);
-    }, 500);
+    try {
+      if (isMedico) {
+        await Promise.all(
+          notificacoes.map(notif =>
+            fetch(`${BASE_URL}/api/notificacoes/delete/${notif.id}`, { method: 'DELETE' })
+          )
+        );
+      } else if (user?.idprefil) {
+        await fetch(`${BASE_URL}/api/notificacoes/delete-all/${user.idprefil}`, { method: 'DELETE' });
+      }
+
+      setTimeout(() => setNotificacoes([]), 500);
+      mostrarToast('Todas as notificações foram removidas!', 'success');
+    } catch (erro) {
+      console.error('Erro ao remover todas:', erro);
+      setNotificacoes(prev => prev.map(notif => ({ ...notif, removing: false })));
+      mostrarToast('Erro ao remover notificações.', 'error');
+    }
   };
 
-  // 👁️ MARCAR TODAS COMO VISTAS
-  const marcarTodasComoVistas = () => {
-    setNotificacoes(prev => prev.map(notif => ({ ...notif, vista: true })));
+  // 👁️ MARCAR TODAS COMO VISTAS (API)
+  const marcarTodasComoVistas = async () => {
+    try {
+      if (isMedico) {
+        await Promise.all(
+          notificacoes
+            .filter(n => !n.vista)
+            .map(n =>
+              fetch(`${BASE_URL}/api/notificacoes/vista/${n.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ visto: true })
+              })
+            )
+        );
+      } else if (user?.idprefil) {
+        await fetch(`${BASE_URL}/api/notificacoes/vista-todas/${user.idprefil}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+
+      setNotificacoes(prev => prev.map(notif => ({ ...notif, vista: true })));
+      mostrarToast('Todas marcadas como lidas!', 'success');
+    } catch (erro) {
+      console.error('Erro ao marcar todas como vistas:', erro);
+      mostrarToast('Erro ao marcar notificações.', 'error');
+    }
   };
 
-  // ➕ CRIAR NOVA NOTIFICAÇÃO (apenas médicos)
-  const criarNotificacao = () => {
-    if (!novaNotificacao.data || !novaNotificacao.hora) {
-      mostrarToast('Por favor, preencha a data e a hora.', 'error');
+  // ➕ CRIAR NOVA NOTIFICAÇÃO — guarda na base de dados (só médicos / admins)
+  const criarNotificacao = async () => {
+    if (!novaNotificacao.titulo) {
+      mostrarToast('Por favor, selecione um tipo de notificação.', 'error');
       return;
     }
 
-    // novaNotificacao.data vem do <input type="date"> no formato AAAA-MM-DD
-    const [, mes, dia] = novaNotificacao.data.split('-');
-    const dataFormatada = `${dia}/${mes} - ${novaNotificacao.hora}`;
+    setCriando(true);
+    try {
+      const payload = {
+        titulo: novaNotificacao.titulo,
+        descricao: novaNotificacao.descricao || null,
+        prefil: novaNotificacao.prefil ? Number(novaNotificacao.prefil) : null,
+        visto: false
+      };
 
-    const novaNotif = {
-      id: crypto.randomUUID ? crypto.randomUUID() : `local-${Date.now()}`,
-      titulo: novaNotificacao.titulo,
-      data: dataFormatada,
-      vista: false,
-      removing: false,
-      detalhes: `Notificação criada por ${user?.nome}`
-    };
+      console.log('📤 A criar notificação:', payload);
 
-    setNotificacoes(prev => [novaNotif, ...prev]);
-    setNovaNotificacao({
-      titulo: "Consulta Marcada",
-      data: "",
-      hora: ""
-    });
-    setMostrarFormulario(false);
-    mostrarToast('Notificação criada com sucesso!', 'success');
+      const resposta = await fetch(`${BASE_URL}/api/notificacoes/create`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const dados = await resposta.json();
+
+      if (dados.success) {
+        mostrarToast('Notificação criada e guardada com sucesso!', 'success');
+        setNovaNotificacao({ titulo: 'Consulta Marcada', descricao: '', prefil: '' });
+        setMostrarFormulario(false);
+        await buscarNotificacoes();
+      } else {
+        mostrarToast(`Erro: ${dados.error || 'Não foi possível criar a notificação.'}`, 'error');
+      }
+    } catch (erro) {
+      console.error('Erro ao criar notificação:', erro);
+      mostrarToast('Erro de conexão ao servidor.', 'error');
+    } finally {
+      setCriando(false);
+    }
   };
 
-  const preencherAgora = () => {
-    const agora = new Date();
-    const ano = agora.getFullYear();
-    const mes = String(agora.getMonth() + 1).padStart(2, '0');
-    const dia = String(agora.getDate()).padStart(2, '0');
-    const hora = String(agora.getHours()).padStart(2, '0');
-    const minutos = String(agora.getMinutes()).padStart(2, '0');
-
-    setNovaNotificacao(prev => ({
-      ...prev,
-      data: `${ano}-${mes}-${dia}`,
-      hora: `${hora}:${minutos}`
-    }));
-  };
-
-  const userInfo = user ? `${user.nome} - ${user.tipo === 'medico' ? 'Médico' : 'Paciente'}` : 'Não logado';
   const naoLidas = notificacoes.filter(n => !n.vista).length;
 
   return (
@@ -271,61 +282,69 @@ const Notificacoes = () => {
         ))}
       </div>
 
-      {/* INFORMAÇÕES DO USUÁRIO LOGADO */}
-      <div className={`user-info-card ${user?.tipo === 'medico' ? 'medico' : ''}`}>
-        <h4>{user?.tipo === 'medico' ? '🩺' : '👤'} {userInfo}</h4>
+      {/* INFORMAÇÕES DO UTILIZADOR */}
+      <div className={`user-info-card ${isMedico ? 'medico' : ''}`}>
+        <h4><i className={`bi ${isMedico ? 'bi-person-badge' : 'bi-person'} me-2`}></i>{user?.nome || 'Utilizador'} — {isMedico ? 'Médico / Gestor' : 'Paciente'}</h4>
         <p>
-          <strong>Total de notificações:</strong> {notificacoes.length} |{' '}
-          <strong> Não lidas:</strong> {naoLidas}
+          <strong>Total:</strong> {notificacoes.length} notificações &nbsp;|&nbsp;
+          <strong>Não lidas:</strong> {naoLidas}
         </p>
-        {usandoDadosMock && (
-          <div className="mock-data-notice">
-            <i className="bi bi-info-circle"></i>
-            A mostrar dados de exemplo (sem ligação à API)
-          </div>
-        )}
       </div>
 
-      {/* CABEÇALHO COM FILTROS */}
+      {/* CABEÇALHO */}
       <div className="notif-header">
         <h3>
-          {user?.tipo === 'medico' ? '📋 Notificações da Clínica' : '🔔 Minhas Notificações'} ({notificacoes.length})
+          <i className={`bi ${isMedico ? 'bi-clipboard-data' : 'bi-bell'} me-2`}></i>
+          {isMedico ? 'Gestão de Notificações' : 'Minhas Notificações'} ({notificacoes.length})
         </h3>
 
         <div className="notif-actions">
-          {user?.tipo === 'medico' && (
+          {isMedico && (
             <button
+              id="btn-nova-notificacao"
               className="btn btn-primary"
               onClick={() => setMostrarFormulario(!mostrarFormulario)}
             >
-              <i className="bi bi-plus-circle"></i>
-              {mostrarFormulario ? "Cancelar" : "Nova"}
+              <i className={`bi ${mostrarFormulario ? 'bi-x-circle' : 'bi-plus-circle'}`}></i>
+              {mostrarFormulario ? 'Cancelar' : 'Nova'}
             </button>
           )}
           <button
+            id="btn-marcar-todas"
             className="btn btn-primary"
             onClick={marcarTodasComoVistas}
-            disabled={notificacoes.length === 0}
+            disabled={notificacoes.length === 0 || naoLidas === 0}
           >
             <i className="bi bi-eye"></i> Marcar Todas
           </button>
           <button
+            id="btn-remover-todas"
             className="btn btn-danger-outline"
             onClick={removerTodas}
             disabled={notificacoes.length === 0}
           >
             <i className="bi bi-trash"></i> Remover Todas
           </button>
+          <button
+            id="btn-atualizar"
+            className="btn btn-secondary"
+            onClick={buscarNotificacoes}
+            disabled={carregando}
+          >
+            <i className="bi bi-arrow-clockwise"></i>
+          </button>
         </div>
       </div>
 
-      {/* FORMULÁRIO (só para médicos) */}
-      {user?.tipo === 'medico' && mostrarFormulario && (
+      {/* FORMULÁRIO DE CRIAR (só médicos/admins) */}
+      {isMedico && mostrarFormulario && (
         <div className="notif-form">
-          <h5><i className="bi bi-bell-plus"></i> Criar Nova Notificação para Pacientes</h5>
+          <h5><i className="bi bi-bell-plus"></i> Criar Nova Notificação</h5>
+
           <div className="notif-form-fields">
+            {/* Tipo / Título */}
             <div className="notif-form-field">
-              <label htmlFor="tipo-notificacao">Tipo de Notificação</label>
+              <label htmlFor="tipo-notificacao">Tipo de Notificação *</label>
               <select
                 id="tipo-notificacao"
                 value={novaNotificacao.titulo}
@@ -336,38 +355,79 @@ const Notificacoes = () => {
                 ))}
               </select>
             </div>
+
+            {/* Destinatário */}
             <div className="notif-form-field">
-              <label htmlFor="data-notificacao">Data</label>
-              <input
-                id="data-notificacao"
-                type="date"
-                value={novaNotificacao.data}
-                onChange={(e) => setNovaNotificacao({ ...novaNotificacao, data: e.target.value })}
-              />
-            </div>
-            <div className="notif-form-field">
-              <label htmlFor="hora-notificacao">Hora</label>
-              <input
-                id="hora-notificacao"
-                type="time"
-                value={novaNotificacao.hora}
-                onChange={(e) => setNovaNotificacao({ ...novaNotificacao, hora: e.target.value })}
-              />
+              <label htmlFor="destPerfil">Destinatário</label>
+              <select
+                id="destPerfil"
+                value={novaNotificacao.prefil}
+                onChange={(e) => setNovaNotificacao({ ...novaNotificacao, prefil: e.target.value })}
+                disabled={carregandoPerfis}
+              >
+                <option value="">— Geral (Todos os utilizadores) —</option>
+                {perfis.map(p => (
+                  <option key={p.idutilizadorprefil} value={p.idutilizadorprefil}>
+                    {p.nome} {p.profissao ? `(${p.profissao})` : ''}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
+
+          {/* Descrição */}
+          <div className="notif-form-field" style={{ marginBottom: '15px' }}>
+            <label htmlFor="descricao-notificacao">Descrição / Mensagem</label>
+            <textarea
+              id="descricao-notificacao"
+              rows={3}
+              placeholder="Escreva os detalhes da notificação..."
+              value={novaNotificacao.descricao}
+              onChange={(e) => setNovaNotificacao({ ...novaNotificacao, descricao: e.target.value })}
+              style={{
+                width: '100%',
+                padding: '8px 12px',
+                borderRadius: '6px',
+                border: '1px solid var(--cor-primaria)',
+                resize: 'vertical',
+                fontFamily: 'inherit',
+                fontSize: '14px'
+              }}
+            />
+          </div>
+
           <div className="notif-form-buttons">
-            <button className="btn btn-secondary" onClick={preencherAgora}>
-              <i className="bi bi-clock"></i> Preencher Agora
+            <button
+              id="btn-cancelar-form"
+              className="btn btn-secondary"
+              onClick={() => setMostrarFormulario(false)}
+              disabled={criando}
+            >
+              <i className="bi bi-x"></i> Cancelar
             </button>
-            <button className="btn btn-primary" onClick={criarNotificacao}>
-              <i className="bi bi-check-circle"></i> Criar Notificação
+            <button
+              id="btn-guardar-notificacao"
+              className="btn btn-primary"
+              onClick={criarNotificacao}
+              disabled={criando}
+            >
+              {criando
+                ? <><i className="bi bi-hourglass-split"></i> A guardar...</>
+                : <><i className="bi bi-check-circle"></i> Guardar Notificação</>
+              }
             </button>
           </div>
         </div>
       )}
 
       {/* LISTA DE NOTIFICAÇÕES */}
-      {!carregando && notificacoes.length > 0 ? (
+      {carregando ? (
+        <div className="loading-state">
+          <i className="bi bi-arrow-repeat" style={{ fontSize: '32px', animation: 'spin 1s linear infinite', display: 'block', marginBottom: '10px' }}></i>
+          <p>A carregar notificações...</p>
+          <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+        </div>
+      ) : notificacoes.length > 0 ? (
         <div className="cards-center-container">
           {notificacoes.map(notif => (
             <div
@@ -380,18 +440,28 @@ const Notificacoes = () => {
                     {notif.titulo}
                     {!notif.vista && <span className="badge-nova">NOVA</span>}
                   </h5>
-                  <p className="card-text">{notif.data}</p>
-                  {notif.detalhes && (
-                    <p className="card-detalhes">{notif.detalhes}</p>
+                  <p className="card-text">
+                    <i className="bi bi-clock" style={{ marginRight: '4px' }}></i>
+                    {notif.data}
+                  </p>
+                  {/* Nome do destinatário (só médico vê) */}
+                  {isMedico && (
+                    <p className="card-text" style={{ fontSize: '12px', marginTop: '4px' }}>
+                      <i className="bi bi-person" style={{ marginRight: '4px' }}></i>
+                      Para: {notif.perfilNome}
+                    </p>
+                  )}
+                  {notif.descricao && (
+                    <p className="card-detalhes">{notif.descricao}</p>
                   )}
                 </div>
                 <div className="notification-icons">
                   <button
                     type="button"
                     className={`icon-btn view ${notif.vista ? 'vista' : ''}`}
-                    onClick={() => toggleVista(notif.id)}
-                    aria-label={notif.vista ? "Marcar como não lida" : "Marcar como lida"}
-                    title={notif.vista ? "Marcar como não lida" : "Marcar como lida"}
+                    onClick={() => toggleVista(notif.id, notif.vista)}
+                    aria-label={notif.vista ? 'Marcar como não lida' : 'Marcar como lida'}
+                    title={notif.vista ? 'Marcar como não lida' : 'Marcar como lida'}
                   >
                     <i className={`bi ${notif.vista ? 'bi-eye-slash' : 'bi-eye'}`}></i>
                   </button>
@@ -409,26 +479,26 @@ const Notificacoes = () => {
             </div>
           ))}
         </div>
-      ) : !carregando ? (
+      ) : (
         <div className="empty-state">
           <div className="empty-icon">
             <i className="bi bi-bell-slash"></i>
           </div>
           <h5>Nenhuma notificação</h5>
           <p>
-            {user?.tipo === 'medico'
-              ? "Você não tem notificações no momento."
-              : "Você não tem notificações pendentes."}
+            {isMedico
+              ? 'Não existem notificações. Crie a primeira!'
+              : 'Não tem notificações pendentes.'}
           </p>
-          {user?.tipo === 'medico' && (
-            <button className="btn btn-primary" onClick={() => setMostrarFormulario(true)}>
+          {isMedico && (
+            <button
+              id="btn-criar-primeira"
+              className="btn btn-primary"
+              onClick={() => setMostrarFormulario(true)}
+            >
               <i className="bi bi-plus-circle"></i> Criar Notificação
             </button>
           )}
-        </div>
-      ) : (
-        <div className="loading-state">
-          <p>Carregando notificações...</p>
         </div>
       )}
     </div>

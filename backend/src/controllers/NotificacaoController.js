@@ -1,16 +1,22 @@
 // controllers/NotificacaoController.js
+const { Op } = require("sequelize");
 const Notificacao = require("../model/Notificacao");
+const Utilizadorperfil = require("../model/Utilizadorperfil");
 const sequelize = require("../model/database");
 const controllers = {};
 
-// Listar todas as notificações
-// CORREÇÃO NAS FUNÇÕES DE LISTAGEM
-
-// Listar todas as notificações
+// Listar todas as notificações (Médico / Backoffice)
 controllers.list = async (req, res) => {
   try {
     const data = await Notificacao.findAll({
-      order: [['idnotificacao', 'DESC']] // Alterado de data_criacao para idnotificacao
+      include: [
+        {
+          model: Utilizadorperfil,
+          as: "PerfilData",
+          attributes: ["idutilizadorprefil", "nome", "gmail"]
+        }
+      ],
+      order: [['idnotificacao', 'DESC']]
     });
     res.json({ success: true, data: data });
   } catch (error) {
@@ -19,13 +25,25 @@ controllers.list = async (req, res) => {
   }
 };
 
-// Listar notificações por perfil
+// Listar notificações por perfil (Paciente / Frontoffice - inclui notificações do perfil e notificações gerais/globais)
 controllers.listByPerfil = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = Number(req.params.id);
     const data = await Notificacao.findAll({
-      where: { prefil: id },
-      order: [['idnotificacao', 'DESC']] // Alterado de data_criacao para idnotificacao
+      where: {
+        [Op.or]: [
+          { prefil: id },
+          { prefil: null }
+        ]
+      },
+      include: [
+        {
+          model: Utilizadorperfil,
+          as: "PerfilData",
+          attributes: ["idutilizadorprefil", "nome", "gmail"]
+        }
+      ],
+      order: [['idnotificacao', 'DESC']]
     });
     res.json({ success: true, data: data });
   } catch (error) {
@@ -37,13 +55,16 @@ controllers.listByPerfil = async (req, res) => {
 // Listar notificações não vistas por perfil
 controllers.listNaoVistasByPerfil = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = Number(req.params.id);
     const data = await Notificacao.findAll({
       where: { 
-        prefil: id,
+        [Op.or]: [
+          { prefil: id },
+          { prefil: null }
+        ],
         visto: false 
       },
-      order: [['idnotificacao', 'DESC']] // Alterado de data_criacao para idnotificacao
+      order: [['idnotificacao', 'DESC']]
     });
     res.json({ success: true, data: data });
   } catch (error) {
@@ -51,78 +72,62 @@ controllers.listNaoVistasByPerfil = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-// Criar nova notificação
+
+// Criar nova notificação (Apenas médicos / administradores)
 controllers.create = async (req, res) => {
   try {
-    console.log("📥 ========== NOVA REQUISIÇÃO ==========");
-    console.log("📥 Método:", req.method);
-    console.log("📥 URL:", req.originalUrl);
-    console.log("📥 Headers:", JSON.stringify(req.headers, null, 2));
-    console.log("📥 Body recebido:", req.body);
-    console.log("📥 Tipo do body:", typeof req.body);
-    
     const { prefil, titulo, descricao, visto = false } = req.body;
-    
-    console.log("📋 Campos extraídos:");
-    console.log("- prefil:", prefil, "(tipo:", typeof prefil, ")");
-    console.log("- titulo:", titulo, "(tipo:", typeof titulo, ")");
-    console.log("- descricao:", descricao, "(tipo:", typeof descricao, ")");
-    console.log("- visto:", visto, "(tipo:", typeof visto, ")");
-    
-    // Validação manual do título
+
+    console.log("📥 Criar notificação:", { prefil, titulo, descricao });
+
     if (!titulo) {
-      console.log("❌ Título está vazio ou undefined!");
-      return res.status(400).json({ 
-        success: false, 
-        error: "O campo 'titulo' é obrigatório" 
+      return res.status(400).json({
+        success: false,
+        error: "O campo 'titulo' é obrigatório"
       });
     }
-    
-    console.log("✅ Todos os campos validados, criando notificação...");
-    
-    // CORREÇÃO: Removido data_criacao, deixe o modelo usar o valor padrão
+
     const novaNotificacao = await Notificacao.create({
-      prefil: prefil || null,
+      prefil: (prefil && prefil !== "null" && prefil !== "") ? Number(prefil) : null,
       titulo,
-      descricao,
-      visto
-      // REMOVIDO: data_criacao: new Date()
+      descricao: descricao || null,
+      visto: Boolean(visto)
     });
-    
+
     console.log("✅ Notificação criada com ID:", novaNotificacao.idnotificacao);
-    
-    res.json({ 
-      success: true, 
+
+    res.json({
+      success: true,
       message: "Notificação criada com sucesso!",
-      data: novaNotificacao 
+      data: novaNotificacao
     });
   } catch (error) {
-    console.error("❌ Erro ao criar notificação:");
-    console.error("❌ Mensagem:", error.message);
-    console.error("❌ Stack:", error.stack);
-    console.error("❌ Nome:", error.name);
-    console.error("❌ Erros completos:", JSON.stringify(error, null, 2));
-    
+    console.error("❌ Erro ao criar notificação:", error.message);
     res.status(500).json({ success: false, error: error.message });
   }
 };
 
-// Marcar notificação como vista
+// Marcar notificação como vista (ou alterar estado de visto)
 controllers.marcarComoVista = async (req, res) => {
   try {
     const { id } = req.params;
+    const { visto } = req.body || {};
     
     const notificacao = await Notificacao.findByPk(id);
     if (!notificacao) {
       return res.status(404).json({ success: false, error: "Notificação não encontrada" });
     }
     
-    notificacao.visto = true;
+    if (typeof visto === "boolean") {
+      notificacao.visto = visto;
+    } else {
+      notificacao.visto = !notificacao.visto;
+    }
     await notificacao.save();
     
     res.json({ 
       success: true, 
-      message: "Notificação marcada como vista!",
+      message: "Notificação atualizada com sucesso!",
       data: notificacao 
     });
   } catch (error) {
@@ -134,11 +139,18 @@ controllers.marcarComoVista = async (req, res) => {
 // Marcar todas como vistas de um perfil
 controllers.marcarTodasComoVistas = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = Number(req.params.id);
     
     await Notificacao.update(
       { visto: true },
-      { where: { prefil: id } }
+      {
+        where: {
+          [Op.or]: [
+            { prefil: id },
+            { prefil: null }
+          ]
+        }
+      }
     );
     
     res.json({ 
@@ -176,10 +188,15 @@ controllers.delete = async (req, res) => {
 // Deletar todas as notificações de um perfil
 controllers.deleteAllByPerfil = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = Number(req.params.id);
     
     await Notificacao.destroy({
-      where: { prefil: id }
+      where: {
+        [Op.or]: [
+          { prefil: id },
+          { prefil: null }
+        ]
+      }
     });
     
     res.json({ 
@@ -192,4 +209,4 @@ controllers.deleteAllByPerfil = async (req, res) => {
   }
 };
 
-module.exports = controllers;   
+module.exports = controllers;

@@ -14,10 +14,16 @@ const Consultas = sequelize.define(
     },
 
     medico: Sequelize.STRING,
-    hora: Sequelize.TIME,
-    falta: Sequelize.BOOLEAN,
-    estadimarcacao: Sequelize.BOOLEAN,
-    numerotelemovel: Sequelize.NUMBER,
+    hora: Sequelize.STRING, // Guarda a hora ex: "10:00" ou "10:00:00"
+    falta: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
+    },
+    estadimarcacao: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: true
+    },
+    numerotelemovel: Sequelize.STRING,
 
     tipomarcacao: {
       type: Sequelize.INTEGER,
@@ -25,17 +31,19 @@ const Consultas = sequelize.define(
     },
 
     data: Sequelize.DATE,
+    hora: Sequelize.STRING,    // Hora de início ex: "16:00:00"
+    horaFim: Sequelize.STRING, // Hora de fim ex: "17:30:00"
     detalhes: Sequelize.STRING,
     guia_tratamento: Sequelize.STRING,
 
     idutilizadorprefil: {
       type: Sequelize.INTEGER,
-      references: { model: Utilizadorperfil, key: "idutilizadorprefil" }, // <- confirma o nome real do PK em Classe
+      references: { model: Utilizadorperfil, key: "idutilizadorprefil" },
     },
   },
   {
     timestamps: false,
-    tableName: "consultas", // opcional, mas ajuda a evitar confusões
+    tableName: "consultas",
     freezeTableName: true
   }
 );
@@ -47,7 +55,8 @@ Consultas.belongsTo(TipoMarcacao, {
 
 Consultas.belongsTo(Utilizadorperfil, {
   as: "UtilizadorData",
-  foreignKey: "idutilizadorprefil"
+  foreignKey: "idutilizadorprefil",
+  targetKey: "idutilizadorprefil"
 });
 
 module.exports = Consultas;

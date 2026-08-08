@@ -42,6 +42,7 @@ const Utilizadorperfil = require("./Utilizadorperfil");
 Notificacao.belongsTo(Utilizadorperfil, {
   as: "PerfilData",
   foreignKey: "prefil",
+  targetKey: "idutilizadorprefil"
 });
 
 module.exports = Notificacao;

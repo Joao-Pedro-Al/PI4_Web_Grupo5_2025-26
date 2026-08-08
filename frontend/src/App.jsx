@@ -41,12 +41,12 @@ const RequireAuth = ({ children, requireTipoconta = null }) => {
   }
 
   // Se precisa de um tipo específico de conta
-  if (requireTipoconta && user.idtipoconta !== requireTipoconta) {
+  if (requireTipoconta && user.idtipoconta !== requireTipoconta && !(requireTipoconta === 1 && (user.idtipoconta === 3 || user.idtipoconta === 1))) {
     // Redireciona baseado no tipo de conta atual
-    if (user.idtipoconta === 1) {
-      return <Navigate to="/frontoffice/paginainicial" replace />;
-    } else if (user.idtipoconta === 2) {
+    if (user.idtipoconta === 2) {
       return <Navigate to="/backoffice/paginainicial" replace />;
+    } else {
+      return <Navigate to="/frontoffice/paginainicial" replace />;
     }
   }
 
@@ -71,14 +71,10 @@ const PaginaInicialPorTipoConta = () => {
     // Médicos - Backoffice
     console.log('🔄 Redirecionando para BACKOFFICE (Médico)');
     return <Navigate to="/backoffice/paginainicial" replace />;
-  } else if (user.idtipoconta === 1) {
-    // Pacientes - Frontoffice
+  } else {
+    // Pacientes/Outros - Frontoffice
     console.log('🔄 Redirecionando para FRONTOFFICE (Paciente)');
     return <Navigate to="/frontoffice/paginainicial" replace />;
-  } else {
-    // Tipo desconhecido - default para login
-    console.log('❌ Tipo de conta desconhecido:', user.idtipoconta);
-    return <Navigate to="/login" replace />;
   }
 };
 

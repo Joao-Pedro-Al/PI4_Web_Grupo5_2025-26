@@ -26,7 +26,9 @@ const contaRouters = require("./routes/contaRoute.js");
 // Usar as rotas
 app.use("/utilizadorperfil", utilizadorperfilRouters);
 app.use("/consultas", consultasRouters);
+app.use("/api/consultas", consultasRouters);
 app.use("/notificacao", notificacaoRouters);
+app.use("/api/notificacoes", notificacaoRouters);
 app.use("/comprovativo", comprovativoRouters);
 app.use("/conta", contaRouters);
 app.use("/api/conta", contaRouters);

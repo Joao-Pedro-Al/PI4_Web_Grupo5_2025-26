@@ -1,4 +1,4 @@
-// src/view/PagInicialCli.jsx - VERSÃO ATUALIZADA COM NAVEGAÇÃO
+// src/view/PagInicialCli.jsx - VERSÃO ATUALIZADA COM NAVEGAÇÃO E DESIGN PROFISSIONAL
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../App.jsx';
@@ -13,7 +13,7 @@ const PagInicialCli = () => {
       id: 1,
       title: "Consulta Remarcada",
       time: "02/05 - 18:30",
-      pacienteId: user?.id || 1, // Usa ID da conta
+      pacienteId: user?.id || 1,
       medico: "Dr. Carlos Santos",
       status: "Confirmada",
       tipo: "Limpeza",
@@ -24,7 +24,7 @@ const PagInicialCli = () => {
       id: 2,
       title: "Consulta Marcada",
       time: "04/20 - 9:30",
-      pacienteId: user?.id || 1, // Usa ID da conta
+      pacienteId: user?.id || 1,
       medico: "Dra. Ana Costa",
       status: "Pendente",
       tipo: "Check-up",
@@ -51,11 +51,11 @@ const PagInicialCli = () => {
   const handleAction = (action, notificacao) => {
     switch(action) {
       case 'view':
-        alert(`📋 DETALHES DA CONSULTA\n\n📌 ${notificacao.title}\n📅 ${notificacao.time}\n👤 Paciente: ${user?.nome}\n👨‍⚕️ Médico: ${notificacao.medico}\n🏥 Local: ${notificacao.local}\n📝 Tipo: ${notificacao.tipo}\n📋 Descrição: ${notificacao.descricao}`);
+        alert(`DETALHES DA CONSULTA\n\n📌 ${notificacao.title}\nData: ${notificacao.time}\nPaciente: ${user?.nome}\nMédico: ${notificacao.medico}\nLocal: ${notificacao.local}\nTipo: ${notificacao.tipo}\nDescrição: ${notificacao.descricao}`);
         break;
       
-      
-        const novaData = prompt(`📅 REMARCAR CONSULTA\n\nPaciente: ${user?.nome}\n\nDigite a nova data/hora (formato: DD/MM - HH:MM):\nExemplo: 15/12 - 14:30`, notificacao.time);
+      case 'reschedule':
+        const novaData = prompt(`REMARCAR CONSULTA\n\nPaciente: ${user?.nome}\n\nDigite a nova data/hora (formato: DD/MM - HH:MM):\nExemplo: 15/12 - 14:30`, notificacao.time);
         if (novaData && novaData.trim() !== '') {
           setNotificacoes(notificacoes.map(n => 
             n.id === notificacao.id ? { 
@@ -65,7 +65,7 @@ const PagInicialCli = () => {
               status: "Remarcada"
             } : n
           ));
-          alert('✅ Consulta remarcada com sucesso!');
+          alert('Consulta remarcada com sucesso!');
         }
         break;
       
@@ -76,11 +76,11 @@ const PagInicialCli = () => {
             status: "Confirmada"
           } : n
         ));
-        alert('✅ Consulta confirmada com sucesso!');
+        alert('Consulta confirmada com sucesso!');
         break;
       
       case 'cancel':
-        if (window.confirm(`❌ CANCELAR CONSULTA\n\nPaciente: ${user?.nome}\n\nTem certeza que deseja cancelar esta consulta?\n\n${notificacao.title}\n📅 ${notificacao.time}`)) {
+        if (window.confirm(`CANCELAR CONSULTA\n\nPaciente: ${user?.nome}\n\nTem certeza que deseja cancelar esta consulta?\n\n${notificacao.title}\nData: ${notificacao.time}`)) {
           setNotificacoes(notificacoes.map(n => 
             n.id === notificacao.id ? { 
               ...n, 
@@ -88,7 +88,7 @@ const PagInicialCli = () => {
               status: "Cancelada"
             } : n
           ));
-          alert('❌ Consulta cancelada com sucesso!');
+          alert('Consulta cancelada com sucesso!');
         }
         break;
       
@@ -104,10 +104,10 @@ const PagInicialCli = () => {
 
   // Função para solicitar nova consulta
   const handleSolicitarConsulta = () => {
-    const tipo = prompt(`📝 SOLICITAR NOVA CONSULTA\n\nPaciente: ${user?.nome}\n\nTipo de consulta (Limpeza, Check-up, Extração, Ortodontia):`);
+    const tipo = prompt(`SOLICITAR NOVA CONSULTA\n\nPaciente: ${user?.nome}\n\nTipo de consulta (Limpeza, Check-up, Extração, Ortodontia):`);
     if (!tipo) return;
     
-    const descricao = prompt('📋 Descreva o motivo da consulta:');
+    const descricao = prompt('Descreva o motivo da consulta:');
     if (!descricao) return;
     
     // Adicionar nova consulta
@@ -124,75 +124,75 @@ const PagInicialCli = () => {
     };
     
     setNotificacoes([...notificacoes, novaConsulta]);
-    alert(`✅ Solicitação enviada!\n\n👤 Paciente: ${user?.nome}\n📝 Tipo: ${tipo}\n📋 Motivo: ${descricao}\n\nA clínica entrará em contato para confirmar a data.`);
+    alert(`Solicitação enviada!\n\nPaciente: ${user?.nome}\nTipo: ${tipo}\nMotivo: ${descricao}\n\nA clínica entrará em contacto para confirmar a data.`);
   };
 
   // Função para baixar comprovante
   const handleDownloadComprovante = (notificacao) => {
-    alert(`📄 Baixando comprovante da consulta:\n\nPaciente: ${user?.nome}\n📅 ${notificacao.time}\n👨‍⚕️ ${notificacao.medico}\n🏥 ${notificacao.local}`);
+    alert(`A descarregar comprovativo da consulta:\n\nPaciente: ${user?.nome}\nData: ${notificacao.time}\nMédico: ${notificacao.medico}\nLocal: ${notificacao.local}`);
   };
 
   return (
     <div className="pagina-cliente-conteudo">
       {/* Cabeçalho com informações do usuário */}
-     <div style={{
-  backgroundColor: '#f0f7ff',
-  border: '2px solid #A99C5E',
-  borderRadius: '10px',
-  padding: '15px',
-  marginBottom: '20px'
-}}>
-  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-    <div>
-      <h3 style={{ color: '#A99C5E', marginBottom: '10px' }}>
-        <i className="bi bi-person-circle"></i> Bem-vindo, {user?.nome}!
-      </h3>
-      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-        <div>
-          <strong>👤 ID Conta:</strong> {user?.id}
-        </div>
-        <div>
-          <strong>📧 Email:</strong> {user?.email}
-        </div>
-        <div>
-          <strong>🎫 Tipo:</strong> Paciente
-        </div>
-        <div>
-          <strong>🔢 idtipoconta:</strong> {user?.idtipoconta}
-        </div>
-        <div>
-          <strong>🆔 ID Perfil:</strong> {user?.idprefil || 'Não vinculado'}
+      <div style={{
+        backgroundColor: '#f0f7ff',
+        border: '2px solid #A99C5E',
+        borderRadius: '10px',
+        padding: '15px',
+        marginBottom: '20px'
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h3 style={{ color: '#A99C5E', marginBottom: '10px' }}>
+              <i className="bi bi-person-circle me-2"></i>Bem-vindo, {user?.nome}!
+            </h3>
+            <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+              <div>
+                <i className="bi bi-card-text me-1"></i><strong>ID Conta:</strong> {user?.id}
+              </div>
+              <div>
+                <i className="bi bi-envelope me-1"></i><strong>Email:</strong> {user?.email}
+              </div>
+              <div>
+                <i className="bi bi-person-badge me-1"></i><strong>Tipo:</strong> Paciente
+              </div>
+              <div>
+                <i className="bi bi-shield-check me-1"></i><strong>idtipoconta:</strong> {user?.idtipoconta}
+              </div>
+              <div>
+                <i className="bi bi-person-vcard me-1"></i><strong>ID Perfil:</strong> {user?.idprefil || 'Não vinculado'}
+              </div>
+            </div>
+          </div>
+          
+          {/* Botão para Notificações */}
+          <button 
+            onClick={handleVerNotificacoes}
+            style={{
+              backgroundColor: '#A99C5E',
+              color: 'white',
+              border: 'none',
+              padding: '10px 20px',
+              borderRadius: '30px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '14px',
+              fontWeight: 'bold'
+            }}
+          >
+            <i className="bi bi-bell-fill"></i> Ver Notificações
+          </button>
         </div>
       </div>
-    </div>
-    
-    {/* Botão para Notificações */}
-    <button 
-      onClick={handleVerNotificacoes}
-      style={{
-        backgroundColor: '#A99C5E',
-        color: 'white',
-        border: 'none',
-        padding: '10px 20px',
-        borderRadius: '30px',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        fontSize: '14px',
-        fontWeight: 'bold'
-      }}
-    >
-      <i className="bi bi-bell-fill"></i> Ver Notificações
-    </button>
-  </div>
-</div>
       
       {/* Título das consultas */}
       <div className="titulo-secao">
-        <h2><i className="bi bi-calendar-check"></i> Minhas Consultas</h2>
+        <h2><i className="bi bi-calendar-check me-2"></i>Minhas Consultas</h2>
         <button className="btn-solicitar" onClick={handleSolicitarConsulta}>
-          <i className="bi bi-calendar-plus"></i> Solicitar Consulta
+          <i className="bi bi-calendar-plus me-1"></i> Solicitar Consulta
         </button>
       </div>
       
@@ -209,16 +209,16 @@ const PagInicialCli = () => {
               <div className="card-header" onClick={() => toggleCard(notificacao.id)}>
                 <div className="card-main-info">
                   <h3 className="card-title">
-                    <i className="bi bi-calendar-check"></i> {notificacao.title}
+                    <i className="bi bi-calendar-check me-2"></i>{notificacao.title}
                   </h3>
                   <p className="card-time">
-                    <i className="bi bi-clock"></i> {notificacao.time}
+                    <i className="bi bi-clock me-1"></i>{notificacao.time}
                   </p>
                   <div className={`card-badge status-${notificacao.status.toLowerCase()}`}>
-                    {notificacao.status === 'Confirmada' ? '✅ Confirmada' :
-                     notificacao.status === 'Pendente' ? '⏳ Pendente' :
-                     notificacao.status === 'Cancelada' ? '❌ Cancelada' :
-                     notificacao.status === 'Remarcada' ? '🔄 Remarcada' : notificacao.status}
+                    {notificacao.status === 'Confirmada' ? <><i className="bi bi-check-circle-fill me-1"></i>Confirmada</> :
+                     notificacao.status === 'Pendente' ? <><i className="bi bi-hourglass-split me-1"></i>Pendente</> :
+                     notificacao.status === 'Cancelada' ? <><i className="bi bi-x-circle-fill me-1"></i>Cancelada</> :
+                     notificacao.status === 'Remarcada' ? <><i className="bi bi-arrow-repeat me-1"></i>Remarcada</> : notificacao.status}
                   </div>
                 </div>
                 <i className={`bi bi-chevron-down expand-icon ${expandedCards.includes(notificacao.id) ? 'rotated' : ''}`}></i>
@@ -228,23 +228,23 @@ const PagInicialCli = () => {
                 <div className="card-expanded-content">
                   <div className="card-details">
                     <div className="detail-item">
-                      <span className="detail-label"><i className="bi bi-person"></i> Paciente:</span>
+                      <span className="detail-label"><i className="bi bi-person me-1"></i>Paciente:</span>
                       <span className="detail-value">{user?.nome}</span>
                     </div>
                     <div className="detail-item">
-                      <span className="detail-label"><i className="bi bi-person-badge"></i> Médico:</span>
+                      <span className="detail-label"><i className="bi bi-person-badge me-1"></i>Médico:</span>
                       <span className="detail-value">{notificacao.medico}</span>
                     </div>
                     <div className="detail-item">
-                      <span className="detail-label"><i className="bi bi-geo-alt"></i> Local:</span>
+                      <span className="detail-label"><i className="bi bi-geo-alt me-1"></i>Local:</span>
                       <span className="detail-value">{notificacao.local}</span>
                     </div>
                     <div className="detail-item">
-                      <span className="detail-label"><i className="bi bi-clipboard"></i> Tipo:</span>
+                      <span className="detail-label"><i className="bi bi-clipboard me-1"></i>Tipo:</span>
                       <span className="detail-value">{notificacao.tipo}</span>
                     </div>
                     <div className="detail-item">
-                      <span className="detail-label"><i className="bi bi-chat-text"></i> Descrição:</span>
+                      <span className="detail-label"><i className="bi bi-chat-text me-1"></i>Descrição:</span>
                       <span className="detail-value">{notificacao.descricao}</span>
                     </div>
                   </div>
@@ -258,7 +258,7 @@ const PagInicialCli = () => {
                           handleAction('view', notificacao);
                         }}
                       >
-                        <i className="bi bi-eye-fill"></i> Ver Detalhes
+                        <i className="bi bi-eye-fill me-1"></i> Ver Detalhes
                       </button>
                       
                       <button 
@@ -268,7 +268,7 @@ const PagInicialCli = () => {
                           handleDownloadComprovante(notificacao);
                         }}
                       >
-                        <i className="bi bi-download"></i> Comprovante
+                        <i className="bi bi-download me-1"></i> Comprovante
                       </button>
                       
                       {notificacao.status === 'Pendente' && (
@@ -279,11 +279,11 @@ const PagInicialCli = () => {
                             handleAction('confirm', notificacao);
                           }}
                         >
-                          <i className="bi bi-check-circle-fill"></i> Confirmar
+                          <i className="bi bi-check-circle-fill me-1"></i> Confirmar
                         </button>
                       )}
                       
-    {notificacao.status !== 'Cancelada' && notificacao.status !== 'Remarcada' && (
+                      {notificacao.status !== 'Cancelada' && notificacao.status !== 'Remarcada' && (
                         <>
                           <button 
                             className="btn-action btn-reschedule"
@@ -292,7 +292,7 @@ const PagInicialCli = () => {
                               handleAction('reschedule', notificacao);
                             }}
                           >
-                            <i className="bi bi-calendar2-event"></i> Remarcar
+                            <i className="bi bi-calendar2-event me-1"></i> Remarcar
                           </button>
                           
                           <button 
@@ -302,7 +302,7 @@ const PagInicialCli = () => {
                               handleAction('cancel', notificacao);
                             }}
                           >
-                            <i className="bi bi-x-circle-fill"></i> Cancelar
+                            <i className="bi bi-x-circle-fill me-1"></i> Cancelar
                           </button>
                         </>
                       )}
@@ -316,9 +316,9 @@ const PagInicialCli = () => {
           <div className="no-notifications">
             <i className="bi bi-calendar-x"></i>
             <h4>Nenhuma consulta agendada</h4>
-            <p>Olá {user?.nome}, você não possui consultas marcadas no momento.</p>
+            <p>Olá {user?.nome}, não possui consultas marcadas no momento.</p>
             <button className="btn-solicitar" onClick={handleSolicitarConsulta}>
-              <i className="bi bi-calendar-plus"></i> Solicitar Minha Primeira Consulta
+              <i className="bi bi-calendar-plus me-1"></i> Solicitar Primeira Consulta
             </button>
           </div>
         )}
@@ -326,10 +326,10 @@ const PagInicialCli = () => {
       
       {/* Guia de Tratamento */}
       <div className="guia-tratamento">
-        <h3><i className="bi bi-journal-medical"></i> Guia de Tratamento de {user?.nome}</h3>
+        <h3><i className="bi bi-journal-medical me-2"></i>Guia de Tratamento de {user?.nome}</h3>
         <div className="guia-content">
           <p>
-            <strong>📋 Instruções personalizadas:</strong><br/>
+            <strong>Instruções personalizadas:</strong><br/>
             • Lavar os dentes depois do almoço e do jantar<br/>
             • Evitar bruxamento dos dentes<br/>
             • Diminuir a quantidade de chocolate consumido<br/>
@@ -338,13 +338,13 @@ const PagInicialCli = () => {
           </p>
           <div className="guia-actions">
             <button className="btn-guia">
-              <i className="bi bi-download"></i> Baixar Guia Completo
+              <i className="bi bi-download me-1"></i> Baixar Guia Completo
             </button>
             <button className="btn-guia">
-              <i className="bi bi-printer"></i> Imprimir
+              <i className="bi bi-printer me-1"></i> Imprimir
             </button>
             <button className="btn-guia">
-              <i className="bi bi-share"></i> Compartilhar com Familiar
+              <i className="bi bi-share me-1"></i> Compartilhar com Familiar
             </button>
           </div>
         </div>
@@ -353,7 +353,7 @@ const PagInicialCli = () => {
       {/* Botão Ver Agenda */}
       <div className="ver-agenda-container">
         <button className="btn-ver-agenda" onClick={handleViewAgenda}>
-          <i className="bi bi-calendar3"></i> Ver Agenda Completa de {user?.nome}
+          <i className="bi bi-calendar3 me-1"></i> Ver Agenda Completa de {user?.nome}
         </button>
       </div>
     </div>

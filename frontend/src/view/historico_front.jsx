@@ -267,16 +267,17 @@ const Historico_Front = () => {
     }
 
     function CarregarConsultasMes() {
-      const datames = dataConsul.filter((data) => {
-        const dataconsul = new Date(data.data);
-        const consul_mes = dataconsul.getMonth() + 1;
-        const consul_ano = dataconsul.getFullYear();
+      const datames = dataConsul.filter((item) => {
+        if (!item.data) return false;
+        const partes = item.data.split('T')[0].split('-');
+        if (partes.length < 3) return false;
+        const consul_ano = parseInt(partes[0], 10);
+        const consul_mes = parseInt(partes[1], 10);
 
-        return consul_mes == Mes_Sel && consul_ano == Ano_Sel;
+        return consul_mes === Mes_Sel && consul_ano === Ano_Sel;
       });
 
-      console.log("Debug: " + datames);
-
+      console.log("Debug: ", datames);
       setdataConsulMes(datames);
     }
 

@@ -73,6 +73,46 @@ const CheckboxField = ({ label, checked, onChange }) => (
 );
 
 
+const SectionTitle = ({ step, title }) => (
+  <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px" }}>
+    <div style={{
+      backgroundColor: "#A99C5E",
+      color: "white",
+      borderRadius: "50%",
+      width: "32px",
+      height: "32px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontWeight: "bold",
+      fontSize: "14px",
+      flexShrink: 0
+    }}>{step}</div>
+    <h5 style={{ color: "#A99C5E", margin: 0, fontFamily: "Poppins", fontWeight: 600 }}>{title}</h5>
+  </div>
+);
+
+const ToggleField = ({ label, checked, onChange }) => (
+  <div className="d-flex align-items-center mb-4" style={{ gap: "8px" }}>
+    <label style={{ color: "#A99C5E", fontSize: "14px", cursor: "pointer", margin: 0 }}>
+      {label}
+    </label>
+    <input
+      type="checkbox"
+      checked={checked}
+      onChange={onChange}
+      style={{
+        width: "20px",
+        height: "20px",
+        accentColor: "#A99C5E",
+        cursor: "pointer",
+        marginLeft: "4px"
+      }}
+    />
+  </div>
+);
+
+const GoldenButton = ({ label, onClick, disabled = false, className = "", styleOverride = {} }) => {
   const baseStyle = {
     backgroundColor: "#A99C5E",
     borderRadius: "10px",
@@ -86,18 +126,19 @@ const CheckboxField = ({ label, checked, onChange }) => (
   };
   return (
     <button
-      type={type}
+      type="button"
       onClick={onClick}
       disabled={disabled}
       className={`btn shadow-none text-white ${className}`}
       style={{ ...baseStyle, ...styleOverride, opacity: disabled ? 0.6 : 1 }}
-      onMouseOver={(e) => { if (!disabled) e.target.style.opacity = "0.8"; }}
-      onMouseOut={(e) => { if (!disabled) e.target.style.opacity = "1"; }}
+      onMouseOver={(e) => { if (!disabled) e.currentTarget.style.opacity = "0.8"; }}
+      onMouseOut={(e) => { if (!disabled) e.currentTarget.style.opacity = "1"; }}
     >
       {label}
     </button>
   );
 };
+
 
 /* =======================
    COMPONENTE PRINCIPAL
