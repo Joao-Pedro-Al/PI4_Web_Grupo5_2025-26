@@ -1,9 +1,24 @@
 const ConsultaHistorico = ({titulo, horas, data, detalhes, guia, idCon}) => {
-if(guia == null){guia = "N/A"}
-horas= horas.substring(0, 5);
-const data_tempo = new Date(data);
-if(data_tempo.getDate() < 10){data = "0" + data_tempo.getDate() + "/" + data_tempo.getMonth() + 1 + "/" + data_tempo.getFullYear();}
-else{data = data_tempo.getDate() + "/" + data_tempo.getMonth() + 1 + "/" + data_tempo.getFullYear();}
+  if (guia == null || guia === '') { guia = "N/A"; }
+  const horaStr = horas ? horas.substring(0, 5) : '';
+  
+  let dataFormatada = data || '';
+  if (data) {
+    if (typeof data === 'string' && data.includes('-')) {
+      const partes = data.split('T')[0].split('-');
+      if (partes.length === 3) {
+        dataFormatada = `${partes[2].padStart(2, '0')}/${partes[1].padStart(2, '0')}/${partes[0]}`;
+      }
+    } else {
+      const dt = new Date(data);
+      if (!isNaN(dt.getTime())) {
+        const dia = String(dt.getDate()).padStart(2, '0');
+        const mes = String(dt.getMonth() + 1).padStart(2, '0');
+        const ano = dt.getFullYear();
+        dataFormatada = `${dia}/${mes}/${ano}`;
+      }
+    }
+  }
 return (
     <div className=" px-0 col-12 mb-3">
         <div className="card div--cartao--consulta" id={idCon + "-aberto"}>
@@ -11,7 +26,7 @@ return (
                 <div className="row align-items-center">
                 <div className="col-10">
                     <h4 className="card-title fw-bold mb-1">{titulo}</h4>
-                    <p className="card-text">{data} - {horas}</p>
+                    <p className="card-text">{dataFormatada} - {horaStr}</p>
                 </div>
                 <i className="bi bi-chevron-down i--cartao--seta text-center fs-2 col-2"></i>
                 </div>
@@ -24,7 +39,7 @@ return (
                 <div className="row align-items-center">
                     <div className="col-10">
                         <h4 className="card-title fw-bold mb-1">{titulo}</h4>
-                        <p className="card-text">{data} - {horas}</p>
+                        <p className="card-text">{dataFormatada} - {horaStr}</p>
                     </div>
                     <i className="bi bi-chevron-right i--cartao--seta text-center fs-2 col-2"></i>
                     </div>

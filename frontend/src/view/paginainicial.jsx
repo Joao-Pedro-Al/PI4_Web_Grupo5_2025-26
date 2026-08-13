@@ -56,8 +56,14 @@ const PaginaInicial = () => {
       const data = await response.json();
 
       if (data.success && data.data) {
-        const medicosList = data.data.map((p, index) => ({
-          id: `med${p.idutilizadorprefil}`,
+        // Filtrar perfis que sejam médicos ou administradores
+        const medicosFiltrados = data.data.filter(p => 
+          (p.profissao && p.profissao.toLowerCase().includes('médic')) || 
+          (p.nome && p.nome.toLowerCase().includes('dr'))
+        );
+        const listToUse = medicosFiltrados.length > 0 ? medicosFiltrados : data.data;
+        const medicosList = listToUse.map((p, index) => ({
+          id: p.nome,
           title: p.nome,
           nomeCompleto: p.nome,
           idPerfil: p.idutilizadorprefil,
@@ -67,13 +73,13 @@ const PaginaInicial = () => {
         setDoctors(medicosList);
       } else {
         setDoctors([
-          { id: 'med1', title: 'Dra. Maria Santos', nomeCompleto: 'Dra. Maria Santos', color: '#b79b53', tipo: 'Médico' }
+          { id: 'Dra. Maria Santos', title: 'Dra. Maria Santos', nomeCompleto: 'Dra. Maria Santos', color: '#b79b53', tipo: 'Médico' }
         ]);
       }
     } catch (error) {
       console.error('Erro ao carregar médicos:', error);
       setDoctors([
-        { id: 'med1', title: 'Dra. Maria Santos', nomeCompleto: 'Dra. Maria Santos', color: '#b79b53', tipo: 'Médico' }
+        { id: 'Dra. Maria Santos', title: 'Dra. Maria Santos', nomeCompleto: 'Dra. Maria Santos', color: '#b79b53', tipo: 'Médico' }
       ]);
     }
   };
@@ -154,6 +160,7 @@ const PaginaInicial = () => {
           });
 
         setEventsList(eventosFormatados);
+        setTimeout(() => applyDoctorFilter(selectedDoctor), 100);
       }
     } catch (error) {
       console.error('Erro ao carregar consultas da BD:', error);
@@ -288,16 +295,25 @@ const PaginaInicial = () => {
     const { dbId } = info.event.extendedProps;
     if (!dbId) return; // Evento sem ID na BD, ignorar
 
-    const novaData = info.event.start.toISOString().split('T')[0];
-    const novaHora = `${String(info.event.start.getHours()).padStart(2, '0')}:${String(info.event.start.getMinutes()).padStart(2, '0')}:00`;
+    const startDate = info.event.start;
+    const endDate = info.event.end;
+
+    const year = startDate.getFullYear();
+    const month = String(startDate.getMonth() + 1).padStart(2, '0');
+    const day = String(startDate.getDate()).padStart(2, '0');
+    const novaDataStr = `${year}-${month}-${day}`;
+
+    const novaHora = `${String(startDate.getHours()).padStart(2, '0')}:${String(startDate.getMinutes()).padStart(2, '0')}:00`;
+    const novaHoraFim = endDate ? `${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}:00` : null;
 
     try {
       const response = await fetch(`${BASE_URL}/api/consultas/update/${dbId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          data: new Date(`${novaData}T12:00:00Z`),
-          hora: novaHora
+          data: novaDataStr,
+          hora: novaHora,
+          horaFim: novaHoraFim
         })
       });
       const dados = await response.json();
@@ -305,7 +321,8 @@ const PaginaInicial = () => {
         alert('Erro ao atualizar a consulta na base de dados. A reverter.');
         info.revert(); // Desfaz o drag se falhar
       } else {
-        console.log('Consulta atualizada na BD:', novaData, novaHora);
+        console.log('Consulta atualizada na BD:', novaDataStr, novaHora, novaHoraFim);
+        await carregarConsultasBD();
       }
     } catch (error) {
       console.error('Erro ao atualizar consulta:', error);
@@ -318,21 +335,34 @@ const PaginaInicial = () => {
     const { dbId } = info.event.extendedProps;
     if (!dbId) return;
 
-    const novaData = info.event.start.toISOString().split('T')[0];
-    const novaHora = `${String(info.event.start.getHours()).padStart(2, '0')}:${String(info.event.start.getMinutes()).padStart(2, '0')}:00`;
+    const startDate = info.event.start;
+    const endDate = info.event.end;
+
+    const year = startDate.getFullYear();
+    const month = String(startDate.getMonth() + 1).padStart(2, '0');
+    const day = String(startDate.getDate()).padStart(2, '0');
+    const novaDataStr = `${year}-${month}-${day}`;
+
+    const novaHora = `${String(startDate.getHours()).padStart(2, '0')}:${String(startDate.getMinutes()).padStart(2, '0')}:00`;
+    const novaHoraFim = endDate ? `${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}:00` : null;
 
     try {
       const response = await fetch(`${BASE_URL}/api/consultas/update/${dbId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          data: new Date(`${novaData}T12:00:00Z`),
-          hora: novaHora
+          data: novaDataStr,
+          hora: novaHora,
+          horaFim: novaHoraFim
         })
       });
       const dados = await response.json();
       if (!dados.success) {
+        alert('Erro ao atualizar a duração na base de dados. A reverter.');
         info.revert();
+      } else {
+        console.log('Duração da consulta atualizada na BD:', novaHora, 'até', novaHoraFim);
+        await carregarConsultasBD();
       }
     } catch (error) {
       console.error('Erro ao redimensionar consulta:', error);
@@ -371,20 +401,26 @@ const PaginaInicial = () => {
     }
   };
 
-  const handleDoctorFilterChange = (e) => {
-    const selected = e.target.value;
-    setSelectedDoctor(selected);
+  const applyDoctorFilter = (doctorVal) => {
     const calendarApi = calendarRef.current?.getApi();
     if (calendarApi) {
       calendarApi.getEvents().forEach(event => {
-        if (selected === 'all') {
+        if (!doctorVal || doctorVal === 'all') {
           event.setProp('display', 'auto');
         } else {
-          const eventDoctorId = event.extendedProps?.resourceId || event.extendedProps?.doctorId;
-          event.setProp('display', eventDoctorId === selected ? 'auto' : 'none');
+          const eventMedico = (event.extendedProps?.medico || '').toLowerCase();
+          const target = doctorVal.toLowerCase();
+          const match = eventMedico.includes(target) || target.includes(eventMedico);
+          event.setProp('display', match ? 'auto' : 'none');
         }
       });
     }
+  };
+
+  const handleDoctorFilterChange = (e) => {
+    const selected = e.target.value;
+    setSelectedDoctor(selected);
+    applyDoctorFilter(selected);
   };
 
   return (
@@ -421,15 +457,40 @@ const PaginaInicial = () => {
         <span><strong>Como marcar uma consulta:</strong> Clique e arraste sobre um horário na agenda para o selecionar — a consulta será guardada diretamente na base de dados.</span>
       </div>
 
-      {/* Filtro de médico */}
-      <div id="doctor-filter" className="mb-3">
-        <label className="me-2"><strong>Filtrar por médico:</strong></label>
+      {/* Filtro e Pesquisa de Médico */}
+      <div id="doctor-filter" className="mb-3 d-flex align-items-center gap-2 flex-wrap bg-white p-3 rounded shadow-sm border">
+        <label className="me-2 mb-0 fw-bold"><i className="bi bi-funnel-fill text-primary me-1"></i>Filtrar por Médico:</label>
         <select id="doctorSelect" className="form-select d-inline-block w-auto" value={selectedDoctor} onChange={handleDoctorFilterChange}>
-          <option value="all">Todos</option>
+          <option value="all">Todos os Médicos</option>
           {doctors.map(doc => (
-            <option key={doc.id} value={doc.id}>{doc.title}</option>
+            <option key={doc.id} value={doc.title}>{doc.title}</option>
           ))}
         </select>
+        <div className="input-group w-auto">
+          <span className="input-group-text bg-light"><i className="bi bi-search"></i></span>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Pesquisar por nome do médico..."
+            value={selectedDoctor === 'all' ? '' : selectedDoctor}
+            onChange={(e) => {
+              const val = e.target.value;
+              setSelectedDoctor(val || 'all');
+              applyDoctorFilter(val || 'all');
+            }}
+          />
+        </div>
+        {selectedDoctor !== 'all' && (
+          <button
+            className="btn btn-sm btn-outline-secondary"
+            onClick={() => {
+              setSelectedDoctor('all');
+              applyDoctorFilter('all');
+            }}
+          >
+            <i className="bi bi-x-circle me-1"></i>Limpar Filtro
+          </button>
+        )}
       </div>
 
       {/* Calendário */}

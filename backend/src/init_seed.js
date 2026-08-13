@@ -13,8 +13,11 @@ const bcrypt = require("bcryptjs");
 
 async function initSeed() {
   try {
+    // Adicionar colunas caso estejam em falta na tabela SQLite existente
+    try { await sequelize.query("ALTER TABLE utilizadorprefil ADD COLUMN ficheirosanexos TEXT;"); } catch (e) {}
+    try { await sequelize.query("ALTER TABLE consultas ADD COLUMN horaFim TEXT;"); } catch (e) {}
+
     // Forçar a criação de todas as tabelas em ordem
-    // (os modelos já foram importados neste ficheiro, então o sequelize conhece-os)
     await sequelize.sync({ force: false });
 
     // Check if Generos exists

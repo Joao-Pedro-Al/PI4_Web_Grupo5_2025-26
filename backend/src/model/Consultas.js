@@ -14,7 +14,6 @@ const Consultas = sequelize.define(
     },
 
     medico: Sequelize.STRING,
-    hora: Sequelize.STRING, // Guarda a hora ex: "10:00" ou "10:00:00"
     falta: {
       type: Sequelize.BOOLEAN,
       defaultValue: false
@@ -32,7 +31,10 @@ const Consultas = sequelize.define(
 
     data: Sequelize.DATE,
     hora: Sequelize.STRING,    // Hora de início ex: "16:00:00"
-    horaFim: Sequelize.STRING, // Hora de fim ex: "17:30:00"
+    horaFim: {
+      type: Sequelize.STRING,
+      field: 'horafim'
+    },
     detalhes: Sequelize.STRING,
     guia_tratamento: Sequelize.STRING,
 

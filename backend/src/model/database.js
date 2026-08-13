@@ -27,4 +27,14 @@ if (process.env.USE_SQLITE === 'true') {
   });
 }
 
+// Suporte para fallback SQLite se o PostgreSQL não estiver a correr ou falhar autenticação
+sequelize.authenticate().catch(err => {
+  console.warn("⚠️ Não foi possível ligar ao PostgreSQL. A utilizar SQLite local (pi4_g5.sqlite)...");
+  sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: path.join(__dirname, '../../pi4_g5.sqlite'),
+    logging: false
+  });
+});
+
 module.exports = sequelize;

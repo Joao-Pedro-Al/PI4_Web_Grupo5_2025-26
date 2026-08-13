@@ -71,10 +71,9 @@ const Historico_Front = () => {
           ListarAnos();
           AtualizarData();
           const Mes = document.getElementById("mes-" + idmes);
-          //Ativar Mês Selecionado
-          Mes.classList.remove("h5");
-          Mes.classList.remove("p--data");
-          Mes.classList.add("h2");
+          if (Mes) {
+            Mes.classList.add("p--data--ativo");
+          }
         }
 
         function ListarAnos()
@@ -84,7 +83,7 @@ const Historico_Front = () => {
             
             for(var i = 8; i >= 1; i--){
                 const A = document.getElementById("data-" + i);
-                A.textContent = anomax - menos;
+                if (A) A.textContent = anomax - menos;
                 menos += 1;
             }
 
@@ -96,16 +95,11 @@ const Historico_Front = () => {
             anos.forEach(item => {
                 if(item.textContent == stateAno.current)
                 {
-                    item.classList.remove('h5');
-                    item.classList.remove('p--data');
-                    item.classList.add('h2');
+                    item.classList.add('p--data--ativo');
                 }
-
-                if(item.classList.contains('h2') && item.textContent != stateAno.current)
+                else
                 {
-                    item.classList.add('h5');
-                    item.classList.add('p--data');
-                    item.classList.remove('h2');
+                    item.classList.remove('p--data--ativo');
                 }
             })
         }
@@ -132,12 +126,12 @@ const Historico_Front = () => {
           }
         };
 
-        MenosAno.addEventListener('click', MenosClick);
-        MaisAno.addEventListener('click', MaisClick);
+        if (MenosAno) MenosAno.addEventListener('click', MenosClick);
+        if (MaisAno) MaisAno.addEventListener('click', MaisClick);
 
         anos.forEach(item => {
             item.addEventListener('click', function() {
-                if(item.classList.contains("h2") == false)
+                if(item.classList.contains("p--data--ativo") == false)
                 {
                     ano = parseInt(item.textContent);
                     stateAno.current = ano;
@@ -149,19 +143,15 @@ const Historico_Front = () => {
 
         meses.forEach(item => {
             item.addEventListener('click', function() {
-                if(item.classList.contains("h2") == false)
+                if(item.classList.contains("p--data--ativo") == false)
                 {
                     const mes_ativo = document.getElementById("mes-" + idmes);
 
-                    //Revreter Mês Ativo
-                    mes_ativo.classList.add("h5");
-                    mes_ativo.classList.add("p--data");
-                    mes_ativo.classList.remove("h2");
+                    if (mes_ativo) {
+                        mes_ativo.classList.remove("p--data--ativo");
+                    }
 
-                    //Ativar Mês Selecionado
-                    item.classList.remove('h5');
-                    item.classList.remove('p--data');
-                    item.classList.add('h2');
+                    item.classList.add('p--data--ativo');
 
                     const Id_String = item.id;
                     idmes = parseInt(Id_String.substring(Id_String.indexOf("-") + 1));
@@ -417,8 +407,5 @@ const Historico_Front = () => {
     return "Erro...";
   }
 }
-<div className="row d-flex flex-column align-items-center justify-content-center mb-5" style={{minHeight: "300px"}}>
-  <i className="bi bi-calendar-x" style={{fontSize: "48px", color: "#A99C5E", opacity: 0.6}}></i>
-  <h4 className="text-center mt-3 text-secondary">Não houve consultas neste mês...</h4>
-</div>
+
 export default Historico_Front;
