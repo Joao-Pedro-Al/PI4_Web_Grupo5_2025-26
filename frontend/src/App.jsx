@@ -25,6 +25,7 @@ import CriarConta from './view/criar-conta.jsx';
 import Webpage from './view/webpage.jsx';
 import PaginaInicial from './view/paginainicial.jsx';
 import Notificacoes from './view/notificacoes.jsx';
+import DetalhesConsulta from './view/DetalhesConsulta.jsx';
 
 // ----FRONTOFFICE----
 import Historico_Front from './view/historico_front.jsx';
@@ -282,6 +283,14 @@ function App() {
             <RequireAuth requireTipoconta={2}>
               <BackofficeLayout>
                 <CriarConta />
+              </BackofficeLayout>
+            </RequireAuth>
+          } />
+
+          <Route path="/backoffice/consulta/:id" element={
+            <RequireAuth requireTipoconta={2}>
+              <BackofficeLayout>
+                <DetalhesConsulta />
               </BackofficeLayout>
             </RequireAuth>
           } />

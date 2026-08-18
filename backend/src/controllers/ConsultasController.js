@@ -53,6 +53,26 @@ controllers.listTiposMarca = async (req, res) => {
   }
 };
 
+// Obter consulta por ID
+controllers.getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await Consultas.findByPk(id, {
+      include: [
+        { model: TipoMarcacao, as: 'TipoMarcacaoData' },
+        { model: Utilizadorperfil, as: 'UtilizadorData' }
+      ]
+    });
+    if (!data) {
+      return res.status(404).json({ success: false, message: "Consulta não encontrada." });
+    }
+    res.json({ success: true, data: data });
+  } catch (error) {
+    console.error("Erro ao obter consulta por ID:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 // Criar nova consulta (Gravar na BD e Enviar Notificação a Médico e Paciente)
 controllers.create = async (req, res) => {
   try {
@@ -65,7 +85,8 @@ controllers.create = async (req, res) => {
       horaFim,
       numerotelemovel,
       detalhes,
-      guia_tratamento
+      guia_tratamento,
+      urgencia
     } = req.body;
 
     console.log("Pedido para criar consulta:", req.body);
@@ -87,6 +108,7 @@ controllers.create = async (req, res) => {
       numerotelemovel: numerotelemovel ? String(numerotelemovel) : null,
       detalhes: detalhes || null,
       guia_tratamento: guia_tratamento || null,
+      urgencia: urgencia || "Normal",
       falta: false,
       estadimarcacao: true
     });

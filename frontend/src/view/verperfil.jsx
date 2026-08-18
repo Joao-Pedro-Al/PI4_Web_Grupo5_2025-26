@@ -1,87 +1,76 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 
 import url from "./url_global";
-
 import axios from "axios";
-
 import '../verperfil.css';
 
 const mostrar = (valor) => {
-    if (valor === null || valor === undefined || valor === "") {
+    if (valor === null || valor === undefined || valor === "" || valor === false) {
         return <span className="valor-vazio">Não Indicado</span>;
     }
+    if (valor === true) return "Sim";
     return valor;
 };
 
 const VerPerfil = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const [perfil, setPerfil] = useState(null);
+    const [consultas, setConsultas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState(null);
 
     useEffect(() => {
         if (!id) {
-            setErro(
-                "O ID do perfil não veio na URL (useParams devolveu undefined). " +
-                "Confirma se a rota em App.jsx está definida como '/backoffice/perfis/:id' " +
-                "e se o link que clicaste aponta para um id válido."
-            );
+            setErro("O ID do perfil não veio na URL.");
             setLoading(false);
             return;
         }
 
-        const urlAPI = url + "utilizadorperfil/list/" + id;
-        console.log("[VerPerfil] A pedir dados a:", urlAPI);
-
-        axios.get(urlAPI)
-            .then(res => {
-                console.log("[VerPerfil] Resposta recebida:", res.data);
-
-                if (res.data && res.data.success) {
-                    let data = res.data.data;
-
-                    // O backend pode devolver um array com 1 elemento OU um objeto único.
-                    // Aceitamos os dois casos para não rebentar no .map().
-                    if (Array.isArray(data)) {
-                        data = data[0];
-                    }
-
+        const carregarDados = async () => {
+            try {
+                setLoading(true);
+                // 1. Carregar Perfil
+                const resPerfil = await axios.get(`${url}utilizadorperfil/list/${id}`);
+                if (resPerfil.data && resPerfil.data.success) {
+                    let data = resPerfil.data.data;
+                    if (Array.isArray(data)) data = data[0];
                     if (!data) {
-                        setErro("O servidor respondeu com sucesso, mas não veio nenhum perfil com o id '" + id + "'.");
+                        setErro(`Perfil com o ID ${id} não encontrado.`);
                     } else {
                         setPerfil(data);
                     }
                 } else {
-                    setErro(
-                        "O servidor respondeu, mas 'success' não é true. Mensagem do servidor: " +
-                        (res.data?.message || "(sem mensagem)")
-                    );
+                    setErro("Não foi possível obter dados do perfil.");
                 }
-            })
-            .catch(error => {
-                console.error("[VerPerfil] Erro no pedido axios:", error);
 
-                let msg = error.message || "erro desconhecido";
-                if (error.code === "ERR_NETWORK") {
-                    msg += " — o backend está mesmo a correr em " + url + " ? Confirma no terminal do backend.";
-                } else if (error.response) {
-                    msg += " — o servidor respondeu com status " + error.response.status;
+                // 2. Carregar Histórico de Consultas do Paciente
+                const resConsultas = await axios.get(`${url}api/consultas/list/${id}`);
+                if (resConsultas.data && resConsultas.data.success) {
+                    setConsultas(resConsultas.data.data || []);
                 }
-                setErro(msg);
-            })
-            .finally(() => setLoading(false));
+            } catch (error) {
+                console.error("[VerPerfil] Erro ao carregar dados:", error);
+                setErro("Erro de ligação ao servidor.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        carregarDados();
     }, [id]);
-
-    // ---------- ESTADOS VISÍVEIS NO ECRÃ (sem precisar de DevTools) ----------
 
     if (loading) {
         return (
             <div className="container-fluid py-5 text-center">
-                <p>A carregar perfil...</p>
+                <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">A carregar perfil...</span>
+                </div>
+                <p className="mt-2 text-muted">A carregar dados do perfil...</p>
             </div>
         );
     }
@@ -90,9 +79,12 @@ const VerPerfil = () => {
         return (
             <div className="container-fluid py-5">
                 <div className="alert alert-danger">
-                    <strong>Não foi possível carregar o perfil.</strong>
+                    <strong>Erro ao carregar perfil:</strong>
                     <p className="mb-0 mt-2" style={{ whiteSpace: "pre-wrap" }}>{erro}</p>
                 </div>
+                <Link to="/backoffice/perfis" className="btn btn-secondary">
+                    <i className="bi bi-arrow-left me-1"></i> Voltar aos Perfis
+                </Link>
             </div>
         );
     }
@@ -100,19 +92,15 @@ const VerPerfil = () => {
     if (!perfil) {
         return (
             <div className="container-fluid py-5">
-                <div className="alert alert-warning">
-                    Não há dados de perfil para mostrar.
-                </div>
+                <div className="alert alert-warning">Não há dados de perfil para mostrar.</div>
             </div>
         );
     }
 
-    // ---------- DADOS CARREGADOS COM SUCESSO ----------
+    const anestesia = perfil.experienciaanastesia ? "Sim" : "Não";
+    const gravida = perfil.gravida ? "Sim" : "Não";
+    const dorSensibilidade = perfil.historicodor ? "Sim" : "Não";
 
-    const anestesia = (perfil.experienciaanastesia === true) ? "Sim" : "Não";
-    const gravida = (perfil.gravida === true) ? "Sim" : "Não";
-
-    // Nomes dos ficheiros anexados vêm como array JSON em texto (ver utilizadorperfilController.js)
     let ficheirosAnexados = [];
     try {
         if (perfil.ficheirosanexos) {
@@ -123,81 +111,214 @@ const VerPerfil = () => {
     }
 
     return (
-        <div className="container-fluid">
+        <div className="container-fluid py-3" style={{ fontFamily: 'Poppins, sans-serif' }}>
 
-            <Link to="/backoffice/perfis" className="voltar-link">
-                <i className="bi bi-arrow-left"></i> Voltar aos perfis
+            <Link to="/backoffice/perfis" className="voltar-link mb-3 d-inline-block">
+                <i className="bi bi-arrow-left me-1"></i> Voltar aos perfis
             </Link>
 
-            <div className="row align-items-start mb-5">
-
-                <div className="card div--cartao--perfil d-block mb-sm-3 col-sm-11 mb-lg-0 col-lg-8">
+            {/* CARTÃO 1: IDENTIFICAÇÃO PESSOAL */}
+            <div className="row align-items-start mb-4">
+                <div className="card div--cartao--perfil d-block col-lg-8 shadow-sm">
                     <div className="card-body py-4">
-                        <h5 className="card-title fw-bold mb-3">{perfil.nome}</h5>
-                        <p className="card-text mb-1"><b>Telefone: </b>{mostrar(perfil.contactoprincipal)}</p>
-                        <p className="card-text mb-1"><b>Email: </b>{mostrar(perfil.gmail)}</p>
-                        <p className="card-text mb-1"><b>Data de Nascimento: </b>{mostrar(perfil.datanascimento)}</p>
-                        <p className="card-text mb-1"><b>NIF/SNS: </b>{mostrar(perfil.nif)}</p>
-                        <p className="card-text mb-1"><b>Sexo: </b>{mostrar(perfil.generoData?.designacao || perfil.genero)}</p>
-                        <p className="card-text mb-1"><b>Estado Civil: </b>{mostrar(perfil.estadocivilData?.designacao || perfil.estadocivil)}</p>
-                        <p className="card-text mb-1"><b>Gravida: </b>{gravida}</p>
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                            <h4 className="card-title fw-bold mb-0" style={{ color: '#A99C5E' }}>
+                                <i className="bi bi-person-circle me-2"></i>{perfil.nome}
+                            </h4>
+                            <span className="badge bg-secondary">
+                                {perfil.classeData?.designacao || (perfil.classe === 2 ? 'Médico' : 'Paciente')}
+                            </span>
+                        </div>
+                        <div className="row g-2 text-secondary">
+                            <div className="col-md-6"><b>Telefone Principal: </b>{mostrar(perfil.contactoprincipal)}</div>
+                            <div className="col-md-6"><b>Telefone Secundário: </b>{mostrar(perfil.contactosecundario)}</div>
+                            <div className="col-md-6"><b>Email: </b>{mostrar(perfil.gmail)}</div>
+                            <div className="col-md-6"><b>Profissão: </b>{mostrar(perfil.profissao)}</div>
+                            <div className="col-md-6"><b>Data de Nascimento: </b>{mostrar(perfil.datanascimento)}</div>
+                            <div className="col-md-6"><b>NIF / SNS: </b>{mostrar(perfil.nif)}</div>
+                            <div className="col-md-6"><b>Nº Utente Saúde: </b>{mostrar(perfil.numeroutente)}</div>
+                            <div className="col-md-6"><b>Subsistema Saúde: </b>{mostrar(perfil.subsistemassaude)}</div>
+                            <div className="col-md-6"><b>Sexo / Género: </b>{mostrar(perfil.generoData?.designacao || perfil.genero)}</div>
+                            <div className="col-md-6"><b>Estado Civil: </b>{mostrar(perfil.estadocivilData?.designacao || perfil.estadocivil)}</div>
+                            <div className="col-md-6"><b>Grávida: </b>{gravida}</div>
+                            <div className="col-md-12"><b>Endereço: </b>{mostrar(perfil.endereco)}</div>
+                        </div>
                     </div>
                 </div>
 
-                <div className="container-fluid mx-sm-0 col-sm-11 mx-lg-auto offset-lg-1 col-lg-2">
-                    <div className="row">
-                        <button type="button" className="btn btn-alterar shadow-none mb-lg-3 col-sm-5 col-lg-12">
+                <div className="col-lg-3 offset-lg-1 mt-3 mt-lg-0">
+                    <div className="d-flex flex-column gap-2">
+                        <button type="button" className="btn btn-alterar shadow-none w-100">
                             <i className="bi bi-pencil-square me-1"></i> Alterar Perfil
                         </button>
-                        <button type="button" className="btn btn-apagar shadow-none offset-sm-2 col-sm-5 offset-lg-0 col-lg-12">
+                        <button type="button" className="btn btn-apagar shadow-none w-100">
                             <i className="bi bi-trash me-1"></i> Apagar Perfil
                         </button>
                     </div>
                 </div>
-
             </div>
 
-            <div className="row align-items-start mb-5">
-                <div className="card div--cartao--perfil d-block col-9">
+            {/* CARTÃO 2: HISTÓRICO MÉDICO GERAL & INTERNAÇÕES */}
+            <div className="row align-items-start mb-4">
+                <div className="card div--cartao--perfil d-block col-lg-9 shadow-sm">
                     <div className="secao-header">
-                        <i className="bi bi-heart-pulse-fill"></i>
-                        <h5>Histórico Médico Geral</h5>
+                        <i className="bi bi-heart-pulse-fill me-2"></i>
+                        <h5 className="mb-0">Histórico Médico Geral & Internações</h5>
                     </div>
-                    <div className="card-body py-4">
-                        <p className="card-text mb-1"><b>Cirurgias Anteriores: </b>{mostrar(perfil.historicotratamentosdentariospassados)}</p>
-                        <p className="card-text mb-1"><b>Alergias: </b>{mostrar(perfil.alergias)}</p>
-                        <p className="card-text"><b>Raios-X: </b>N/A</p>
+                    <div className="card-body py-4 text-secondary">
+                        <p className="card-text mb-2">
+                            <b><i className="bi bi-hospital me-1"></i>Internações ou Tratamentos Médicos Importantes: </b>
+                            {mostrar(perfil.condicaosaude)}
+                        </p>
+                        <p className="card-text mb-2">
+                            <b><i className="bi bi-scissors me-1"></i>Histórico Cirúrgico Relevante / Cirurgias Anteriores: </b>
+                            {mostrar(perfil.historicotratamentosdentariospassados)}
+                        </p>
+                        <p className="card-text mb-2">
+                            <b><i className="bi bi-exclamation-octagon me-1"></i>Alergias Conocidas: </b>
+                            {mostrar(perfil.alergias)}
+                        </p>
+                        <p className="card-text mb-0">
+                            <b><i className="bi bi-capsule me-1"></i>Medicamentos em Uso Habitual: </b>
+                            {mostrar(perfil.medicamentos)}
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <div className="row align-items-start mb-3">
-                <div className="card div--cartao--perfil d-block col-9">
+            {/* CARTÃO 3: HISTÓRICO DENTÁRIO, CONDICÕES E HÁBITOS */}
+            <div className="row align-items-start mb-4">
+                <div className="card div--cartao--perfil d-block col-lg-9 shadow-sm">
                     <div className="secao-header">
-                        <i className="bi bi-emoji-smile-fill"></i>
-                        <h5>Histórico Dentário</h5>
+                        <i className="bi bi-emoji-smile-fill me-2"></i>
+                        <h5 className="mb-0">Histórico Dentário, Condições & Hábitos</h5>
                     </div>
-                    <div className="card-body py-4">
-                        <p className="card-text mb-1"><b>Última Consulta Dentária: </b>10/01/2024</p>
-                        <p className="card-text mb-1"><b>Motivo da Consulta Inicial: </b>{mostrar(perfil.motivoconsultainicial)}</p>
-                        <p className="card-text mb-1"><b>Experiência com anestesia: </b>{anestesia}</p>
-                        <p className="card-text mb-1"><b>Condições atuais: </b>{mostrar(perfil.condicaosaude)}</p>
-                        <div className="card-text">
-                            <b>Exames anexados: </b>
+                    <div className="card-body py-4 text-secondary">
+                        <div className="row g-3">
+                            <div className="col-md-6">
+                                <b>Condições Dentárias Pré-existentes: </b>
+                                {mostrar(perfil.condicoesdentarias)}
+                            </div>
+                            <div className="col-md-6">
+                                <b>Motivo da Consulta Inicial: </b>
+                                {mostrar(perfil.motivoconsultainicial)}
+                            </div>
+                            <div className="col-md-6">
+                                <b>Hábitos Alimentares & Substâncias (Açúcar / Ácidos): </b>
+                                {mostrar(perfil.consumosubstancia)}
+                            </div>
+                            <div className="col-md-6">
+                                <b>Hábitos de Higiene Oral: </b>
+                                {mostrar(perfil.habitoigieneoral)}
+                            </div>
+                            <div className="col-md-6">
+                                <b>Desportos Praticados: </b>
+                                {mostrar(perfil.atividadesdesportivas)}
+                            </div>
+                            <div className="col-md-6">
+                                <b>Bruxismo: </b>
+                                {mostrar(perfil.bruxismo)}
+                            </div>
+                            <div className="col-md-6">
+                                <b>Experiência com Anestesia Local: </b>
+                                {anestesia}
+                            </div>
+                            <div className="col-md-6">
+                                <b>Histórico de Dor ou Sensibilidade: </b>
+                                {dorSensibilidade}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* CARTÃO 4: OBSERVAÇÕES ADICIONAIS & EXAMES ANEXADOS */}
+            <div className="row align-items-start mb-4">
+                <div className="card div--cartao--perfil d-block col-lg-9 shadow-sm">
+                    <div className="secao-header">
+                        <i className="bi bi-paperclip me-2"></i>
+                        <h5 className="mb-0">Observações Adicionais & Exames Clínicos</h5>
+                    </div>
+                    <div className="card-body py-4 text-secondary">
+                        <p className="card-text mb-2">
+                            <b>Observações Adicionais Relevantes: </b>
+                            {mostrar(perfil.infoadicional)}
+                        </p>
+                        <p className="card-text mb-3">
+                            <b>Resultados de Tratamentos Anteriores: </b>
+                            {mostrar(perfil.resultadosanteriores)}
+                        </p>
+                        <div>
+                            <b className="d-block mb-2">Ficheiros / Exames Anexados:</b>
                             {ficheirosAnexados.length === 0 ? (
-                                <span className="valor-vazio">Nenhum ficheiro anexado</span>
+                                <span className="valor-vazio">Nenhum ficheiro anexado.</span>
                             ) : (
-                                <ul className="lista-anexos">
+                                <ul className="lista-anexos ps-0 mb-0">
                                     {ficheirosAnexados.map((nomeFicheiro, i) => (
-                                        <li key={i}>
-                                            <a href={`${url}uploads/${nomeFicheiro}`} download target="_blank" rel="noreferrer">
-                                                <i className="bi bi-file-earmark-arrow-down"></i> {nomeFicheiro}
+                                        <li key={i} className="mb-1">
+                                            <a href={`${url}uploads/${nomeFicheiro}`} download target="_blank" rel="noreferrer" className="text-decoration-none">
+                                                <i className="bi bi-file-earmark-arrow-down text-primary me-1"></i> {nomeFicheiro}
                                             </a>
                                         </li>
                                     ))}
                                 </ul>
                             )}
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* CARTÃO 5: HISTÓRICO DE CONSULTAS REALIZADAS NA CLÍNICA */}
+            <div className="row align-items-start mb-4">
+                <div className="card div--cartao--perfil d-block col-lg-9 shadow-sm">
+                    <div className="secao-header">
+                        <i className="bi bi-journal-medical me-2"></i>
+                        <h5 className="mb-0">Histórico de Consultas Realizadas na Clínica</h5>
+                    </div>
+                    <div className="card-body py-4">
+                        {consultas.length === 0 ? (
+                            <p className="text-muted italic mb-0">Ainda não existem registos de consultas agendadas ou realizadas para este paciente.</p>
+                        ) : (
+                            <div className="table-responsive">
+                                <table className="table table-hover align-middle">
+                                    <thead className="table-light">
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Horário</th>
+                                            <th>Médico</th>
+                                            <th>Tipo / Detalhes</th>
+                                            <th>Urgência</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {consultas.map((c) => (
+                                            <tr key={c.idconsulta}>
+                                                <td>{c.data ? new Date(c.data).toLocaleDateString('pt-PT') : 'N/A'}</td>
+                                                <td>{c.hora} {c.horaFim ? `— ${c.horaFim}` : ''}</td>
+                                                <td>{c.medico || 'Médico Dentista'}</td>
+                                                <td>{c.TipoMarcacaoData?.desling || c.detalhes || 'Consulta Dentária'}</td>
+                                                <td>
+                                                    <span className={`badge ${c.urgencia === 'Muito Urgente' ? 'bg-danger' : c.urgencia === 'Urgente' ? 'bg-warning text-dark' : 'bg-secondary'}`}>
+                                                        {c.urgencia || 'Normal'}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <button 
+                                                        onClick={() => navigate(`/backoffice/consulta/${c.idconsulta}`)}
+                                                        className="btn btn-sm text-white"
+                                                        style={{ backgroundColor: '#A99C5E' }}
+                                                        title="Abrir Apontamentos e Prescrições"
+                                                    >
+                                                        <i className="bi bi-pencil-square me-1"></i> Apontamentos
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
