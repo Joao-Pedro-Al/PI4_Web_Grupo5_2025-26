@@ -144,15 +144,13 @@ const VerPerfil = () => {
                     </div>
                 </div>
 
-                <div className="container-fluid mx-sm-0 col-sm-11 mx-lg-auto offset-lg-1 col-lg-2">
-                    <div className="row">
-                        <button type="button" className="btn btn-alterar shadow-none mb-lg-3 col-sm-5 col-lg-12">
-                            <i className="bi bi-pencil-square me-1"></i> Alterar Perfil
-                        </button>
-                        <button type="button" className="btn btn-apagar shadow-none offset-sm-2 col-sm-5 offset-lg-0 col-lg-12">
-                            <i className="bi bi-trash me-1"></i> Apagar Perfil
-                        </button>
-                    </div>
+                <div className="col-sm-11 col-lg-2 offset-lg-1 mt-3 mt-lg-0 d-flex flex-column gap-2">
+                    <button type="button" className="btn btn-alterar shadow-none">
+                        <i className="bi bi-pencil-square me-1"></i> Alterar Perfil
+                    </button>
+                    <button type="button" className="btn btn-apagar shadow-none">
+                        <i className="bi bi-trash me-1"></i> Apagar Perfil
+                    </button>
                 </div>
 
             </div>

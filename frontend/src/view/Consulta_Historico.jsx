@@ -23,47 +23,45 @@ return (
     <div className=" px-0 col-12 mb-3">
         <div className="card div--cartao--consulta" id={idCon + "-aberto"}>
             <div className="card-body div--cartao--consulta px-4 py-3">
-                <div className="row align-items-center">
-                <div className="col-10">
-                    <h4 className="card-title fw-bold mb-1">{titulo}</h4>
-                    <p className="card-text">{dataFormatada} - {horaStr}</p>
-                </div>
-                <i className="bi bi-chevron-down i--cartao--seta text-center fs-2 col-2"></i>
+                <div className="d-flex justify-content-between align-items-center">
+                    <div className="flex-grow-1 me-3">
+                        <h4 className="card-title fw-bold mb-1">{titulo}</h4>
+                        <p className="card-text mb-0 text-nowrap">{dataFormatada} - {horaStr}</p>
+                    </div>
+                    <i className="bi bi-chevron-down i--cartao--seta fs-2 flex-shrink-0"></i>
                 </div>
             </div>
         </div>
 
         <div className="card div--cartao--consulta d-none" id={idCon + "-fechado"}>
             <div className="card-body div--cartao--consulta px-4 py-3">
+              <div className="w-100">
 
-                <div className="row align-items-center">
-                    <div className="col-10">
+                <div className="d-flex justify-content-between align-items-center">
+                    <div className="flex-grow-1 me-3">
                         <h4 className="card-title fw-bold mb-1">{titulo}</h4>
-                        <p className="card-text">{dataFormatada} - {horaStr}</p>
+                        <p className="card-text mb-0 text-nowrap">{dataFormatada} - {horaStr}</p>
                     </div>
-                    <i className="bi bi-chevron-right i--cartao--seta text-center fs-2 col-2"></i>
-                    </div>
-
-                    
-                    <div className="row align-items-center">
-
-                    <hr className="hr--cartao mx-3 my-3 col-11" />
-
-                    <div className="col-12 mb-2">
-                        <h5 className="fw-bold mb-1">Detalhes:</h5>
-                        <p className="mb-0">{detalhes}</p>
-                    </div>
-
-                    <div className="col-12 mb-3">
-                        <h5 className="fw-bold mb-1">Guia de Tratamento:</h5>
-                        <p className="mb-0">{guia}</p>
-                    </div>
-
-                    <div className="row m-0">
-                        <button type="button" className="btn shadow-none text-white div__button--presenca px-1 col-12 mb-2 mb-xl-0 col-xl-6">Declaração de Presença<i className="bi bi-download ms-2 button__img--icon"></i></button>
-                        <button type="button" className="btn shadow-none text-white d-flex justify-content-center div__button--presenca px-1 offset-xl-1 col-xl-5">Declaração do Acompanhante<i className="bi bi-download mx-2 my-auto ms-xl-0 button__img--icon"></i></button>
-                    </div>
+                    <i className="bi bi-chevron-right i--cartao--seta fs-2 flex-shrink-0"></i>
                 </div>
+
+                <hr className="hr--cartao my-3" />
+
+                <div className="mb-2">
+                    <h5 className="fw-bold mb-1">Detalhes:</h5>
+                    <p className="mb-0">{detalhes}</p>
+                </div>
+
+                <div className="mb-3">
+                    <h5 className="fw-bold mb-1">Guia de Tratamento:</h5>
+                    <p className="mb-0">{guia}</p>
+                </div>
+
+                <div className="row m-0">
+                    <button type="button" className="btn shadow-none text-white div__button--presenca px-1 col-12 mb-2 mb-xl-0 col-xl-6">Declaração de Presença<i className="bi bi-download ms-2 button__img--icon"></i></button>
+                    <button type="button" className="btn shadow-none text-white d-flex justify-content-center div__button--presenca px-1 offset-xl-1 col-xl-5">Declaração do Acompanhante<i className="bi bi-download mx-2 my-auto ms-xl-0 button__img--icon"></i></button>
+                </div>
+              </div>
             </div>
         </div>
     </div>

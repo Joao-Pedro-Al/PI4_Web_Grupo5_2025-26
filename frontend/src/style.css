@@ -158,6 +158,17 @@ body {
   color: #A99C5E !important;
 }
 
+/* Hover no item já ativo — não deve mudar a cor do texto/ícone (fica
+   branco), só escurece a caixa dourada para dar feedback visual */
+.menu__link.btn-gold:hover {
+  background: linear-gradient(135deg, #8a7d44 0%, #a99c5e 100%);
+  color: white !important;
+}
+
+.menu__link.btn-gold:hover i {
+  color: white !important;
+}
+
 .menu__link:focus-visible {
   outline: none !important;
 }
