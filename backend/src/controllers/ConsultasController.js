@@ -53,6 +53,26 @@ controllers.listTiposMarca = async (req, res) => {
   }
 };
 
+// Obter consulta por ID
+controllers.getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await Consultas.findByPk(id, {
+      include: [
+        { model: TipoMarcacao, as: 'TipoMarcacaoData' },
+        { model: Utilizadorperfil, as: 'UtilizadorData' }
+      ]
+    });
+    if (!data) {
+      return res.status(404).json({ success: false, message: "Consulta não encontrada." });
+    }
+    res.json({ success: true, data: data });
+  } catch (error) {
+    console.error("Erro ao obter consulta por ID:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 // Criar nova consulta (Gravar na BD e Enviar Notificação a Médico e Paciente)
 controllers.create = async (req, res) => {
   try {
@@ -65,7 +85,8 @@ controllers.create = async (req, res) => {
       horaFim,
       numerotelemovel,
       detalhes,
-      guia_tratamento
+      guia_tratamento,
+      urgencia
     } = req.body;
 
     console.log("Pedido para criar consulta:", req.body);
@@ -87,11 +108,11 @@ controllers.create = async (req, res) => {
       numerotelemovel: numerotelemovel ? String(numerotelemovel) : null,
       detalhes: detalhes || null,
       guia_tratamento: guia_tratamento || null,
+      urgencia: urgencia || "Normal",
       falta: false,
       estadimarcacao: true
     });
 
-    // Recarregar a consulta criada com as associações
     const consultaComDetalhes = await Consultas.findByPk(novaConsulta.idconsulta, {
       include: [
         { model: TipoMarcacao, as: 'TipoMarcacaoData' },
@@ -99,32 +120,30 @@ controllers.create = async (req, res) => {
       ]
     });
 
-    console.log("✅ Consulta criada com sucesso ID:", novaConsulta.idconsulta);
-
-    // ================= NOTIFICAÇÕES AUTOMÁTICAS =================
+    // ================= NOTIFICAÇÕES AUTOMÁTICAS (LÓGICA TRIGGER) =================
     const pacienteNome = consultaComDetalhes.UtilizadorData?.nome || "Paciente";
-    const tipoDesignacao = consultaComDetalhes.TipoMarcacaoData?.desling || detalhes || "Consulta Dentária";
     const dateStr = typeof data === 'string' ? data.split('T')[0] : new Date(data).toISOString().split('T')[0];
-    const horarioStr = horaFim ? `${hora} — ${horaFim}` : `${hora}`;
+    const [ano, mes, dia] = dateStr.split('-');
+    const dateFormatted = `${dia}-${mes}-${ano}`;
 
     // 1. Notificação para o Paciente
     await Notificacao.create({
       prefil: Number(idutilizadorprefil),
       titulo: "Consulta Agendada",
-      descricao: `A sua consulta de ${tipoDesignacao} foi agendada para o dia ${dateStr} às ${horarioStr} com ${medico || 'Médico Dentista'}.`,
+      descricao: `A sua consulta no dia ${dateFormatted} às ${hora} foi agendada.`,
       visto: false
     });
 
     // 2. Notificação para o Médico
     const doctorPerfil = await Utilizadorperfil.findOne({ where: { nome: medico } });
-    await Notificacao.create({
-      prefil: doctorPerfil ? doctorPerfil.idutilizadorprefil : null,
-      titulo: "Nova Consulta na Agenda",
-      descricao: `Nova consulta de ${tipoDesignacao} agendada para o paciente ${pacienteNome} no dia ${dateStr} às ${horarioStr}.`,
-      visto: false
-    });
-
-    console.log("🔔 Notificações enviadas ao Médico e ao Paciente com sucesso.");
+    if (doctorPerfil) {
+      await Notificacao.create({
+        prefil: doctorPerfil.idutilizadorprefil,
+        titulo: "Nova Consulta na Agenda",
+        descricao: `Nova consulta agendada para o paciente ${pacienteNome} no dia ${dateFormatted} às ${hora}.`,
+        visto: false
+      });
+    }
 
     res.json({
       success: true,
@@ -147,6 +166,10 @@ controllers.update = async (req, res) => {
       return res.status(404).json({ success: false, message: "Consulta não encontrada." });
     }
 
+    const oldData = consulta.data;
+    const oldHora = consulta.hora;
+    const oldFalta = consulta.falta;
+
     const updateData = { ...req.body };
 
     // Converter data para objeto Date se for string
@@ -168,20 +191,33 @@ controllers.update = async (req, res) => {
       ]
     });
 
-    console.log("Consulta actualizada ID:", id, "nova data:", updateData.data, "hora:", updateData.hora, "horaFim:", updateData.horaFim);
+    // ================= NOTIFICAÇÕES AUTOMÁTICAS (LÓGICA TRIGGER) =================
+    const formatDDMMYYYY = (d) => {
+      if (!d) return '';
+      const iso = d instanceof Date ? d.toISOString().split('T')[0] : String(d).split('T')[0];
+      const [a, m, dia] = iso.split('-');
+      return `${dia}-${m}-${a}`;
+    };
 
-    // Enviar notificação de alteração de horário/data
-    const pacienteNome = consultaAtualizada.UtilizadorData?.nome || "Paciente";
-    const dateStr = updateData.data ? new Date(updateData.data).toISOString().split('T')[0] : '';
-    const novaHora = updateData.hora || consulta.hora;
-    const novaHoraFim = updateData.horaFim || consulta.horaFim;
-    const horarioStr = novaHoraFim ? `${novaHora} — ${novaHoraFim}` : `${novaHora}`;
+    const oldDateStr = formatDDMMYYYY(oldData);
+    const newDateStr = formatDDMMYYYY(consultaAtualizada.data);
+    const newHoraStr = consultaAtualizada.hora;
 
-    if (dateStr || updateData.hora) {
+    const dataOuHoraAlterada = (oldDateStr !== newDateStr) || (oldHora !== newHoraStr);
+    const faltaMarcada = (!oldFalta && consultaAtualizada.falta === true);
+
+    if (dataOuHoraAlterada) {
       await Notificacao.create({
         prefil: consulta.idutilizadorprefil,
-        titulo: "Consulta Remarcada",
-        descricao: `A sua consulta foi alterada para o dia ${dateStr} às ${horarioStr}.`,
+        titulo: "Consulta remarcada!",
+        descricao: `A sua consulta no dia ${oldDateStr} foi remarcada para ${newDateStr} às ${newHoraStr}.`,
+        visto: false
+      });
+    } else if (faltaMarcada) {
+      await Notificacao.create({
+        prefil: consulta.idutilizadorprefil,
+        titulo: "Remarcar Consulta",
+        descricao: `Por favor nos contacte para podermos remarcar a consulta que estava prevista para o dia ${oldDateStr}.`,
         visto: false
       });
     }
@@ -207,7 +243,31 @@ controllers.delete = async (req, res) => {
       return res.status(404).json({ success: false, message: "Consulta não encontrada." });
     }
 
+    const oldData = consulta.data;
+    const formatDDMMYYYY = (d) => {
+      if (!d) return '';
+      const iso = d instanceof Date ? d.toISOString().split('T')[0] : String(d).split('T')[0];
+      const [a, m, dia] = iso.split('-');
+      return `${dia}-${m}-${a}`;
+    };
+
+    const oldDateStr = formatDDMMYYYY(oldData);
+
+    // Verificar se a consulta é futura ou de hoje
+    const todayStr = new Date().toISOString().split('T')[0];
+    const oldIsoStr = oldData ? (oldData instanceof Date ? oldData.toISOString().split('T')[0] : String(oldData).split('T')[0]) : '';
+
     await consulta.destroy();
+
+    // ================= NOTIFICAÇÕES AUTOMÁTICAS (LÓGICA TRIGGER) =================
+    if (oldIsoStr && oldIsoStr >= todayStr) {
+      await Notificacao.create({
+        prefil: consulta.idutilizadorprefil,
+        titulo: "Consulta desmarcada!",
+        descricao: `A sua consulta no dia ${oldDateStr} foi desmarcada.`,
+        visto: false
+      });
+    }
 
     res.json({
       success: true,

@@ -37,6 +37,10 @@ const Consultas = sequelize.define(
     },
     detalhes: Sequelize.STRING,
     guia_tratamento: Sequelize.STRING,
+    urgencia: {
+      type: Sequelize.STRING,
+      defaultValue: "Normal"
+    },
 
     idutilizadorprefil: {
       type: Sequelize.INTEGER,

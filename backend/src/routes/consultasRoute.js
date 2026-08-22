@@ -3,6 +3,7 @@ const router = express.Router();
 const consultasController = require("../controllers/ConsultasController");
 
 router.get("/list", consultasController.list);
+router.get("/get/:id", consultasController.getById);
 router.get("/list/:id", consultasController.listPaciente);
 router.get("/tipomarcacao/list", consultasController.listTiposMarca);
 router.post("/create", consultasController.create);
