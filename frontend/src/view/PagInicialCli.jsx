@@ -303,18 +303,6 @@ const PagInicialCli = () => {
                       >
                         <i className="bi bi-download me-1"></i> Comprovante
                       </button>
-
-                      {!notificacao.isPassada && notificacao.status !== 'Cancelada' && (
-                        <button 
-                          className="btn-action btn-cancel"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleAction('cancel', notificacao);
-                          }}
-                        >
-                          <i className="bi bi-x-circle-fill me-1"></i> Cancelar Consulta
-                        </button>
-                      )}
                     </div>
                   </div>
                 </div>
