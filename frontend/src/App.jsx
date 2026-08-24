@@ -10,6 +10,7 @@ export const AuthContext = createContext();
 // ----MENUS LATERAIS----
 import MenuBack from './view/MenuLateral_Backoffice.jsx';
 import MenuFront from './view/MenuLateral_Frontoffice.jsx';
+import NotificationBell from './view/NotificationBell.jsx';
 
 // ----AUTENTICAÇÃO----
 import Login from './view/Login.jsx';
@@ -105,9 +106,7 @@ const BackofficeLayout = ({ children }) => {
           <i className="bi bi-person-badge"></i>
           <span>{user?.nome || 'Usuário'} | 🩺 MÉDICO</span>
         </div>
-        <a href="/backoffice/notificacoes" style={{ color: 'white', textDecoration: 'none' }}>
-          <i className="bi bi-bell" title="Notificações"></i>
-        </a>
+        <NotificationBell isBackoffice={true} />
         <a href="/login" style={{ color: 'white', textDecoration: 'none' }} onClick={handleLogout}>
           <i className="bi bi-box-arrow-right" title="Sair"></i>
         </a>
@@ -149,9 +148,7 @@ const FrontofficeLayout = ({ children }) => {
           <i className="bi bi-person-circle"></i>
           <span>{user?.nome || 'Usuário'} | 👤 PACIENTE</span>
         </div>
-        <a href="/frontoffice/notificacoes" style={{ color: 'white', textDecoration: 'none' }}>
-          <i className="bi bi-bell" title="Notificações"></i>
-        </a>
+        <NotificationBell isBackoffice={false} />
         <a href="/login" style={{ color: 'white', textDecoration: 'none' }} onClick={handleLogout}>
           <i className="bi bi-box-arrow-right" title="Sair"></i>
         </a>

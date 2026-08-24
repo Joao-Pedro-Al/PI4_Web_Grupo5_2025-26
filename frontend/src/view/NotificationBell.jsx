@@ -6,7 +6,7 @@ import urlGlobal from './url_global.jsx';
 
 const BASE_URL = urlGlobal.endsWith('/') ? urlGlobal.slice(0, -1) : urlGlobal;
 
-const NotificationBell = ({ isBackoffice = false }) => {
+const NotificationBell = ({ isBackoffice = false, showLabel = false, isActive = false }) => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [naoLidasCount, setNaoLidasCount] = useState(0);
@@ -20,14 +20,13 @@ const NotificationBell = ({ isBackoffice = false }) => {
     if (!user) return;
     try {
       let url;
-      const isMedico = user.idtipoconta === 2 || user.idtipoconta === 1;
+      const isMedico = user?.idtipoconta === 2 || user?.idtipoconta === 1 || isBackoffice;
+      const perfilId = user?.idprefil || user?.idutilizadorprefil || user?.id;
 
-      if (isMedico) {
+      if (isMedico || !perfilId) {
         url = `${BASE_URL}/api/notificacoes/list`;
-      } else if (user.idprefil) {
-        url = `${BASE_URL}/api/notificacoes/list/${user.idprefil}`;
       } else {
-        return;
+        url = `${BASE_URL}/api/notificacoes/list/${perfilId}`;
       }
 
       const response = await fetch(url);
@@ -35,14 +34,15 @@ const NotificationBell = ({ isBackoffice = false }) => {
         const dados = await response.json();
         if (dados.success && Array.isArray(dados.data)) {
           setNotificacoes(dados.data);
-          const count = dados.data.filter(n => n.visto === false || n.visto === 0).length;
+          // Contar notificações não vistas (!visto ou visto === 0 ou visto === false)
+          const count = dados.data.filter(n => !n.visto || n.visto === 0 || n.visto === 'false').length;
           setNaoLidasCount(count);
         }
       }
     } catch (error) {
       // Ignorar erros silenciosamente no polling
     }
-  }, [user]);
+  }, [user, isBackoffice]);
 
   useEffect(() => {
     buscarNotificacoes();
@@ -90,8 +90,10 @@ const NotificationBell = ({ isBackoffice = false }) => {
   const marcarTodasComoVistas = async (e) => {
     e.stopPropagation();
     try {
-      const isMedico = user?.idtipoconta === 2 || user?.idtipoconta === 1;
-      if (isMedico) {
+      const isMedico = user?.idtipoconta === 2 || user?.idtipoconta === 1 || isBackoffice;
+      const perfilId = user?.idprefil || user?.idutilizadorprefil || user?.id;
+
+      if (isMedico || !perfilId) {
         await Promise.all(
           notificacoes.filter(n => !n.visto).map(n =>
             fetch(`${BASE_URL}/api/notificacoes/vista/${n.idnotificacao}`, {
@@ -101,8 +103,8 @@ const NotificationBell = ({ isBackoffice = false }) => {
             })
           )
         );
-      } else if (user?.idprefil) {
-        await fetch(`${BASE_URL}/api/notificacoes/vista-todas/${user.idprefil}`, {
+      } else {
+        await fetch(`${BASE_URL}/api/notificacoes/vista-todas/${perfilId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -128,49 +130,79 @@ const NotificationBell = ({ isBackoffice = false }) => {
   const rota = isBackoffice ? '/backoffice/notificacoes' : '/frontoffice/notificacoes';
 
   return (
-    <div ref={containerRef} style={{ position: 'relative', display: 'inline-block' }}>
-      <button
-        type="button"
-        onClick={() => setShowDropdown(!showDropdown)}
-        style={{
-          background: 'none',
-          border: 'none',
-          color: 'white',
-          position: 'relative',
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '6px 10px',
-          borderRadius: '8px',
-          cursor: 'pointer'
-        }}
-        title={`${naoLidasCount} notificação(ões) por ver`}
-      >
-        <i className="bi bi-bell" style={{ fontSize: '19px' }}></i>
-        {naoLidasCount > 0 && (
-          <span
-            style={{
-              position: 'absolute',
-              top: '0px',
-              right: '2px',
-              backgroundColor: '#e74c3c',
-              color: 'white',
-              fontSize: '11px',
-              fontWeight: 'bold',
-              borderRadius: '10px',
-              padding: '1px 5px',
-              minWidth: '17px',
-              height: '17px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
-            }}
-          >
-            {naoLidasCount > 99 ? '99+' : naoLidasCount}
+    <div ref={containerRef} style={{ position: 'relative', width: showLabel ? '100%' : 'auto', display: 'inline-block' }}>
+      {showLabel ? (
+        <button
+          type="button"
+          onClick={() => setShowDropdown(!showDropdown)}
+          className={`menu__link w-100 border-0 bg-transparent text-start d-flex align-items-center justify-content-between ${isActive || showDropdown ? 'btn-gold' : ''}`}
+          style={{ cursor: 'pointer' }}
+        >
+          <span className="d-flex align-items-center">
+            <i className="bi bi-bell-fill me-2"></i> Notificações
           </span>
-        )}
-      </button>
+          {naoLidasCount > 0 && (
+            <span
+              style={{
+                backgroundColor: '#e74c3c',
+                color: 'white',
+                fontSize: '11px',
+                fontWeight: 'bold',
+                borderRadius: '10px',
+                padding: '1px 6px',
+                minWidth: '20px',
+                textAlign: 'center',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+              }}
+            >
+              {naoLidasCount > 99 ? '99+' : naoLidasCount}
+            </span>
+          )}
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setShowDropdown(!showDropdown)}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'white',
+            position: 'relative',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '6px 10px',
+            borderRadius: '8px',
+            cursor: 'pointer'
+          }}
+          title={`${naoLidasCount} notificação(ões) por ver`}
+        >
+          <i className="bi bi-bell" style={{ fontSize: '19px' }}></i>
+          {naoLidasCount > 0 && (
+            <span
+              style={{
+                position: 'absolute',
+                top: '0px',
+                right: '2px',
+                backgroundColor: '#e74c3c',
+                color: 'white',
+                fontSize: '11px',
+                fontWeight: 'bold',
+                borderRadius: '10px',
+                padding: '1px 5px',
+                minWidth: '17px',
+                height: '17px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+              }}
+            >
+              {naoLidasCount > 99 ? '99+' : naoLidasCount}
+            </span>
+          )}
+        </button>
+      )}
 
       {/* DROPDOWN POPUP */}
       {showDropdown && (

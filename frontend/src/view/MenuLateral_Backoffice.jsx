@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-import logo from '../assets/logo.png'
+import logo from '../assets/logo.png';
 import '../style.css';
 
 const MenuBackoffice = () => {
@@ -21,8 +21,6 @@ const MenuBackoffice = () => {
             <i className="bi bi-house-door-fill"></i> Início
           </Link>
         </li>
-
-           
 
         <li className="menu__item">
           <Link to="/backoffice/conta/criar" 

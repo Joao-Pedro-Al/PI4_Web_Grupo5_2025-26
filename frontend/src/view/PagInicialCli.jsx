@@ -186,16 +186,10 @@ const PagInicialCli = () => {
             </h3>
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
               <div>
-                <i className="bi bi-card-text me-1"></i><strong>ID Conta:</strong> {user?.id}
-              </div>
-              <div>
                 <i className="bi bi-envelope me-1"></i><strong>Email:</strong> {user?.email}
               </div>
               <div>
-                <i className="bi bi-person-badge me-1"></i><strong>Tipo:</strong> Paciente
-              </div>
-              <div>
-                <i className="bi bi-person-vcard me-1"></i><strong>ID Perfil:</strong> {user?.idprefil || 'Não vinculado'}
+                <i className="bi bi-person-badge me-1"></i><strong>Tipo de Conta:</strong> Paciente
               </div>
             </div>
           </div>
