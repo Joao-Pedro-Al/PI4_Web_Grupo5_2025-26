@@ -44,11 +44,10 @@ const Perfis = () => {
 
     // Lógica de Filtragem dos Perfis
     const perfisFiltrados = dataPerfis.filter((p) => {
-        // Verificar se é médico ou paciente
         const eMedico = p.classe === 2 || 
                         p.idclasse === 2 || 
-                        (p.profissao && (p.profissao.toLowerCase().includes('médic') || p.profissao.toLowerCase().includes('doutor'))) ||
-                        (p.nome && (p.nome.toLowerCase().includes('dr') || p.nome.toLowerCase().includes('médic')));
+                        (p.profissao && /\b(médic|doutor|dentista)\b/i.test(p.profissao)) ||
+                        (p.nome && /\b(dr\.|dra\.|dr|dra|médic)\b/i.test(p.nome));
         const ePaciente = !eMedico;
 
         // 1. Filtrar por Tipo de Conta
@@ -174,8 +173,8 @@ const Perfis = () => {
                             {perfisFiltrados.map((data, index) => {
                                 const eMedico = data.classe === 2 || 
                                                 data.idclasse === 2 || 
-                                                (data.profissao && (data.profissao.toLowerCase().includes('médic') || data.profissao.toLowerCase().includes('doutor'))) ||
-                                                (data.nome && (data.nome.toLowerCase().includes('dr') || data.nome.toLowerCase().includes('médic')));
+                                                (data.profissao && /\b(médic|doutor|dentista)\b/i.test(data.profissao)) ||
+                                                (data.nome && /\b(dr\.|dra\.|dr|dra|médic)\b/i.test(data.nome));
                                 const idclasseCalc = eMedico ? 2 : 1;
 
                                 return (
