@@ -3,22 +3,22 @@ var sequelize = require("./database");
 var ViewPerfilCompleto = sequelize.define(
   "listarperfiscompletos",
   {
-    idperfil:{
+    idperfil: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
     iddependente: Sequelize.INTEGER,
     nome: Sequelize.STRING,
-    datanascimento: Sequelize.DATEONLY,
+    datanascimento: Sequelize.STRING,
     genero: Sequelize.STRING,
     endereco: Sequelize.STRING,
-    contactoprincipal: Sequelize.NUMBER,
-    contactosecundario: Sequelize.NUMBER,
-    nif: Sequelize.NUMBER,
+    contactoprincipal: Sequelize.STRING,
+    contactosecundario: Sequelize.STRING,
+    nif: Sequelize.STRING,
     estadocivil: Sequelize.STRING,
     profissao: Sequelize.STRING,
-    numeroutente: Sequelize.NUMBER,
+    numeroutente: Sequelize.STRING,
     subsistemassaude: Sequelize.STRING,
     gmail: Sequelize.STRING,
     motivoconsultainicial: Sequelize.STRING,
