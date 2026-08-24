@@ -10,8 +10,9 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import ptLocale from '@fullcalendar/core/locales/pt';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import urlGlobal from './url_global';
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = urlGlobal.endsWith('/') ? urlGlobal.slice(0, -1) : urlGlobal;
 
 const PaginaInicial = () => {
   const { user } = useContext(AuthContext);

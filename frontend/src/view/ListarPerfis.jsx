@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import url from "./url_global";
 
 export default function ListarPerfis() {
   const [lista, setLista] = useState([]);
 
   const carregar = async () => {
     try {
-      const res = await fetch("http://localhost:3000/utilizadorperfil");
+      const res = await fetch(`${url}utilizadorperfil`);
       const dados = await res.json();
       setLista(dados);
     } catch (err) {

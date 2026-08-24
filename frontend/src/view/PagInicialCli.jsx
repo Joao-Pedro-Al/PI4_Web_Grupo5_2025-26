@@ -3,8 +3,9 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../App.jsx';
 import '../Pag_Inic_cli.css';
+import urlGlobal from './url_global';
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = urlGlobal.endsWith('/') ? urlGlobal.slice(0, -1) : urlGlobal;
 
 const PagInicialCli = () => {
   const { user } = useContext(AuthContext);
