@@ -9,6 +9,7 @@ var TipoMarcacao = sequelize.define(
       autoIncrement: true,
       field: 'idtipomarcacao'
     },
+    desling: Sequelize.STRING,
     designacao: Sequelize.STRING,
   },
   {

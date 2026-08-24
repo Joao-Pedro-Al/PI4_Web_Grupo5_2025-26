@@ -64,13 +64,13 @@ async function initSeed() {
     const countTipoMarcacao = await TipoMarcacao.count();
     if (countTipoMarcacao === 0) {
       await TipoMarcacao.bulkCreate([
-        { idtipomarcacao: 1, desling: "Check-up Geral" },
-        { idtipomarcacao: 2, desling: "Limpeza Dentária / Destartarização" },
-        { idtipomarcacao: 3, desling: "Tratamento de Canal (Endodontia)" },
-        { idtipomarcacao: 4, desling: "Extração Dentária" },
-        { idtipomarcacao: 5, desling: "Ortodontia (Aparelho)" },
-        { idtipomarcacao: 6, desling: "Branqueamento Dentário" },
-        { idtipomarcacao: 7, desling: "Implante Dentário" }
+        { idtipomarcacao: 1, desling: "Check-up Geral", designacao: "Check-up Geral" },
+        { idtipomarcacao: 2, desling: "Limpeza Dentária / Destartarização", designacao: "Limpeza Dentária / Destartarização" },
+        { idtipomarcacao: 3, desling: "Tratamento de Canal (Endodontia)", designacao: "Tratamento de Canal (Endodontia)" },
+        { idtipomarcacao: 4, desling: "Extração Dentária", designacao: "Extração Dentária" },
+        { idtipomarcacao: 5, desling: "Ortodontia (Aparelho)", designacao: "Ortodontia (Aparelho)" },
+        { idtipomarcacao: 6, desling: "Branqueamento Dentário", designacao: "Branqueamento Dentário" },
+        { idtipomarcacao: 7, desling: "Implante Dentário", designacao: "Implante Dentário" }
       ]);
     }
 

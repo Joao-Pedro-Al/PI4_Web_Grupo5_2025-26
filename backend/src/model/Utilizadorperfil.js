@@ -25,7 +25,7 @@ const Utilizadorperfil = sequelize.define(
     },
 
     nome: Sequelize.STRING,
-    datanascimento: Sequelize.DATEONLY,
+    datanascimento: Sequelize.STRING,
 
     genero: {
       type: Sequelize.INTEGER,
