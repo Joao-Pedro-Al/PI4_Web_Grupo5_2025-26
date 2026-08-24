@@ -41,6 +41,7 @@ const Consultas = sequelize.define(
       type: Sequelize.STRING,
       defaultValue: "Normal"
     },
+    acompanhante: Sequelize.STRING,
 
     idutilizadorprefil: {
       type: Sequelize.INTEGER,

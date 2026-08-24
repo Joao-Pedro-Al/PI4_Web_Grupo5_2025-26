@@ -22,6 +22,7 @@ function DetalhesConsulta() {
   const [detalhes, setDetalhes] = useState('');
   const [guiaTratamento, setGuiaTratamento] = useState('');
   const [urgencia, setUrgencia] = useState('Normal');
+  const [acompanhante, setAcompanhante] = useState('');
 
   // Receita Médica
   const [receitaTexto, setReceitaTexto] = useState('');
@@ -41,6 +42,7 @@ function DetalhesConsulta() {
         setDetalhes(data.detalhes || '');
         setGuiaTratamento(data.guia_tratamento || '');
         setUrgencia(data.urgencia || 'Normal');
+        setAcompanhante(data.acompanhante || data.UtilizadorData?.posUtilizador?.nome || '');
         
         carregarComprovativos(data.idutilizadorprefil);
       } else {
@@ -81,7 +83,8 @@ function DetalhesConsulta() {
       const res = await axios.put(`${BASE_URL}api/consultas/update/${id}`, {
         detalhes: detalhes,
         guia_tratamento: guiaTratamento,
-        urgencia: urgencia
+        urgencia: urgencia,
+        acompanhante: acompanhante
       });
 
       if (res.data && res.data.success) {
@@ -98,24 +101,32 @@ function DetalhesConsulta() {
     }
   };
 
-  const handleGerarComprovativo = async () => {
+  const handleGerarComprovativo = async (tipoDoc = 'Declaração de Presença') => {
     if (!consulta) return;
     try {
       setGerandoComprovativo(true);
       setErro('');
       
+      let tituloDoc = 'Comprovativo de Presença em Consulta Dentária';
+      if (tipoDoc === 'Declaração do Acompanhante') {
+        const nomeAcomp = window.prompt("Nome do Acompanhante / Encarregado de Educação:", "") || "Acompanhante";
+        tituloDoc = `Declaração de Acompanhante — ${nomeAcomp}`;
+      } else {
+        tituloDoc = tituloComprovativo || 'Comprovativo de Presença em Consulta Dentária';
+      }
+
       const payload = {
         idconsulta: Number(id),
         idutilizadorprefil: consulta.idutilizadorprefil,
-        tipo_documento: 'Comprovativo de Presença',
-        titulo: tituloComprovativo || 'Comprovativo de Presença em Consulta Dentária',
+        tipo_documento: tipoDoc,
+        titulo: tituloDoc,
         valor: 0.00
       };
 
       const res = await axios.post(`${BASE_URL}api/comprovativo/create`, payload);
 
       if (res.data && res.data.success) {
-        setSucessoMsg('Comprovativo emitido com sucesso!');
+        setSucessoMsg(`Documento ("${tipoDoc}") emitido com sucesso!`);
         await carregarComprovativos(consulta.idutilizadorprefil);
         setTimeout(() => setSucessoMsg(''), 4000);
       } else {
@@ -340,11 +351,25 @@ function DetalhesConsulta() {
                 <label className="form-label fw-bold text-secondary">Guia de Tratamento / Recomendações Pós-Consulta:</label>
                 <textarea 
                   className="form-control"
-                  rows={5}
+                  rows={4}
                   placeholder="Instruções para o paciente, próximos passos de tratamento, cuidados pós-procedimento..."
                   value={guiaTratamento}
                   onChange={(e) => setGuiaTratamento(e.target.value)}
                 />
+              </div>
+
+              <div className="mb-3 p-3 bg-light rounded border">
+                <label className="form-label fw-bold text-primary mb-1">
+                  <i className="bi bi-people-fill me-2"></i>Nome do Acompanhante / Encarregado de Educação:
+                </label>
+                <input 
+                  type="text"
+                  className="form-control"
+                  placeholder="Ex: Maria Santos (Mãe / Pai / Acompanhante)"
+                  value={acompanhante}
+                  onChange={(e) => setAcompanhante(e.target.value)}
+                />
+                <small className="text-muted d-block mt-1">Preencha se a consulta teve a presença de um pai, mãe ou tutor legal para permitir emitir a declaração de acompanhante.</small>
               </div>
 
             </div>
@@ -385,20 +410,30 @@ function DetalhesConsulta() {
             <div className="card-body">
               
               <div className="mb-3">
-                <label className="form-label text-muted small">Título do Documento:</label>
+                <label className="form-label text-muted small">Título do Documento Personalizado:</label>
                 <input 
                   type="text" 
                   className="form-control form-control-sm mb-2" 
                   value={tituloComprovativo} 
                   onChange={(e) => setTituloComprovativo(e.target.value)}
                 />
-                <button 
-                  onClick={handleGerarComprovativo}
-                  disabled={gerandoComprovativo}
-                  className="btn btn-success btn-sm w-100"
-                >
-                  {gerandoComprovativo ? 'A gerar...' : <><i className="bi bi-plus-circle me-1"></i> Gerar Novo Comprovativo</>}
-                </button>
+                <div className="d-grid gap-2">
+                  <button 
+                    onClick={() => handleGerarComprovativo('Declaração de Presença')}
+                    disabled={gerandoComprovativo}
+                    className="btn btn-success btn-sm"
+                  >
+                    {gerandoComprovativo ? 'A emitir...' : <><i className="bi bi-file-earmark-check me-1"></i> Emitir Declaração de Presença (Paciente)</>}
+                  </button>
+
+                  <button 
+                    onClick={() => handleGerarComprovativo('Declaração do Acompanhante')}
+                    disabled={gerandoComprovativo}
+                    className="btn btn-outline-success btn-sm"
+                  >
+                    {gerandoComprovativo ? 'A emitir...' : <><i className="bi bi-people me-1"></i> Emitir Declaração do Acompanhante</>}
+                  </button>
+                </div>
               </div>
 
               <hr />

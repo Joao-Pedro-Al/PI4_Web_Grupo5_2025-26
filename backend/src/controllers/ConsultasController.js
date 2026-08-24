@@ -109,6 +109,7 @@ controllers.create = async (req, res) => {
       detalhes: detalhes || null,
       guia_tratamento: guia_tratamento || null,
       urgencia: urgencia || "Normal",
+      acompanhante: req.body.acompanhante || null,
       falta: false,
       estadimarcacao: true
     });

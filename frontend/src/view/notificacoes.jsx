@@ -2,7 +2,9 @@ import { useState, useEffect, useCallback, useContext } from 'react';
 import { AuthContext } from '../App.jsx';
 import './Pag_Not.css';
 
-const BASE_URL = 'http://localhost:3000';
+import urlGlobal from './url_global.jsx';
+
+const BASE_URL = urlGlobal.endsWith('/') ? urlGlobal.slice(0, -1) : urlGlobal;
 
 const Notificacoes = () => {
   const { user } = useContext(AuthContext);
