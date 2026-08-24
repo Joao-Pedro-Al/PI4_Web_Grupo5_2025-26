@@ -135,6 +135,18 @@ async function initSeed() {
       ]);
     }
 
+    // Sincronizar as sequências SERIAL do PostgreSQL para evitar erros de chave duplicada
+    try {
+      await sequelize.query("SELECT setval(pg_get_serial_sequence('utilizadorprefil', 'idutilizadorprefil'), COALESCE((SELECT MAX(idutilizadorprefil) FROM utilizadorprefil), 1));");
+      await sequelize.query("SELECT setval(pg_get_serial_sequence('conta', 'idconta'), COALESCE((SELECT MAX(idconta) FROM conta), 1));");
+      await sequelize.query("SELECT setval(pg_get_serial_sequence('consultas', 'idconsulta'), COALESCE((SELECT MAX(idconsulta) FROM consultas), 1));");
+      await sequelize.query("SELECT setval(pg_get_serial_sequence('notificacao', 'idnotificacao'), COALESCE((SELECT MAX(idnotificacao) FROM notificacao), 1));");
+      await sequelize.query("SELECT setval(pg_get_serial_sequence('comprovativo', 'idcomprovativo'), COALESCE((SELECT MAX(idcomprovativo) FROM comprovativo), 1));");
+      console.log("✅ Sequências SERIAL sincronizadas com sucesso!");
+    } catch (e) {
+      // Ignorar se não for PostgreSQL ou se a tabela não tiver sequence
+    }
+
     console.log("✅ Base de dados inicializada e pronta a usar!");
   } catch (error) {
     console.error("❌ Erro na semente de dados:", error);

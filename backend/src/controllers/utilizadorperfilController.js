@@ -5,8 +5,22 @@ var Estadocivil = require("../model/Estadocivil");
 var ViewPerfilCompleto = require("../model/ViewPerfilCompleto");
 var TipoConta = require("../model/tipoconta");
 var Conta = require("../model/Conta");
+var Consultas = require("../model/Consultas");
+var Notificacao = require("../model/Notificacao");
+var Comprovativo = require("../model/Comprovativo");
 var sequelize = require("../model/database");
 const controllers = {};
+
+const parseIntegerOrNull = (val) => {
+  if (val === null || val === undefined || val === "" || val === "null" || val === "undefined") return null;
+  const num = parseInt(val, 10);
+  return isNaN(num) ? null : num;
+};
+
+const parseBooleanSafe = (val) => {
+  if (val === true || val === "true" || val === 1 || val === "1") return true;
+  return false;
+};
 
 // Criar perfil de utilizador
 controllers.create = async (req, res) => {
@@ -39,33 +53,33 @@ controllers.create = async (req, res) => {
       : null;
 
     const data = await Utilizadorperfil.create({
-      posidutilizador: (idResponsavel && idResponsavel !== "null" && idResponsavel !== "undefined") ? Number(idResponsavel) : null,
-      nome: nome,
-      gmail: gmail || email,
-      nif: nif ? String(nif) : null,
-      profissao: profissao || null,
-      datanascimento: datanascimento || null,
-      genero: idgenero ? Number(idgenero) : (genero ? Number(genero) : null), 
-      estadocivil: idestadocivil ? Number(idestadocivil) : (estadocivil ? Number(estadocivil) : null),
-      classe: idclasse ? Number(idclasse) : (classe ? Number(classe) : null),
-      contactoprincipal: contactoprincipal ? String(contactoprincipal) : null,
-      contactosecundario: contactosecundario ? String(contactosecundario) : null,
-      endereco: endereco || null,
-      numeroutente: numeroutente ? String(numeroutente) : null,
-      subsistemassaude: subsistemassaude || null,
+      posidutilizador: parseIntegerOrNull(idResponsavel),
+      nome: nome || 'Sem Nome',
+      gmail: (gmail || email) ? String(gmail || email).trim() : null,
+      nif: nif ? String(nif).trim() : null,
+      profissao: profissao ? String(profissao).trim() : null,
+      datanascimento: datanascimento ? String(datanascimento).trim() : null,
+      genero: parseIntegerOrNull(idgenero || genero),
+      estadocivil: parseIntegerOrNull(idestadocivil || estadocivil),
+      classe: parseIntegerOrNull(idclasse || classe) || 1, // Default classe 1 (Geral / Paciente)
+      contactoprincipal: contactoprincipal ? String(contactoprincipal).trim() : null,
+      contactosecundario: contactosecundario ? String(contactosecundario).trim() : null,
+      endereco: endereco ? String(endereco).trim() : null,
+      numeroutente: numeroutente ? String(numeroutente).trim() : null,
+      subsistemassaude: subsistemassaude ? String(subsistemassaude).trim() : null,
       alergias: alergias || null,
       medicamentos: medicamentos || null,
       condicaosaude: condicoesSaude || condicaosaude || null,
       motivoconsultainicial: motivoConsulta || motivoconsultainicial || null,
-      experienciaanastesia: Boolean(anestesiaLocal ?? experienciaanastesia),
+      experienciaanastesia: parseBooleanSafe(anestesiaLocal ?? experienciaanastesia),
       condicoesdentarias: detalhesPreExistentes || condicoesdentarias || (condicoesDentariasPre ? "Sim" : null),
       habitoigieneoral: habitosHigieneOral || habitoigieneoral || null,
       consumosubstancia: detalhesSubstancias || consumosubstancia || (consumoSubstancias ? "Sim" : null),
       historicotratamentosdentariospassados: historicoTratamentos || historicotratamentosdentariospassados || null,
-      historicodor: Boolean(dorSensibilidade ?? historicodor),
+      historicodor: parseBooleanSafe(dorSensibilidade ?? historicodor),
       atividadesdesportivas: atividadesDesportivas || atividadesdesportivas || null,
       bruxismo: tipoBruxismo || bruxismo || null,
-      gravida: Boolean(gravidez ?? gravida),
+      gravida: parseBooleanSafe(gravidez ?? gravida),
       infoadicional: infoAdicional || infoadicional || null,
       resultadosanteriores: resultadosAnteriores || resultadosanteriores || null,
       ficheirosanexos: ficheirosanexos
@@ -120,7 +134,7 @@ controllers.listPerfilInteiro = async (req, res) => {
   }
 };
 
-// Listar dependentes (crianças/educandos) de um perfil responsável
+// Listar dependentes associados a um perfil responsável
 controllers.listDependentes = async (req, res) => {
   try {
     const { id } = req.params;
@@ -171,35 +185,35 @@ controllers.update = async (req, res) => {
     const idResponsavel = posidutilizador || posIdUtilizador;
 
     await perfil.update({
-      nome: nome !== undefined ? nome : perfil.nome,
-      gmail: (gmail || email) !== undefined ? (gmail || email) : perfil.gmail,
-      nif: nif !== undefined ? (nif ? String(nif) : null) : perfil.nif,
-      profissao: profissao !== undefined ? profissao : perfil.profissao,
-      datanascimento: datanascimento !== undefined ? datanascimento : perfil.datanascimento,
-      genero: idgenero ? Number(idgenero) : (genero ? Number(genero) : perfil.genero),
-      estadocivil: idestadocivil ? Number(idestadocivil) : (estadocivil ? Number(estadocivil) : perfil.estadocivil),
-      classe: idclasse ? Number(idclasse) : (classe ? Number(classe) : perfil.classe),
-      contactoprincipal: contactoprincipal !== undefined ? (contactoprincipal ? String(contactoprincipal) : null) : perfil.contactoprincipal,
-      contactosecundario: contactosecundario !== undefined ? (contactosecundario ? String(contactosecundario) : null) : perfil.contactosecundario,
-      endereco: endereco !== undefined ? endereco : perfil.endereco,
-      numeroutente: numeroutente !== undefined ? (numeroutente ? String(numeroutente) : null) : perfil.numeroutente,
-      subsistemassaude: subsistemassaude !== undefined ? subsistemassaude : perfil.subsistemassaude,
+      nome: nome !== undefined ? (nome ? String(nome).trim() : perfil.nome) : perfil.nome,
+      gmail: (gmail || email) !== undefined ? ((gmail || email) ? String(gmail || email).trim() : null) : perfil.gmail,
+      nif: nif !== undefined ? (nif ? String(nif).trim() : null) : perfil.nif,
+      profissao: profissao !== undefined ? (profissao ? String(profissao).trim() : null) : perfil.profissao,
+      datanascimento: datanascimento !== undefined ? (datanascimento ? String(datanascimento).trim() : null) : perfil.datanascimento,
+      genero: parseIntegerOrNull(idgenero || genero) !== null ? parseIntegerOrNull(idgenero || genero) : perfil.genero,
+      estadocivil: parseIntegerOrNull(idestadocivil || estadocivil) !== null ? parseIntegerOrNull(idestadocivil || estadocivil) : perfil.estadocivil,
+      classe: parseIntegerOrNull(idclasse || classe) !== null ? parseIntegerOrNull(idclasse || classe) : perfil.classe,
+      contactoprincipal: contactoprincipal !== undefined ? (contactoprincipal ? String(contactoprincipal).trim() : null) : perfil.contactoprincipal,
+      contactosecundario: contactosecundario !== undefined ? (contactosecundario ? String(contactosecundario).trim() : null) : perfil.contactosecundario,
+      endereco: endereco !== undefined ? (endereco ? String(endereco).trim() : null) : perfil.endereco,
+      numeroutente: numeroutente !== undefined ? (numeroutente ? String(numeroutente).trim() : null) : perfil.numeroutente,
+      subsistemassaude: subsistemassaude !== undefined ? (subsistemassaude ? String(subsistemassaude).trim() : null) : perfil.subsistemassaude,
       alergias: alergias !== undefined ? alergias : perfil.alergias,
       medicamentos: medicamentos !== undefined ? medicamentos : perfil.medicamentos,
       condicaosaude: (condicoesSaude || condicaosaude) !== undefined ? (condicoesSaude || condicaosaude) : perfil.condicaosaude,
       motivoconsultainicial: (motivoConsulta || motivoconsultainicial) !== undefined ? (motivoConsulta || motivoconsultainicial) : perfil.motivoconsultainicial,
-      experienciaanastesia: experienciaanastesia !== undefined ? Boolean(experienciaanastesia) : (anestesiaLocal !== undefined ? Boolean(anestesiaLocal) : perfil.experienciaanastesia),
+      experienciaanastesia: experienciaanastesia !== undefined ? parseBooleanSafe(experienciaanastesia) : (anestesiaLocal !== undefined ? parseBooleanSafe(anestesiaLocal) : perfil.experienciaanastesia),
       condicoesdentarias: (detalhesPreExistentes || condicoesdentarias) !== undefined ? (detalhesPreExistentes || condicoesdentarias) : perfil.condicoesdentarias,
       habitoigieneoral: (habitosHigieneOral || habitoigieneoral) !== undefined ? (habitosHigieneOral || habitoigieneoral) : perfil.habitoigieneoral,
       consumosubstancia: (detalhesSubstancias || consumosubstancia) !== undefined ? (detalhesSubstancias || consumosubstancia) : perfil.consumosubstancia,
       historicotratamentosdentariospassados: (historicoTratamentos || historicotratamentosdentariospassados) !== undefined ? (historicoTratamentos || historicotratamentosdentariospassados) : perfil.historicotratamentosdentariospassados,
-      historicodor: historicodor !== undefined ? Boolean(historicodor) : (dorSensibilidade !== undefined ? Boolean(dorSensibilidade) : perfil.historicodor),
+      historicodor: historicodor !== undefined ? parseBooleanSafe(historicodor) : (dorSensibilidade !== undefined ? parseBooleanSafe(dorSensibilidade) : perfil.historicodor),
       atividadesdesportivas: (atividadesDesportivas || atividadesdesportivas) !== undefined ? (atividadesDesportivas || atividadesdesportivas) : perfil.atividadesdesportivas,
       bruxismo: (tipoBruxismo || bruxismo) !== undefined ? (tipoBruxismo || bruxismo) : perfil.bruxismo,
-      gravida: gravida !== undefined ? Boolean(gravida) : (gravidez !== undefined ? Boolean(gravidez) : perfil.gravida),
+      gravida: gravida !== undefined ? parseBooleanSafe(gravida) : (gravidez !== undefined ? parseBooleanSafe(gravidez) : perfil.gravida),
       infoadicional: (infoAdicional || infoadicional) !== undefined ? (infoAdicional || infoadicional) : perfil.infoadicional,
       resultadosanteriores: (resultadosAnteriores || resultadosanteriores) !== undefined ? (resultadosAnteriores || resultadosanteriores) : perfil.resultadosanteriores,
-      posidutilizador: idResponsavel !== undefined ? (idResponsavel && idResponsavel !== "null" && idResponsavel !== "undefined" ? Number(idResponsavel) : null) : perfil.posidutilizador
+      posidutilizador: idResponsavel !== undefined ? parseIntegerOrNull(idResponsavel) : perfil.posidutilizador
     });
 
     const perfilAtualizado = await Utilizadorperfil.findByPk(id, {
@@ -222,7 +236,7 @@ controllers.update = async (req, res) => {
   }
 };
 
-// Eliminar perfil de utilizador
+// Eliminar perfil de utilizador com limpeza em cascata
 controllers.delete = async (req, res) => {
   try {
     const { id } = req.params;
@@ -231,6 +245,28 @@ controllers.delete = async (req, res) => {
     if (!perfil) {
       return res.status(404).json({ success: false, message: "Perfil não encontrado." });
     }
+
+    const perfilId = Number(id);
+
+    try {
+      if (Consultas) await Consultas.destroy({ where: { idutilizadorprefil: perfilId } });
+    } catch (e) { console.log("Aviso eliminar consultas:", e.message); }
+
+    try {
+      if (Conta) await Conta.destroy({ where: { idprefil: perfilId } });
+    } catch (e) { console.log("Aviso eliminar contas:", e.message); }
+
+    try {
+      if (Notificacao) await Notificacao.destroy({ where: { prefil: perfilId } });
+    } catch (e) { console.log("Aviso eliminar notificacoes:", e.message); }
+
+    try {
+      if (Comprovativo) await Comprovativo.destroy({ where: { idutilizadorprefil: perfilId } });
+    } catch (e) { console.log("Aviso eliminar comprovativos:", e.message); }
+
+    try {
+      await Utilizadorperfil.update({ posidutilizador: null }, { where: { posidutilizador: perfilId } });
+    } catch (e) { console.log("Aviso desassociar dependentes:", e.message); }
 
     await perfil.destroy();
 
@@ -243,37 +279,5 @@ controllers.delete = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-controllers.criarconta = async (req, res) => {
-  const { nome, email, tipoconta } = req.body;
-  const tamanhoPass = Math.floor(Math.random() * 10) + 10;
-
-  try {
-    const prefil = await Utilizadorperfil.findAll({
-      where: { gmail: email }
-    });
-    const idpre = prefil.length > 0 ? prefil[0].idutilizadorprefil : null;
-    const data = await Conta.create({
-      nome: nome,
-      password: GerarPassword(tamanhoPass),
-      idtipoconta: Number(tipoconta), 
-      idprefil: idpre ? Number(idpre) : null
-    });
-
-    res.json({ success: true, message: "Registado!", data: data });
-  } catch (error) {
-    console.log("Erro detalhado: ", error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-function GerarPassword(length) {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-  for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return result;
-}
 
 module.exports = controllers;
