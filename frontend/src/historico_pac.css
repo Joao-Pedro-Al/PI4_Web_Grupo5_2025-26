@@ -68,6 +68,14 @@
   background-color: #ECECEC;
 }
 
+/* Título do cartão (titulo da marcação) — maior e na mesma cor do resto
+   do texto do cartão, para não depender do dourado (pouco legível sobre
+   o fundo cinzento claro #ECECEC) */
+.div--cartao--consulta .card-title{
+  font-size: 1.4rem;
+  color: #333;
+}
+
 .i--cartao--seta{
   padding: 0px;
 }
@@ -86,6 +94,8 @@
 .div__button--presenca{
   border: none !important;
   border-radius: 50px !important;
+  padding-left: 18px !important;
+  padding-right: 18px !important;
 }
 
 .button__img--icon{
