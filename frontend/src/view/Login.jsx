@@ -87,7 +87,7 @@ const Login = () => {
         </div>
 
         <h2 className="login-title">
-          Sistema Clínica Dentária
+          CliniMolelos
         </h2>
 
         {erro && (
