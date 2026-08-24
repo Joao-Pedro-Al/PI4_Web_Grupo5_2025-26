@@ -4,22 +4,20 @@
   --text-muted: #8E8E8E;
 }
 
-body { margin: 0; font-family: 'Inter', sans-serif; overflow: hidden; }
-
-/* Header */
-.gold-header {
-  background-color: var(--gold-main);
-  height: 35px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 0 20px;
-  gap: 15px;
-  color: white;
-  font-size: 1.2rem;
+/* Reset para página de remarcação */
+.remarcar-page {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  width: 100%;
 }
 
-.main-layout { display: flex; height: calc(100vh - 35px); }
+/* Header removido pois já tem no layout principal */
+
+.main-layout { 
+  display: flex; 
+  min-height: calc(100vh - 60px);
+  margin-top: 60px;
+}
 
 /* Sidebar */
 .sidebar {
@@ -29,6 +27,10 @@ body { margin: 0; font-family: 'Inter', sans-serif; overflow: hidden; }
   padding: 30px 20px;
   display: flex;
   flex-direction: column;
+  position: fixed;
+  top: 60px;
+  bottom: 0;
+  left: 0;
 }
 
 .logo-container {
@@ -46,9 +48,16 @@ body { margin: 0; font-family: 'Inter', sans-serif; overflow: hidden; }
   font-size: 1.5rem;
 }
 
-.logo-text { color: var(--gold-main); font-size: 1.3rem; }
+.logo-text { 
+  color: var(--gold-main); 
+  font-size: 1.3rem; 
+}
 
-.side-nav { display: flex; flex-direction: column; gap: 8px; }
+.side-nav { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 8px; 
+}
 
 .nav-item {
   padding: 12px 15px;
@@ -66,18 +75,34 @@ body { margin: 0; font-family: 'Inter', sans-serif; overflow: hidden; }
   color: white;
 }
 
-.logout { margin-top: auto; }
+.logout { 
+  margin-top: auto; 
+}
 
-/* Área Central */
-.content {
+/* Área Central para remarcação - CENTRALIZADA */
+.remarcar-content {
   flex: 1;
   padding: 60px;
   background-color: white;
-  background-image: url('https://cdn-icons-png.flaticon.com/512/3211/3211155.png'); /* Ícone de dente como marca d'água */
+  background-image: url('https://cdn-icons-png.flaticon.com/512/3211/3211155.png');
   background-size: 300px;
   background-repeat: space;
   background-blend-mode: overlay;
   opacity: 0.9;
+  margin-left: 260px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: calc(100% - 260px);
+}
+
+.remarcar-container {
+  max-width: 1200px;
+  width: 100%;
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
 }
 
 .form-grid {
@@ -92,6 +117,7 @@ label {
   color: var(--gold-main);
   font-size: 1.8rem;
   margin-bottom: 15px;
+  font-weight: 600;
 }
 
 .custom-input {
@@ -100,9 +126,18 @@ label {
   padding: 12px 20px;
   width: 100%;
   outline: none;
+  font-size: 16px;
+  transition: all 0.3s;
 }
 
-.date-input { max-width: 450px; }
+.custom-input:focus {
+  border-color: #8a7542;
+  box-shadow: 0 0 0 3px rgba(169, 156, 94, 0.2);
+}
+
+.date-input { 
+  max-width: 450px; 
+}
 
 /* Cards de Tempo */
 .time-pickers-wrapper {
@@ -117,6 +152,12 @@ label {
   padding: 15px;
   width: 170px;
   background: white;
+  transition: all 0.3s;
+}
+
+.time-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(169, 156, 94, 0.15);
 }
 
 .card-label {
@@ -125,6 +166,7 @@ label {
   color: var(--gold-main);
   font-size: 0.9rem;
   margin-bottom: 10px;
+  font-weight: 500;
 }
 
 .time-display {
@@ -143,9 +185,14 @@ label {
   font-size: 2.2rem;
   text-align: center;
   color: #333;
+  font-weight: 600;
 }
 
-.separator { font-size: 2rem; font-weight: bold; }
+.separator { 
+  font-size: 2rem; 
+  font-weight: bold; 
+  color: var(--gold-main);
+}
 
 .time-sublabels {
   display: flex;
@@ -166,8 +213,14 @@ label {
   border: none;
   background: none;
   font-size: 0.8rem;
-  color: #5D40C0; /* Cor roxa do OK/Cancel no Figma */
+  color: #5D40C0;
   margin-left: 10px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.btn-cancel:hover, .btn-ok:hover {
+  color: #3D20A0;
 }
 
 /* Botão Confirmar */
@@ -179,6 +232,70 @@ label {
   border-radius: 12px;
   font-size: 1.3rem;
   float: right;
-  margin-top: 150px;
+  margin-top: 30px;
   cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(169, 156, 94, 0.3);
+}
+
+.btn-confirmar:hover {
+  background-color: #8a7542;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(138, 117, 66, 0.4);
+}
+
+/* Textarea motivo */
+.motivo-textarea {
+  width: 100%;
+  border: 2px solid var(--gold-main);
+  border-radius: 15px;
+  padding: 20px;
+  font-size: 16px;
+  min-height: 150px;
+  resize: vertical;
+  margin-top: 10px;
+  font-family: inherit;
+}
+
+.motivo-textarea:focus {
+  outline: none;
+  border-color: #8a7542;
+  box-shadow: 0 0 0 3px rgba(169, 156, 94, 0.2);
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .time-pickers-wrapper {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .remarcar-content {
+    padding: 30px 20px;
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  .remarcar-container {
+    padding: 25px;
+  }
+  
+  .sidebar {
+    display: none;
+  }
+  
+  .time-card {
+    width: 140px;
+  }
+  
+  .btn-confirmar {
+    width: 100%;
+    padding: 15px;
+  }
 }

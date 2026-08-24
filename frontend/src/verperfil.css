@@ -47,3 +47,58 @@ a.active{
   color: #A99C5E;
   margin-bottom: 10px;
 }
+
+
+.voltar-link{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 28px;
+  color: #A99C5E;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.voltar-link:hover{
+  color: #8a7542;
+}
+
+
+.secao-header{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 24px 0;
+  color: #A99C5E;
+}
+
+.secao-header h5{
+  margin: 0;
+  font-weight: 700;
+  color: #A99C5E;
+}
+
+.secao-header i{
+  font-size: 1.4rem;
+}
+
+
+.btn-alterar,
+.btn-apagar{
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+  color: white;
+  background-color: #A99C5E;
+  transition: all 0.3s ease;
+}
+
+.btn-alterar:hover,
+.btn-apagar:hover{
+  background-color: #8a7542;
+  transform: translateY(-2px);
+}

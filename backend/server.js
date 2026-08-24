@@ -5,8 +5,7 @@ app.use(express.json());
 const dotenv = require('dotenv');
 dotenv.config();
 
-const notificacaoPool = require('./dbConfig')
-
+const notificacaoPool = require("./src/DBConfig")
 app.get('/', (req, res) => {
     res.send('Simple API homepage');
 })
