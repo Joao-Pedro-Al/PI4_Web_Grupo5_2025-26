@@ -1,13 +1,13 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import url from "./url_global";
 import id_Perfil from "./id_global";
+import { AuthContext } from "../App.jsx";
 
 import axios from "axios";
-const urlAPI = url + "consultas/list/" + id_Perfil;
 const urlAPI_Tipo = url + "consultas/tipomarcacao/list";
 
 import '../historico_pac.css';
@@ -15,6 +15,10 @@ import '../historico_pac.css';
 import ConsultaHistorico from "./Consulta_Historico";
 
 const Historico_Front = () => {
+  const { user } = useContext(AuthContext);
+  const perfilId = user?.idprefil || id_Perfil;
+  const urlAPI = url + "consultas/list/" + perfilId;
+
   const [dataConsul, setdataConsul] = useState([]);
   const [dataConsulMes, setdataConsulMes] = useState([]);
   
@@ -67,10 +71,9 @@ const Historico_Front = () => {
           ListarAnos();
           AtualizarData();
           const Mes = document.getElementById("mes-" + idmes);
-          //Ativar Mês Selecionado
-          Mes.classList.remove("h5");
-          Mes.classList.remove("p--data");
-          Mes.classList.add("h2");
+          if (Mes) {
+            Mes.classList.add("p--data--ativo");
+          }
         }
 
         function ListarAnos()
@@ -80,7 +83,7 @@ const Historico_Front = () => {
             
             for(var i = 8; i >= 1; i--){
                 const A = document.getElementById("data-" + i);
-                A.textContent = anomax - menos;
+                if (A) A.textContent = anomax - menos;
                 menos += 1;
             }
 
@@ -92,16 +95,11 @@ const Historico_Front = () => {
             anos.forEach(item => {
                 if(item.textContent == stateAno.current)
                 {
-                    item.classList.remove('h5');
-                    item.classList.remove('p--data');
-                    item.classList.add('h2');
+                    item.classList.add('p--data--ativo');
                 }
-
-                if(item.classList.contains('h2') && item.textContent != stateAno.current)
+                else
                 {
-                    item.classList.add('h5');
-                    item.classList.add('p--data');
-                    item.classList.remove('h2');
+                    item.classList.remove('p--data--ativo');
                 }
             })
         }
@@ -128,12 +126,12 @@ const Historico_Front = () => {
           }
         };
 
-        MenosAno.addEventListener('click', MenosClick);
-        MaisAno.addEventListener('click', MaisClick);
+        if (MenosAno) MenosAno.addEventListener('click', MenosClick);
+        if (MaisAno) MaisAno.addEventListener('click', MaisClick);
 
         anos.forEach(item => {
             item.addEventListener('click', function() {
-                if(item.classList.contains("h2") == false)
+                if(item.classList.contains("p--data--ativo") == false)
                 {
                     ano = parseInt(item.textContent);
                     stateAno.current = ano;
@@ -145,19 +143,15 @@ const Historico_Front = () => {
 
         meses.forEach(item => {
             item.addEventListener('click', function() {
-                if(item.classList.contains("h2") == false)
+                if(item.classList.contains("p--data--ativo") == false)
                 {
                     const mes_ativo = document.getElementById("mes-" + idmes);
 
-                    //Revreter Mês Ativo
-                    mes_ativo.classList.add("h5");
-                    mes_ativo.classList.add("p--data");
-                    mes_ativo.classList.remove("h2");
+                    if (mes_ativo) {
+                        mes_ativo.classList.remove("p--data--ativo");
+                    }
 
-                    //Ativar Mês Selecionado
-                    item.classList.remove('h5');
-                    item.classList.remove('p--data');
-                    item.classList.add('h2');
+                    item.classList.add('p--data--ativo');
 
                     const Id_String = item.id;
                     idmes = parseInt(Id_String.substring(Id_String.indexOf("-") + 1));
@@ -263,16 +257,17 @@ const Historico_Front = () => {
     }
 
     function CarregarConsultasMes() {
-      const datames = dataConsul.filter((data) => {
-        const dataconsul = new Date(data.data);
-        const consul_mes = dataconsul.getMonth() + 1;
-        const consul_ano = dataconsul.getFullYear();
+      const datames = dataConsul.filter((item) => {
+        if (!item.data) return false;
+        const partes = item.data.split('T')[0].split('-');
+        if (partes.length < 3) return false;
+        const consul_ano = parseInt(partes[0], 10);
+        const consul_mes = parseInt(partes[1], 10);
 
-        return consul_mes == Mes_Sel && consul_ano == Ano_Sel;
+        return consul_mes === Mes_Sel && consul_ano === Ano_Sel;
       });
 
-      console.log("Debug: " + datames);
-
+      console.log("Debug: ", datames);
       setdataConsulMes(datames);
     }
 
@@ -412,4 +407,5 @@ const Historico_Front = () => {
     return "Erro...";
   }
 }
+
 export default Historico_Front;

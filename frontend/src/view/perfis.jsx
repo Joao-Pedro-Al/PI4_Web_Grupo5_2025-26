@@ -1,318 +1,212 @@
-import { useEffect, useState, useRef } from "react";
+// src/view/perfis.jsx - VERSÃO COMPLETA REFACTORED
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 
 import url from "./url_global";
-
 import axios from "axios";
-const urlAPI = url + "utilizadorperfil/list";
-
 import '../perfis.css';
-
 import CartaoPerfil from "./Cartao_Perfil";
 
+const urlAPI = url + "utilizadorperfil/list";
+
 const Perfis = () => {
-    const [dataPerfis, setdataPerfis] = useState([]);
-    
-    const iniciado = useRef(0);
+    const [dataPerfis, setDataPerfis] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [erro, setErro] = useState(null);
 
-    // Carregar Perfis
+    // Estados de Filtro em React puro
+    const [tipoFiltro, setTipoFiltro] = useState("Todos"); // "Todos", "Paciente", "Doutor"
+    const [termoPesquisa, setTermoPesquisa] = useState("");
+
+    // Carregar Perfis da API
     useEffect(() => {
-        CarregarPerfis();
-    }, [])
+        carregarPerfis();
+    }, []);
 
-    useEffect(() => {
-        if (dataPerfis.length > 0){
-            setTimeout(() => {
-
-            const dropdownItems = document.querySelectorAll('.dropdown-item');
-            const dropdownButton = document.getElementById('dropdownButton');
-
-            const telInput = document.getElementById('telefone');
-
-            const perfisItems = document.querySelectorAll('.div--cartao--perfil');
-
-            var Aberto = 0;
-            var TipoSelect = "Todos";
-
-            if(iniciado.current == 0){Start(); iniciado.current = 1;}
-
-            function Start()
-            {
-                MostrarTodos();
+    const carregarPerfis = async () => {
+        try {
+            setLoading(true);
+            const res = await axios.get(urlAPI);
+            if (res.data && res.data.success) {
+                setDataPerfis(res.data.data || []);
+            } else {
+                setErro("Erro ao obter lista de perfis do servidor.");
             }
-
-            //Selecionar a opção clicada
-            dropdownItems.forEach(item => {
-                item.addEventListener('click', function () {
-                    //Por texto correspondente no Botão
-                    TipoSelect = this.textContent;
-                    dropdownButton.textContent = TipoSelect;
-                    //Desativar o último ativo
-                    dropdownItems.forEach(item => {
-                        if (item.classList.contains("active")) {
-                            item.classList.toggle("active");
-                        }
-                    });
-                    //Ativar o item clicado
-                    item.classList.add("active");
-                    // Listar os Selecionados
-                    ListarSelecionado(TipoSelect);
-                    //Fechar Dropdown (expecificamente, adicionar o border radius no fundo)
-                    // AbrirDropdown();
-                });
-            });
-
-            // Garantir que seja só números
-            telInput.addEventListener("keydown", (event) => {
-                const tecla = event.code;
-
-                if(tecla != "Digit1" && tecla != "Digit2" && tecla != "Digit3" && tecla != "Digit4" && tecla != "Digit5" && tecla != "Digit6" && tecla != "Digit7" && tecla != "Digit8" && tecla != "Digit9" && tecla != "Digit0" && tecla != "Backspace" && tecla != "Enter")
-                {
-                    console.log("A tecla " + tecla + " é inválida!");
-                    event.preventDefault();
-                }
-                else if(telInput.value.length > 8 && tecla != "Backspace" && tecla != "Enter")
-                {
-                    console.log("Número Máximo Atingido");
-                    event.preventDefault();
-                }
-            });
-
-            // Filtrar Número
-            telInput.addEventListener("input", (event) => {
-                var segundo = 0;
-                const Tipo = TipoSelect.toLowerCase();
-                const Num = telInput.value;
-
-                console.log(Num);
-                if(Num != "")
-                {
-                    perfisItems.forEach(item => {
-                        if (Tipo != "todos")
-                        {
-                            if (item.classList.contains(Tipo)) {
-                                const text_tel = item.querySelector("p.card-text").textContent.trim();
-                                // Esconder todos que não tenham
-                                if (text_tel.includes("Telefone: " + Num))
-                                {
-                                    if(item.classList.contains("d-none"))
-                                    {item.classList.toggle("d-none");}
-                                    if(segundo == 0)
-                                    {
-                                        if(item.classList.contains("offset-xl-3") && item.classList.contains("offset-lg-1")){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
-                                        segundo = 1;
-                                    }
-                                    else if(segundo == 1)
-                                    {
-                                        if(item.classList.contains("offset-xl-3") == false && item.classList.contains("offset-lg-1") == false){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
-                                        segundo = 0;
-                                    }
-                                }
-                                else
-                                {
-                                    if(item.classList.contains("d-none") == false)
-                                    {item.classList.toggle("d-none");}
-                                }
-                            }
-                        }
-                        else
-                        {
-                            const text_tel = item.querySelector("p.card-text").textContent.trim();
-                            // Esconder todos que não tenham
-                            if (text_tel.includes("Telefone: " + Num))
-                            {
-                                if(item.classList.contains("d-none"))
-                                {item.classList.toggle("d-none");}
-                                if(segundo == 0)
-                                {
-                                    if(item.classList.contains("offset-xl-3") && item.classList.contains("offset-lg-1")){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
-                                    segundo = 1;
-                                }
-                                else if(segundo == 1)
-                                {
-                                    if(item.classList.contains("offset-xl-3") == false && item.classList.contains("offset-lg-1") == false){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
-                                    segundo = 0;
-                                }
-                            }
-                            else
-                            {
-                                if(item.classList.contains("d-none") == false)
-                                {item.classList.toggle("d-none");}
-                            }
-                        }
-                    });
-                }
-                else
-                {
-                    MostrarTodos();
-                    //Garantir que segue os filtros
-                    ListarSelecionado(dropdownButton.textContent);
-                }
-            });
-
-
-
-            function ListarSelecionado(tipo)
-            {
-                if(tipo == "Paciente")
-                {
-                    Mostrar1Tipo("paciente");
-                }
-                else if(tipo == "Doutor")
-                {
-                    Mostrar1Tipo("doutor");
-                }
-                else
-                {
-                    MostrarTodos();
-                }
-            }
-
-            // ------------Mostrar e/ou Esconder-----------
-
-            function Mostrar1(Item_Sel)
-            {
-                perfisItems.forEach(item => {
-                    if(Item == Item_Sel)
-                    {
-                        if(item.classList.contains("d-none")){item.classList.toggle("d-none");}
-                        if(item.classList.contains("offset-xl-3") && item.classList.contains("offset-lg-1")){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
-                    }
-                    else
-                    {
-                        if(item.classList.contains("d-none") == false)
-                        {item.classList.add("d-none");}
-                    }
-                });
-            }
-
-            function Mostrar1Tipo(Tipo)
-            {
-                var segundo = 0;
-                const Num = telInput.value;
-
-                perfisItems.forEach(item => {
-                    const text_tel = item.querySelector("p.card-text").textContent.trim();
-                    if (item.classList.contains(Tipo) && text_tel.includes("Telefone: " + Num)) {
-                        if(item.classList.contains("d-none"))
-                        {
-                            item.classList.toggle("d-none");
-                        }
-                        if(segundo == 0)
-                        {
-                            if(item.classList.contains("offset-xl-3") && item.classList.contains("offset-lg-1")){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
-                            segundo = 1;
-                        }
-                        else if(segundo == 1)
-                        {
-                            if(item.classList.contains("offset-xl-3") == false && item.classList.contains("offset-lg-1") == false){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
-                            segundo = 0;
-                        }
-                    }
-                    else
-                    {
-                        if(item.classList.contains("d-none") == false)
-                        {item.classList.add("d-none");}
-                    }
-                });
-            }
-
-            function MostrarTodos()
-            {
-                var segundo = 0;
-                const Num = telInput.value;
-
-                perfisItems.forEach(item => {
-                    const text_tel = item.querySelector("p.card-text").textContent.trim();
-                    if (text_tel.includes("Telefone: " + Num))
-                    {
-                        if(item.classList.contains("d-none"))
-                        {
-                            item.classList.toggle("d-none");
-                        }
-                        if(segundo == 0)
-                        {
-                            if(item.classList.contains("offset-xl-3") && item.classList.contains("offset-lg-1")){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
-                            segundo = 1;
-                        }
-                        else if(segundo == 1)
-                        {
-                            if(item.classList.contains("offset-xl-3") == false && item.classList.contains("offset-lg-1") == false){item.classList.toggle("offset-xl-3"); item.classList.toggle("offset-lg-1");}
-                            segundo = 0;
-                        }
-                    }
-                });
-            }
-        }, 100);
-
+        } catch (error) {
+            console.error("Erro ao carregar perfis:", error);
+            setErro("Erro de ligação ao servidor.");
+        } finally {
+            setLoading(false);
         }
-    }, [dataPerfis])
+    };
 
-    function CarregarPerfis() {
-        axios.get(urlAPI)
-        .then(res => {
-        if(res.data.success){
-        const data = res.data.data;
-        setdataPerfis(data);
-        }else{
-        alert("Error Web Service!");
+    // Lógica de Filtragem dos Perfis
+    const perfisFiltrados = dataPerfis.filter((p) => {
+        // Verificar se é médico ou paciente
+        const eMedico = p.classe === 2 || 
+                        p.idclasse === 2 || 
+                        (p.profissao && (p.profissao.toLowerCase().includes('médic') || p.profissao.toLowerCase().includes('doutor'))) ||
+                        (p.nome && (p.nome.toLowerCase().includes('dr') || p.nome.toLowerCase().includes('médic')));
+        const ePaciente = !eMedico;
+
+        // 1. Filtrar por Tipo de Conta
+        if (tipoFiltro === "Paciente" && !ePaciente) return false;
+        if (tipoFiltro === "Doutor" && !eMedico) return false;
+
+        // 2. Pesquisa por Telefone, Nome ou Email
+        if (termoPesquisa.trim() !== "") {
+            const query = termoPesquisa.trim().toLowerCase();
+            const tel = (p.contactoprincipal || "").toString().toLowerCase();
+            const nome = (p.nome || "").toLowerCase();
+            const email = (p.gmail || "").toLowerCase();
+            const nif = (p.nif || "").toString().toLowerCase();
+
+            return tel.includes(query) || nome.includes(query) || email.includes(query) || nif.includes(query);
         }
-        })
-        .catch(error => {
-        alert(error)
-        });
-    }
+
+        return true;
+    });
+
     return (
-        <div className="container-fluid">
+        <div className="container-fluid py-3" style={{ fontFamily: 'Poppins, sans-serif' }}>
 
             {/* <!-- //// Filtros //// --> */}
-            <div className="row align-items-start mb-5">
-            
-            {/* <!-- Tipo de Conta --> */}
-            <div className="dropdown div--dropdown px-0 col-sm-5 col-xl-4 mt-auto">
-                <button id="dropdownButton" className="btn dropdown-toggle div__button--dropdown text-start text-white shadow-none opacity-100 col-12" type="button" data-bs-toggle="dropdown" data-bs-auto-close="inside">
-                Todos{/* <!-- <span className="material-symbols-outlined ms-auto">keyboard_arrow_down</span> --> */}
-                </button>
-                <ul className="dropdown-menu shadow py-0 col-12">
-                <li><p className="dropdown-item ul__li--dropdown">Paciente</p></li>
-                <li><p className="dropdown-item ul__li--dropdown">Doutor</p></li>
-                <li><p className="dropdown-item ul__li--dropdown active">Todos</p></li>
-                </ul>
+            <div className="row align-items-end mb-4 gy-3">
+                
+                {/* Tipo de Conta */}
+                <div className="col-md-4 col-lg-3">
+                    <label className="form-label div__input--label fw-bold">Filtrar por Tipo de Conta</label>
+                    <div className="dropdown div--dropdown px-0 w-100">
+                        <button 
+                            id="dropdownButton" 
+                            className="btn dropdown-toggle div__button--dropdown text-start text-white shadow-none opacity-100 w-100" 
+                            type="button" 
+                            data-bs-toggle="dropdown"
+                        >
+                            {tipoFiltro}
+                        </button>
+                        <ul className="dropdown-menu shadow py-0 w-100">
+                            <li>
+                                <button 
+                                    type="button" 
+                                    className={`dropdown-item ul__li--dropdown ${tipoFiltro === "Todos" ? "active" : ""}`}
+                                    onClick={() => setTipoFiltro("Todos")}
+                                >
+                                    Todos
+                                </button>
+                            </li>
+                            <li>
+                                <button 
+                                    type="button" 
+                                    className={`dropdown-item ul__li--dropdown ${tipoFiltro === "Paciente" ? "active" : ""}`}
+                                    onClick={() => setTipoFiltro("Paciente")}
+                                >
+                                    Paciente
+                                </button>
+                            </li>
+                            <li>
+                                <button 
+                                    type="button" 
+                                    className={`dropdown-item ul__li--dropdown ${tipoFiltro === "Doutor" ? "active" : ""}`}
+                                    onClick={() => setTipoFiltro("Doutor")}
+                                >
+                                    Doutor
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                {/* Pesquisa por Telefone / Nome */}
+                <div className="col-md-8 col-lg-5 ms-auto">
+                    <label htmlFor="telefone" className="form-label div__input--label fw-bold">Pesquisar Perfil</label>
+                    <div className="input-group">
+                        <span className="input-group-text bg-light"><i className="bi bi-search"></i></span>
+                        <input 
+                            type="text" 
+                            placeholder="Pesquisar por telefone, nome ou email..." 
+                            className="form-control div__input--textbox shadow-none" 
+                            id="telefone" 
+                            value={termoPesquisa}
+                            onChange={(e) => setTermoPesquisa(e.target.value)}
+                        />
+                        {termoPesquisa && (
+                            <button 
+                                className="btn btn-outline-secondary" 
+                                type="button"
+                                onClick={() => setTermoPesquisa("")}
+                            >
+                                ✕
+                            </button>
+                        )}
+                    </div>
+                </div>
+
             </div>
 
-            {/* <!-- Telemovel --> */}
-            <div className="px-0 col-sm-5 offset-sm-1 col-xl-4 offset-xl-3">
-                <label htmlFor="telefone" className="form-label div__input--label">Telefone</label>
-                <input type="tel" placeholder="987123654" className="form-control div__input--textbox shadow-none" id="telefone" pattern="[0-9]{3}[0-9]{3}[0-9]{3}" />
-            </div>
+            {/* Carregando ou Erro */}
+            {loading && (
+                <div className="text-center py-5">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">A carregar perfis...</span>
+                    </div>
+                    <p className="mt-2 text-muted">A carregar perfis...</p>
+                </div>
+            )}
 
-            </div>
+            {erro && (
+                <div className="alert alert-danger my-3">
+                    <i className="bi bi-exclamation-triangle-fill me-2"></i> {erro}
+                </div>
+            )}
 
             {/* <!-- //// Perfis //// --> */}
-            <div className="row align-items-start mb-4">
+            {!loading && !erro && (
+                <>
+                    {perfisFiltrados.length === 0 ? (
+                        <div className="alert alert-info text-center py-4 my-3">
+                            <i className="bi bi-info-circle me-2"></i> Nenhum perfil encontrado para os filtros selecionados.
+                        </div>
+                    ) : (
+                        <div className="perfis-grid mb-4">
+                            {perfisFiltrados.map((data, index) => {
+                                const eMedico = data.classe === 2 || 
+                                                data.idclasse === 2 || 
+                                                (data.profissao && (data.profissao.toLowerCase().includes('médic') || data.profissao.toLowerCase().includes('doutor'))) ||
+                                                (data.nome && (data.nome.toLowerCase().includes('dr') || data.nome.toLowerCase().includes('médic')));
+                                const idclasseCalc = eMedico ? 2 : 1;
 
-                {/* Listar */}
-                <LoadPerfisData/>
-
-            </div>
+                                return (
+                                    <CartaoPerfil
+                                        key={data.idutilizadorprefil || index}
+                                        nome={data.nome}
+                                        num={data.contactoprincipal}
+                                        email={data.gmail}
+                                        idclasse={idclasseCalc}
+                                        idperf={data.idutilizadorprefil}
+                                    />
+                                );
+                            })}
+                        </div>
+                    )}
+                </>
+            )}
 
             {/* <!-- //// Criar Novo Perfil //// --> */}
-            <div className="row align-items-start">
-
-            <button type="button" className="btn text-white col-sm-5 offset-sm-6 col-lg-2 offset-lg-9">Criar Perfil</button>
-
+            <div className="row align-items-start mt-3">
+                <Link to="/backoffice/criarperfil" className="text-decoration-none col-sm-5 offset-sm-6 col-lg-2 offset-lg-9">
+                    <button
+                        type="button"
+                        className="btn btn-criar-perfil w-100">
+                        <i className="bi bi-person-plus-fill me-1"></i> Criar Perfil
+                    </button>
+                </Link>
             </div>
 
         </div>
     );
+};
 
-    function LoadPerfisData() {
-        return dataPerfis.map((data, index) => {
-            return (
-                <CartaoPerfil key={index} nome={data.nome} num={data.contactoprincipal} email={data.gmail} idclasse={data.classe} idperf={data.idutilizadorprefil} />
-            );
-        });
-    }
-}
 export default Perfis;

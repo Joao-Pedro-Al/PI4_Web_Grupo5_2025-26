@@ -1,0 +1,421 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+/* Reset e estilos globais */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --gold-900: #6b5a32;
+  --gold-800: #8a7542;
+  --gold-700: #a99c5e;
+  --gold-600: #b79b53;
+  --gold-100: #f3ecd9;
+  --gold-50:  #fbf8f1;
+  --cream: #f9f2ef;
+  --ink-900: #2a271d;
+  --ink-600: #6f6a58;
+  --ink-300: #a49d87;
+  --white: #ffffff;
+  --danger: #c0392b;
+  --danger-bg: #fdecec;
+  --danger-border: #f3b8b8;
+
+  --font-display: "Poppins", "Segoe UI", sans-serif;
+  --font-body: "Inter", "Segoe UI", sans-serif;
+
+  --shadow-sm: 0 2px 8px rgba(42, 39, 29, 0.08);
+  --shadow-md: 0 10px 30px rgba(42, 39, 29, 0.14);
+  --shadow-lg: 0 30px 70px rgba(42, 39, 29, 0.35);
+}
+
+/* ===== Página de Login ===== */
+.login-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--gold-600);
+  background-image:
+    linear-gradient(160deg, rgba(42, 33, 15, 0.55) 0%, rgba(183, 155, 83, 0.55) 100%),
+    url('../assets/fundo_dentes.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: var(--font-body);
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* ===== Botão de voltar ===== */
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 1000;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(4px);
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: scale(1.08);
+}
+
+/* ===== Card central ===== */
+.login-container {
+  width: 420px;
+  max-width: 100%;
+  background: var(--cream);
+  padding: 40px 36px;
+  border-radius: 22px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  margin: auto;
+  max-height: 92vh;
+  overflow-y: auto;
+}
+
+/* ===== Logo ===== */
+.logo {
+  color: var(--gold-700);
+  font-weight: bold;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: center;
+}
+
+.logo img {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: var(--white);
+  padding: 10px;
+  box-shadow: var(--shadow-sm), 0 0 0 4px var(--gold-100);
+}
+
+.login-title {
+  color: var(--gold-800);
+  margin: 18px 0 22px 0;
+  font-size: 1.5rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+/* ===== Acesso rápido ===== */
+.quick-access {
+  margin-bottom: 22px;
+}
+
+.quick-access__label {
+  font-size: 12.5px;
+  color: var(--ink-600);
+  margin-bottom: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.quick-access__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.demo-btn {
+  width: 100%;
+  padding: 13px 18px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: var(--font-body);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  letter-spacing: 0.2px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  border: none;
+}
+
+.backoffice-btn {
+  background-color: var(--gold-700);
+  color: var(--white);
+  box-shadow: var(--shadow-sm);
+}
+
+.backoffice-btn:hover {
+  background-color: var(--gold-800);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.frontoffice-btn {
+  background-color: var(--white);
+  color: var(--gold-800);
+  border: 2px solid var(--gold-700);
+}
+
+.frontoffice-btn:hover {
+  background-color: var(--gold-50);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===== Divisória ===== */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 22px 0;
+  gap: 12px;
+}
+
+.divider__line {
+  flex: 1;
+  height: 1px;
+  background-color: var(--gold-100);
+}
+
+.divider__label {
+  color: var(--ink-300);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* ===== Formulário ===== */
+form {
+  width: 100%;
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 12px;
+}
+
+/* Blindagem: qualquer filho direto do formulário ocupa sempre a linha inteira,
+   independentemente de qualquer outra regra CSS que possa entrar em conflito. */
+form > * {
+  grid-column: 1 / -1;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ===== Inputs ===== */
+form input {
+  display: block;
+  width: 100%;
+  padding: 13px 16px;
+  margin: 0;
+  border-radius: 12px;
+  border: 1.5px solid var(--gold-100);
+  outline: none;
+  text-align: center;
+  font-size: 14px;
+  font-family: var(--font-body);
+  background: var(--gold-50);
+  color: var(--ink-900);
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+input:focus {
+  border-color: var(--gold-700);
+  background: var(--white);
+}
+
+input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+input::placeholder {
+  color: var(--gold-700);
+}
+
+.Texto {
+  color: var(--gold-700);
+}
+
+/* ===== Link recuperar ===== */
+.recover {
+  display: block;
+  margin: 10px 0;
+  font-size: 13px;
+  color: #007acc;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.recover:hover {
+  text-decoration: underline;
+}
+
+/* ===== Botão de submeter ===== */
+.login-container form .submit-btn,
+.submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px;
+  margin-top: 6px;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(135deg, var(--gold-700), var(--gold-600));
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1.2;
+  white-space: nowrap;
+  font-family: var(--font-body);
+  letter-spacing: 0.3px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ===== Mensagem de erro ===== */
+.error-message {
+  background-color: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  color: var(--danger);
+  border-radius: 12px;
+  padding: 11px 14px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  text-align: left;
+  line-height: 1.5;
+}
+
+/* ===== Painéis de informação (recolhíveis) ===== */
+.info-panel {
+  margin-top: 18px;
+  text-align: left;
+  border: 1px solid var(--gold-100);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--white);
+}
+
+.info-panel + .info-panel {
+  margin-top: 10px;
+}
+
+.info-panel summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 11px 14px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--gold-800);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold-50);
+  user-select: none;
+}
+
+.info-panel summary::-webkit-details-marker {
+  display: none;
+}
+
+.info-panel summary::after {
+  content: "▾";
+  margin-left: auto;
+  color: var(--ink-300);
+  transition: transform 0.2s ease;
+}
+
+.info-panel[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.info-panel__body {
+  padding: 12px 14px 14px 14px;
+  font-size: 12.5px;
+  color: var(--ink-600);
+  line-height: 1.7;
+}
+
+.info-panel__body strong {
+  color: var(--ink-900);
+}
+
+.teacher-title {
+  font-weight: 700;
+  color: var(--gold-800);
+}
+
+.teacher-item {
+  font-size: 12.5px;
+  color: var(--ink-600);
+  line-height: 1.7;
+}
+
+.debug-info div:first-child {
+  color: var(--gold-800);
+}
+
+/* Foco visível para acessibilidade */
+button:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--gold-700);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .login-container {
+    width: 100%;
+    padding: 32px 22px;
+    border-radius: 18px;
+  }
+
+  input, button {
+    width: 100%;
+  }
+}

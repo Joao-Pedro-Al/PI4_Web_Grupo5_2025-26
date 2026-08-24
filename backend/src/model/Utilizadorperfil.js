@@ -19,13 +19,13 @@ const Utilizadorperfil = sequelize.define(
       type: Sequelize.INTEGER,
       allowNull: true,
       references: {
-        model: "utilizadorperfil",      // <- usa o nome da tabela/modelo (string)
-        key: "idutilizadorperfil",      // <- aponta ao PK
+        model: "utilizadorprefil",      // <- aponta para a tabela utilizadorprefil
+        key: "idutilizadorprefil",      // <- aponta ao PK
       },
     },
 
     nome: Sequelize.STRING,
-    datanascimento: Sequelize.DATE,
+    datanascimento: Sequelize.DATEONLY,
 
     genero: {
       type: Sequelize.INTEGER,
@@ -34,9 +34,9 @@ const Utilizadorperfil = sequelize.define(
 
     endereco: Sequelize.STRING,
 
-    contactoprincipal: Sequelize.INTEGER,
-    contactosecundario: Sequelize.INTEGER,
-    nif: Sequelize.INTEGER,
+    contactoprincipal: Sequelize.STRING,
+    contactosecundario: Sequelize.STRING,
+    nif: Sequelize.STRING,
 
     estadocivil: {
       type: Sequelize.INTEGER,
@@ -44,18 +44,38 @@ const Utilizadorperfil = sequelize.define(
     },
 
     profissao: Sequelize.STRING,
-    numeroutente: Sequelize.INTEGER,
+    numeroutente: Sequelize.STRING,
     subsistemassaude: Sequelize.STRING,
     gmail: Sequelize.STRING,
 
     classe: {
       type: Sequelize.INTEGER,
-      references: { model: Classe, key: "idclasse" }, // <- confirma o nome real do PK em Classe
+      references: { model: Classe, key: "idclasse" },
     },
+
+    // Campos de Histórico Médico & Dentário
+    alergias: Sequelize.STRING,
+    medicamentos: Sequelize.STRING,
+    condicaosaude: Sequelize.STRING,
+    motivoconsultainicial: Sequelize.STRING,
+    experienciaanastesia: Sequelize.BOOLEAN,
+    condicoesdentarias: Sequelize.STRING,
+    habitoigieneoral: Sequelize.STRING,
+    consumosubstancia: Sequelize.STRING,
+    historicotratamentosdentariospassados: Sequelize.TEXT,
+    historicodor: Sequelize.BOOLEAN,
+    atividadesdesportivas: Sequelize.STRING,
+    bruxismo: Sequelize.STRING,
+    gravida: Sequelize.BOOLEAN,
+    infoadicional: Sequelize.TEXT,
+    resultadosanteriores: Sequelize.TEXT,
+
+    // Guarda um array JSON com os nomes dos ficheiros anexados (exames, raios-x, etc.)
+    ficheirosanexos: Sequelize.TEXT,
   },
   {
     timestamps: false,
-    tableName: "utilizadorprefil", // opcional, mas ajuda a evitar confusões
+    tableName: "utilizadorprefil",
     freezeTableName: true
   }
 );
