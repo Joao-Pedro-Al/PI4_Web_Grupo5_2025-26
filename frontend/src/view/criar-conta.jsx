@@ -136,7 +136,7 @@ const CriarConta = () => {
         <div className="criar-conta-page">
             <div className="form-container">
                 <div className="form-container__header">
-                    <div className="form-container__eyebrow">Clínica Dentária</div>
+                    <div className="form-container__eyebrow">CliniMolelos</div>
                     <h2 className="form-container__title">Criar Conta de Utilizador</h2>
                     <p className="form-container__subtitle">Ligue credenciais de login a um perfil existente na base de dados</p>
                 </div>
@@ -206,9 +206,7 @@ const CriarConta = () => {
                             }}
                         >
                             <option value="3">Paciente</option>
-                            <option value="2">Médico / Doutor</option>
-                            <option value="1">Administrador</option>
-                            <option value="4">Rececionista</option>
+                            <option value="2">Médico</option>
                         </select>
 
                         <label style={{ marginTop: '14px' }}>

@@ -26,8 +26,14 @@ router.get("/list/:id", utilizadorperfilController.listPerfilInteiro);
 router.get("/dependentes/:id", utilizadorperfilController.listDependentes);
 
 router.post('/create', upload.array('ficheiros', 10), utilizadorperfilController.create);
+
+// Suporte para PUT e POST no update
 router.put('/update/:id', upload.array('ficheiros', 10), utilizadorperfilController.update);
+router.post('/update/:id', upload.array('ficheiros', 10), utilizadorperfilController.update);
+
+// Suporte para DELETE e POST no delete
 router.delete('/delete/:id', utilizadorperfilController.delete);
+router.post('/delete/:id', utilizadorperfilController.delete);
 
 router.get("/conta/criar", utilizadorperfilController.criarconta);
 

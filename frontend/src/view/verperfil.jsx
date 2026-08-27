@@ -119,8 +119,15 @@ const VerPerfil = () => {
     const handleSaveEdit = async () => {
         try {
             setSalvandoEdicao(true);
-            const res = await axios.put(`${url}utilizadorperfil/update/${id}`, editFormData);
+            let res;
+            try {
+                res = await axios.put(`${url}utilizadorperfil/update/${id}`, editFormData);
+            } catch (putErr) {
+                res = await axios.post(`${url}utilizadorperfil/update/${id}`, editFormData);
+            }
+
             if (res.data && res.data.success) {
+                alert("Perfil atualizado com sucesso!");
                 setEditModalOpen(false);
                 await carregarDados();
             } else {
@@ -128,7 +135,8 @@ const VerPerfil = () => {
             }
         } catch (err) {
             console.error("Erro ao atualizar perfil:", err);
-            alert("Erro de rede ao atualizar perfil.");
+            const msg = err.response?.data?.message || "Erro ao comunicar com o servidor para atualizar perfil.";
+            alert(msg);
         } finally {
             setSalvandoEdicao(false);
         }
@@ -139,7 +147,13 @@ const VerPerfil = () => {
             return;
         }
         try {
-            const res = await axios.delete(`${url}utilizadorperfil/delete/${id}`);
+            let res;
+            try {
+                res = await axios.delete(`${url}utilizadorperfil/delete/${id}`);
+            } catch (delErr) {
+                res = await axios.post(`${url}utilizadorperfil/delete/${id}`);
+            }
+
             if (res.data && res.data.success) {
                 alert("Perfil eliminado com sucesso!");
                 navigate('/backoffice/perfis');
@@ -148,7 +162,8 @@ const VerPerfil = () => {
             }
         } catch (err) {
             console.error("Erro ao eliminar perfil:", err);
-            alert("Erro ao comunicar com o servidor para eliminar perfil.");
+            const msg = err.response?.data?.message || "Erro ao comunicar com o servidor para eliminar perfil.";
+            alert(msg);
         }
     };
 

@@ -383,7 +383,7 @@ const Historico_Front = () => {
       if(index % 2 == 0){
         const titulo = Titulo(data.tipomarcacao);
         return (
-            <ConsultaHistorico key={index} titulo={titulo} horas={data.hora} data={data.data} detalhes={data.detalhes} guia={data.guia_tratamento} idCon={data.idconsulta} />
+            <ConsultaHistorico key={index} titulo={titulo} horas={data.hora} data={data.data} detalhes={data.detalhes} guia={data.guia_tratamento} idCon={data.idconsulta} acompanhante={data.acompanhante} medico={data.medico} />
         );
       }
     });
@@ -395,7 +395,7 @@ const Historico_Front = () => {
         const titulo = Titulo(data.tipomarcacao);
         console.log("Resultado: " + titulo);
         return (
-            <ConsultaHistorico key={index} titulo={titulo} horas={data.hora} data={data.data} detalhes={data.detalhes} guia={data.guia_tratamento} idCon={data.idconsulta} />
+            <ConsultaHistorico key={index} titulo={titulo} horas={data.hora} data={data.data} detalhes={data.detalhes} guia={data.guia_tratamento} idCon={data.idconsulta} acompanhante={data.acompanhante} medico={data.medico} />
         );
       }
     });

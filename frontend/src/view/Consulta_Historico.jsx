@@ -1,4 +1,4 @@
-const ConsultaHistorico = ({titulo, horas, data, detalhes, guia, idCon}) => {
+const ConsultaHistorico = ({titulo, horas, data, detalhes, guia, idCon, acompanhante, medico}) => {
   if (guia == null || guia === '') { guia = "N/A"; }
   const horaStr = horas ? horas.substring(0, 5) : '';
   
@@ -21,55 +21,63 @@ const ConsultaHistorico = ({titulo, horas, data, detalhes, guia, idCon}) => {
   }
 
   const imprimirDeclaracao = (tipo) => {
-    let tituloDoc = "DECLARAÇÃO DE PRESENÇA EM CONSULTA";
+    let tituloDoc = "DECLARAÇÃO DE PRESENÇA EM CONSULTA DENTÁRIA";
     let textoPresenca = "";
 
     if (tipo === 'acompanhante') {
-      const nomeAcompanhante = window.prompt("Por favor, introduza o nome do Encarregado de Educação / Acompanhante:", "");
-      if (!nomeAcompanhante) return;
+      const nomeAcomp = acompanhante || "Acompanhante / Tutor";
       tituloDoc = "DECLARAÇÃO DE PRESENÇA DE ACOMPANHANTE";
-      textoPresenca = `Declara-se, para os devidos efeitos, que <b>${nomeAcompanhante}</b> esteve presente nesta clínica no dia <b>${dataFormatada}</b>, às <b>${horaStr}</b>, na qualidade de acompanhante para a consulta médica de medicina dentária.`;
+      textoPresenca = `Declara-se, para os devidos efeitos legais ou de justificação de ausência, que <b>${nomeAcomp}</b> esteve presente na <b>CliniMolelos</b> no dia <b>${dataFormatada}</b>, às <b>${horaStr}</b>, na qualidade de acompanhante / encarregado(a) de educação para a realização de consulta médica dentária.`;
     } else {
-      textoPresenca = `Declara-se, para os devidos efeitos, que o paciente esteve presente nesta clínica no dia <b>${dataFormatada}</b> às <b>${horaStr}</b>, para realização de consulta de medicina dentária (<b>${detalhes || titulo}</b>).`;
+      textoPresenca = `Declara-se, para os devidos efeitos, que o(a) paciente esteve presente na <b>CliniMolelos</b> no dia <b>${dataFormatada}</b> às <b>${horaStr}</b>, para a realização de ato médico-dentário (<b>${detalhes || titulo}</b>).`;
     }
 
     const dataHojeStr = new Date().toLocaleDateString('pt-PT');
+    const medicoNome = medico || 'Dra. Maria Santos';
 
     const htmlContent = `
       <!DOCTYPE html>
       <html>
         <head>
-          <title>${tituloDoc}</title>
+          <title>${tituloDoc} — CliniMolelos</title>
           <style>
-            body { font-family: Arial, sans-serif; margin: 40px; color: #333; line-height: 1.6; }
-            .header { text-align: center; border-bottom: 2px solid #A99C5E; padding-bottom: 15px; margin-bottom: 30px; }
-            .header h1 { color: #A99C5E; margin: 0; font-size: 22px; text-transform: uppercase; }
-            .header p { margin: 5px 0 0; color: #666; font-size: 13px; }
-            .content { font-size: 15px; margin: 40px 0; text-align: justify; background: #fafafa; padding: 25px; border-radius: 8px; border: 1px solid #eee; }
-            .footer { margin-top: 70px; text-align: right; }
-            .sig-line { border-top: 1px solid #333; width: 250px; display: inline-block; margin-top: 50px; text-align: center; font-size: 12px; }
+            @page { size: A4; margin: 25mm 20mm; }
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 25px; color: #2B2519; line-height: 1.7; }
+            .header { text-align: center; border-bottom: 2.5px solid #A99C5E; padding-bottom: 15px; margin-bottom: 30px; }
+            .header h1 { color: #A99C5E; margin: 0; font-size: 24px; letter-spacing: 1.5px; }
+            .header p { margin: 5px 0 0; color: #666; font-size: 13px; text-transform: uppercase; }
+            .doc-title { text-align: center; color: #2B2519; font-size: 17px; font-weight: bold; margin-bottom: 30px; text-transform: uppercase; text-decoration: underline; text-underline-offset: 5px; }
+            .content { font-size: 15.5px; margin: 30px 0; text-align: justify; background: #FAF8F5; padding: 30px; border-radius: 10px; border: 1px solid #E5DFD5; }
+            .footer { margin-top: 60px; text-align: right; }
+            .sig-line { border-top: 1.5px solid #2B2519; width: 260px; display: inline-block; margin-top: 50px; text-align: center; font-size: 13px; font-weight: 600; padding-top: 6px; }
+            .clinic-footer { position: fixed; bottom: 20px; left: 0; right: 0; text-align: center; font-size: 11px; color: #888; border-top: 1px solid #ddd; padding-top: 10px; }
           </style>
         </head>
         <body>
           <div class="header">
-            <h1>CLÍNICA DENTÁRIA GRUPO 5</h1>
-            <p>Declaração Oficial de Presença Médica</p>
+            <h1>CLINIMOLELOS</h1>
+            <p>Clínica de Medicina Dentária & Bem-Estar</p>
           </div>
 
-          <h3 style="text-align: center; margin-bottom: 25px; color: #2c3e50;">${tituloDoc}</h3>
+          <div class="doc-title">${tituloDoc}</div>
 
           <div class="content">
             <p>${textoPresenca}</p>
-            <p style="margin-top: 20px;">Por ser verdade e ter sido solicitado, passa-se a presente declaração que vai devidamente autenticada.</p>
+            <p style="margin-top: 20px;">Por ser verdade e ter sido solicitada, passa-se a presente declaração que segue devidamente autenticada.</p>
           </div>
 
-          <p style="margin-top: 30px;"><b>Data de Emissão:</b> ${dataHojeStr}</p>
+          <p style="margin-top: 30px; font-size: 14px;"><b>Data de Emissão:</b> ${dataHojeStr}</p>
+          <p style="font-size: 14px;"><b>Médico Responsável:</b> ${medicoNome}</p>
 
           <div class="footer">
             <div class="sig-line">
               Assinatura e Carimbo Médico<br>
-              <i>Clínica Dentária</i>
+              <i style="font-weight: normal; color: #666; font-size: 11px;">CliniMolelos</i>
             </div>
+          </div>
+
+          <div class="clinic-footer">
+            CliniMolelos • Sistema de Gestão Dentária • Documento Oficial Autenticado
           </div>
         </body>
       </html>
@@ -87,8 +95,9 @@ const ConsultaHistorico = ({titulo, horas, data, detalhes, guia, idCon}) => {
   hojeZero.setHours(0, 0, 0, 0);
 
   const eConsultaFutura = dataConsultaObj && dataConsultaObj > hojeZero;
+  const temAcompanhante = acompanhante && acompanhante.trim() !== '';
 
-return (
+  return (
     <div className=" px-0 col-12 mb-3">
         <div className="card div--cartao--consulta" id={idCon + "-aberto"}>
             <div className="card-body div--cartao--consulta px-4 py-3">
@@ -117,8 +126,8 @@ return (
                 <hr className="hr--cartao my-3" />
 
                 <div className="mb-2">
-                    <h5 className="fw-bold mb-1">Detalhes:</h5>
-                    <p className="mb-0">{detalhes}</p>
+                    <h5 className="fw-bold mb-1">Detalhes / Observações:</h5>
+                    <p className="mb-0">{detalhes || 'Sem observações registadas.'}</p>
                 </div>
 
                 <div className="mb-3">
@@ -126,11 +135,18 @@ return (
                     <p className="mb-0">{guia}</p>
                 </div>
 
+                {temAcompanhante && (
+                  <div className="mb-3 p-2 bg-light rounded border" style={{ fontSize: '13.5px' }}>
+                    <i className="bi bi-people-fill me-1 text-secondary"></i>
+                    <strong>Acompanhante Registado:</strong> {acompanhante}
+                  </div>
+                )}
+
                 <div className="mt-3 pt-2 border-top">
                     {eConsultaFutura ? (
                       <div className="text-muted small fst-italic">
                         <i className="bi bi-info-circle me-1" style={{ color: '#A99C5E' }}></i>
-                        As declarações de presença ficam disponíveis após a realização da consulta.
+                        As declarações de presença ficam disponíveis após a data da consulta.
                       </div>
                     ) : (
                       <div className="d-flex flex-wrap gap-2">
@@ -139,20 +155,25 @@ return (
                           className="btn shadow-none text-white d-inline-flex align-items-center gap-2"
                           style={{ backgroundColor: '#A99C5E', border: 'none', borderRadius: '8px', padding: '8px 14px', fontSize: '13px', fontWeight: '500' }}
                           onClick={(e) => { e.stopPropagation(); imprimirDeclaracao('paciente'); }}
+                          title="Descarregar Declaração de Presença Oficial"
                         >
                           <i className="bi bi-file-earmark-check-fill"></i> Declaração de Presença
                           <i className="bi bi-download ms-1"></i>
                         </button>
 
-                        <button 
-                          type="button" 
-                          className="btn shadow-none text-dark d-inline-flex align-items-center gap-2"
-                          style={{ border: '1.5px solid #A99C5E', borderRadius: '8px', padding: '8px 14px', fontSize: '13px', fontWeight: '500', backgroundColor: '#fcf8e3' }}
-                          onClick={(e) => { e.stopPropagation(); imprimirDeclaracao('acompanhante'); }}
-                        >
-                          <i className="bi bi-person-check-fill"></i> Declaração do Acompanhante
-                          <i className="bi bi-download ms-1"></i>
-                        </button>
+                        {/* Botão Acompanhante: Só renderiza se houver acompanhante registado! */}
+                        {temAcompanhante && (
+                          <button 
+                            type="button" 
+                            className="btn shadow-none text-dark d-inline-flex align-items-center gap-2"
+                            style={{ border: '1.5px solid #A99C5E', borderRadius: '8px', padding: '8px 14px', fontSize: '13px', fontWeight: '500', backgroundColor: '#FAF8F5' }}
+                            onClick={(e) => { e.stopPropagation(); imprimirDeclaracao('acompanhante'); }}
+                            title={`Descarregar Declaração para ${acompanhante}`}
+                          >
+                            <i className="bi bi-person-check-fill" style={{ color: '#A99C5E' }}></i> Declaração do Acompanhante
+                            <i className="bi bi-download ms-1"></i>
+                          </button>
+                        )}
                       </div>
                     )}
                 </div>
@@ -160,7 +181,7 @@ return (
             </div>
         </div>
     </div>
-    
-);
-}
+  );
+};
+
 export default ConsultaHistorico;
