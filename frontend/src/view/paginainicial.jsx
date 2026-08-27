@@ -51,6 +51,12 @@ const PaginaInicial = () => {
   });
   const [modalError, setModalError] = useState('');
 
+  // Estado da pesquisa e seleção de paciente no modal
+  const [termoPesquisaPaciente, setTermoPesquisaPaciente] = useState('');
+  const [dropdownPacientesAberto, setDropdownPacientesAberto] = useState(false);
+  const [pacienteSelecionado, setPacienteSelecionado] = useState(null);
+  const searchPatientRef = useRef(null);
+
   // Estado do formulário de criação rápida de paciente no modal
   const [showNovoPacienteForm, setShowNovoPacienteForm] = useState(false);
   const [novoPacienteData, setNovoPacienteData] = useState({
@@ -233,6 +239,30 @@ const PaginaInicial = () => {
     return null;
   };
 
+  // Fechar dropdown ao clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchPatientRef.current && !searchPatientRef.current.contains(event.target)) {
+        setDropdownPacientesAberto(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Pacientes filtrados para pesquisa
+  const pacientesFiltrados = pacientes.filter(p => {
+    if (!termoPesquisaPaciente.trim()) return true;
+    const termo = termoPesquisaPaciente.toLowerCase();
+    const nomeMatch = p.nome && p.nome.toLowerCase().includes(termo);
+    const telMatch = p.contactoprincipal && p.contactoprincipal.toString().includes(termo);
+    const nifMatch = p.nif && p.nif.toString().includes(termo);
+    const idMatch = p.idutilizadorprefil && p.idutilizadorprefil.toString().includes(termo);
+    return nomeMatch || telMatch || nifMatch || idMatch;
+  });
+
   // Abrir modal de NOVA consulta
   const handleSelect = (info) => {
     const startDate = info.start;
@@ -253,10 +283,15 @@ const PaginaInicial = () => {
       doctor: doctors.length > 0 ? doctors[0].id : '',
       consultationType: consultationTypes[0],
       phoneNumber: '',
+      pacienteId: null,
+      pacienteNome: '',
       urgencia: 'Normal',
       slotStart: startDate,
       slotEnd: endDate,
     });
+    setTermoPesquisaPaciente('');
+    setDropdownPacientesAberto(false);
+    setPacienteSelecionado(null);
     setShowNovoPacienteForm(false);
     setNovoPacienteData({ nome: '', contactoprincipal: '', gmail: '', nif: '' });
     setModalError('');
@@ -287,9 +322,17 @@ const PaginaInicial = () => {
 
       const res = await response.json();
 
-      if (res.success) {
+      if (res.success && res.data) {
         await carregarPacientes();
-        setModalData(prev => ({ ...prev, phoneNumber: novoPacienteData.contactoprincipal }));
+        const criado = res.data;
+        setPacienteSelecionado(criado);
+        setModalData(prev => ({
+          ...prev,
+          pacienteId: criado.idutilizadorprefil,
+          pacienteNome: criado.nome,
+          phoneNumber: criado.contactoprincipal || ''
+        }));
+        setTermoPesquisaPaciente(criado.nome);
         setShowNovoPacienteForm(false);
         setNovoPacienteData({ nome: '', contactoprincipal: '', gmail: '', nif: '' });
       } else {
@@ -307,14 +350,24 @@ const PaginaInicial = () => {
   const handleConfirmarModal = async () => {
     setModalError('');
 
-    if (!modalData.consultationType || !modalData.phoneNumber) {
-      setModalError('Por favor, preencha todos os campos obrigatórios.');
+    if (!modalData.consultationType) {
+      setModalError('Por favor selecione o Tipo de Consulta.');
       return;
     }
 
-    const paciente = buscarPacientePorTelefone(modalData.phoneNumber);
-    if (!paciente) {
-      setModalError(`Paciente com contacto "${modalData.phoneNumber}" não foi encontrado. Clique em "+ Criar Paciente" para o registar.`);
+    let pacienteIdFinal = pacienteSelecionado?.idutilizadorprefil || modalData.pacienteId;
+    let telefoneFinal = modalData.phoneNumber || pacienteSelecionado?.contactoprincipal || '';
+
+    if (!pacienteIdFinal && modalData.phoneNumber) {
+      const paciente = buscarPacientePorTelefone(modalData.phoneNumber);
+      if (paciente) {
+        pacienteIdFinal = paciente.id;
+        telefoneFinal = paciente.telefone;
+      }
+    }
+
+    if (!pacienteIdFinal) {
+      setModalError('Por favor, selecione um paciente da lista ou registe um novo.');
       return;
     }
 
@@ -327,12 +380,12 @@ const PaginaInicial = () => {
     try {
       const payload = {
         medico: medicoNome,
-        idutilizadorprefil: paciente.id,
+        idutilizadorprefil: Number(pacienteIdFinal),
         tipomarcacao: tipomarcacaoId,
         data: modalData.date,
         hora: modalData.startTime,
         horaFim: modalData.endTime,
-        numerotelemovel: modalData.phoneNumber,
+        numerotelemovel: telefoneFinal,
         detalhes: modalData.consultationType,
         urgencia: modalData.urgencia
       };
@@ -715,24 +768,29 @@ const PaginaInicial = () => {
               </select>
             </div>
 
-            {/* Telefone do Paciente */}
-            <div className="modal-field modal-field--phone">
+            {/* Seleção / Pesquisa de Paciente */}
+            <div className="modal-field">
               <div className="d-flex justify-content-between align-items-center mb-1">
-                <label className="modal-label mb-0"><i className="bi bi-telephone me-1"></i>Telemóvel do Paciente</label>
+                <label className="modal-label mb-0">
+                  <i className="bi bi-person-search me-1" style={{ color: '#A99C5E' }}></i>
+                  Paciente (Pesquisar por Nome, Telemóvel ou NIF)
+                </label>
                 <button 
                   type="button"
                   className="btn btn-link btn-sm p-0 text-decoration-none"
                   style={{ color: '#A99C5E', fontWeight: 'bold' }}
                   onClick={() => setShowNovoPacienteForm(!showNovoPacienteForm)}
                 >
-                  {showNovoPacienteForm ? '✕ Cancelar Novo Paciente' : '+ Criar Novo Paciente'}
+                  {showNovoPacienteForm ? '✕ Cancelar Registo' : '+ Registar Novo Paciente'}
                 </button>
               </div>
 
               {/* Form de Novo Paciente Rápido */}
               {showNovoPacienteForm ? (
-                <div className="p-3 mb-2 bg-light border rounded">
-                  <h6 className="fw-bold mb-2 text-secondary"><i className="bi bi-person-plus me-1"></i>Registo Rápido de Paciente</h6>
+                <div className="p-3 mb-2 bg-light border rounded-3">
+                  <h6 className="fw-bold mb-2 text-secondary">
+                    <i className="bi bi-person-plus me-1"></i>Registo Rápido de Novo Paciente
+                  </h6>
                   <div className="row g-2">
                     <div className="col-12">
                       <input 
@@ -754,8 +812,17 @@ const PaginaInicial = () => {
                     </div>
                     <div className="col-6">
                       <input 
+                        type="text" 
+                        placeholder="NIF / SNS (opcional)" 
+                        className="form-control form-control-sm"
+                        value={novoPacienteData.nif}
+                        onChange={e => setNovoPacienteData(prev => ({ ...prev, nif: e.target.value }))}
+                      />
+                    </div>
+                    <div className="col-12">
+                      <input 
                         type="email" 
-                        placeholder="Email" 
+                        placeholder="Email (opcional)" 
                         className="form-control form-control-sm"
                         value={novoPacienteData.gmail}
                         onChange={e => setNovoPacienteData(prev => ({ ...prev, gmail: e.target.value }))}
@@ -764,7 +831,8 @@ const PaginaInicial = () => {
                     <div className="col-12">
                       <button 
                         type="button" 
-                        className="btn btn-sm btn-primary w-100 mt-1"
+                        className="btn btn-sm text-white w-100 mt-1"
+                        style={{ backgroundColor: '#A99C5E' }}
                         onClick={handleCriarPacienteRapido}
                         disabled={criandoPaciente}
                       >
@@ -774,26 +842,117 @@ const PaginaInicial = () => {
                   </div>
                 </div>
               ) : (
-                <>
-                  <input
-                    type="text"
-                    placeholder="ex: 961234567"
-                    value={modalData.phoneNumber}
-                    onChange={e => setModalData(prev => ({ ...prev, phoneNumber: e.target.value }))}
-                    className="modal-input"
-                    list="modal-pacientes-telefones"
-                  />
-                  <datalist id="modal-pacientes-telefones">
-                    {pacientes.map((p, i) => (
-                      <option key={i} value={p.contactoprincipal || ''}>{p.nome}</option>
-                    ))}
-                  </datalist>
-                </>
-              )}
+                <div ref={searchPatientRef} style={{ position: 'relative' }}>
+                  {pacienteSelecionado ? (
+                    <div className="d-flex justify-content-between align-items-center p-2 rounded-3 border" style={{ backgroundColor: '#FAF8F5', border: '1.5px solid #A99C5E' }}>
+                      <div>
+                        <strong className="text-dark d-block">
+                          <i className="bi bi-check-circle-fill text-success me-1"></i>
+                          {pacienteSelecionado.nome}
+                        </strong>
+                        <small className="text-muted">
+                          📞 {pacienteSelecionado.contactoprincipal || 'Sem telefone'} • 🪪 NIF: {pacienteSelecionado.nif || 'N/A'}
+                        </small>
+                      </div>
+                      <button 
+                        type="button"
+                        className="btn btn-sm btn-outline-secondary"
+                        style={{ borderRadius: '6px', fontSize: '12px', padding: '3px 10px' }}
+                        onClick={() => {
+                          setPacienteSelecionado(null);
+                          setModalData(prev => ({ ...prev, pacienteId: null, pacienteNome: '', phoneNumber: '' }));
+                          setTermoPesquisaPaciente('');
+                          setDropdownPacientesAberto(true);
+                        }}
+                      >
+                        ✕ Trocar Paciente
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <input
+                        type="text"
+                        placeholder="Pesquise por Nome, Telemóvel, NIF ou ID..."
+                        value={termoPesquisaPaciente}
+                        onChange={e => {
+                          setTermoPesquisaPaciente(e.target.value);
+                          setDropdownPacientesAberto(true);
+                        }}
+                        onFocus={() => setDropdownPacientesAberto(true)}
+                        className="modal-input"
+                      />
 
-              {pacientes.length > 0 && !showNovoPacienteForm && (
-                <div className="patients-hint">
-                  Pacientes: {pacientes.map(p => `${p.nome} (${p.contactoprincipal || 'sem tel.'})`).join(' • ')}
+                      {dropdownPacientesAberto && (
+                        <div 
+                          style={{
+                            position: 'absolute',
+                            top: '100%',
+                            left: 0,
+                            right: 0,
+                            maxHeight: '230px',
+                            overflowY: 'auto',
+                            backgroundColor: '#ffffff',
+                            border: '1.5px solid #A99C5E',
+                            borderRadius: '10px',
+                            boxShadow: '0 8px 24px rgba(0,0,0,0.16)',
+                            zIndex: 1050,
+                            marginTop: '4px'
+                          }}
+                        >
+                          {pacientesFiltrados.length === 0 ? (
+                            <div className="p-3 text-center text-muted" style={{ fontSize: '13px' }}>
+                              Nenhum paciente encontrado para "{termoPesquisaPaciente}".<br/>
+                              <small>Clique acima em "+ Registar Novo Paciente" para adicioná-lo.</small>
+                            </div>
+                          ) : (
+                            pacientesFiltrados.map(p => (
+                              <div
+                                key={p.idutilizadorprefil}
+                                onClick={() => {
+                                  setPacienteSelecionado(p);
+                                  setModalData(prev => ({
+                                    ...prev,
+                                    pacienteId: p.idutilizadorprefil,
+                                    pacienteNome: p.nome,
+                                    phoneNumber: p.contactoprincipal || ''
+                                  }));
+                                  setTermoPesquisaPaciente(p.nome);
+                                  setDropdownPacientesAberto(false);
+                                }}
+                                style={{
+                                  padding: '10px 14px',
+                                  cursor: 'pointer',
+                                  borderBottom: '1px solid #f0f0f0',
+                                  transition: 'background-color 0.15s'
+                                }}
+                                onMouseEnter={e => e.currentTarget.style.backgroundColor = '#FAF8F5'}
+                                onMouseLeave={e => e.currentTarget.style.backgroundColor = '#ffffff'}
+                              >
+                                <div className="d-flex justify-content-between align-items-center">
+                                  <strong style={{ color: '#2B2519', fontSize: '13.5px' }}>
+                                    <i className="bi bi-person-fill me-1" style={{ color: '#A99C5E' }}></i>
+                                    {p.nome}
+                                  </strong>
+                                  <span className="badge bg-light text-secondary border" style={{ fontSize: '11px' }}>
+                                    ID {p.idutilizadorprefil}
+                                  </span>
+                                </div>
+                                <div className="d-flex gap-3 text-muted mt-1" style={{ fontSize: '12px' }}>
+                                  <span><i className="bi bi-telephone me-1"></i>{p.contactoprincipal || 'Sem telemóvel'}</span>
+                                  {p.nif && <span><i className="bi bi-card-heading me-1"></i>NIF: {p.nif}</span>}
+                                  {p.posUtilizador && (
+                                    <span className="text-primary">
+                                      <i className="bi bi-people me-1"></i>Educando de {p.posUtilizador.nome}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
               )}
             </div>
