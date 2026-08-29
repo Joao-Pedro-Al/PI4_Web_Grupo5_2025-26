@@ -35,6 +35,4 @@ router.post('/update/:id', upload.array('ficheiros', 10), utilizadorperfilContro
 router.delete('/delete/:id', utilizadorperfilController.delete);
 router.post('/delete/:id', utilizadorperfilController.delete);
 
-router.get("/conta/criar", utilizadorperfilController.criarconta);
-
 module.exports = router;
