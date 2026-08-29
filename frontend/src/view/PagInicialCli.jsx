@@ -70,15 +70,15 @@ const PagInicialCli = () => {
           };
         });
 
-        // 2. Extrair o ÚLTIMO Guia de Tratamento anotado pelo médico
+        // 2. Extrair o ÚLTIMO Guia de Tratamento efetivamente anotado pelo médico
         const consultasComGuia = [...todasFormatadas]
-          .filter(c => (c.guia && c.guia.trim() !== '') || (c.descricao && c.descricao.trim() !== ''))
+          .filter(c => c.guia && c.guia.trim() !== '' && c.guia.trim().toUpperCase() !== 'N/A' && c.guia.trim() !== 'null')
           .sort((a, b) => b.dataObj - a.dataObj);
 
         if (consultasComGuia.length > 0) {
           const maisRecente = consultasComGuia[0];
           setUltimoGuiaInfo({
-            texto: maisRecente.guia || maisRecente.descricao,
+            texto: maisRecente.guia,
             data: maisRecente.dataFormatted,
             medico: maisRecente.medico,
             tipo: maisRecente.title
@@ -535,40 +535,40 @@ const PagInicialCli = () => {
 
         <div className="guia-content">
           {ultimoGuiaInfo ? (
-            <div style={{ backgroundColor: '#ffffff', padding: '20px', borderRadius: '10px', border: '1px solid #E5DFD5', fontSize: '15px', lineHeight: '1.8', whiteSpace: 'pre-wrap', color: '#333' }}>
-              <strong>Instruções do Médico ({ultimoGuiaInfo.medico}):</strong><br/>
-              {ultimoGuiaInfo.texto}
-            </div>
+            <>
+              <div style={{ backgroundColor: '#ffffff', padding: '20px', borderRadius: '10px', border: '1px solid #E5DFD5', fontSize: '15px', lineHeight: '1.8', whiteSpace: 'pre-wrap', color: '#333' }}>
+                <strong style={{ color: '#A99C5E' }}>Indicações do Médico ({ultimoGuiaInfo.medico}):</strong><br/>
+                {ultimoGuiaInfo.texto}
+              </div>
+
+              <div className="guia-actions mt-3 d-flex gap-3">
+                <button 
+                  className="btn-guia"
+                  onClick={handleImprimirGuiaTratamento}
+                  style={{
+                    backgroundColor: '#A99C5E',
+                    color: 'white',
+                    border: 'none',
+                    padding: '10px 22px',
+                    borderRadius: '8px',
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <i className="bi bi-printer-fill"></i> Imprimir / Descarregar Guia em PDF
+                </button>
+              </div>
+            </>
           ) : (
-            <div style={{ backgroundColor: '#ffffff', padding: '20px', borderRadius: '10px', border: '1px solid #E5DFD5', fontSize: '14.5px', color: '#555' }}>
-              <strong>Recomendações gerais de saúde oral:</strong><br/>
-              • Lavar os dentes após as refeições principais (mínimo 2x ao dia)<br/>
-              • Utilizar fio dentário antes de deitar<br/>
-              • Realizar bochechos com elixir fluoretado<br/>
-              • Consultar o médico dentista de 6 em 6 meses
+            <div style={{ backgroundColor: '#ffffff', padding: '25px', borderRadius: '10px', border: '1px solid #E5DFD5', textAlign: 'center', color: '#777' }}>
+              <i className="bi bi-journal-x d-block fs-2 mb-2" style={{ color: '#A99C5E', opacity: 0.6 }}></i>
+              <p className="mb-0 fw-500">Ainda não foram registadas orientações ou guias de tratamento pelo médico dentista para este perfil.</p>
+              <small className="text-muted">Assim que o médico adicionar observações ou guia na sua consulta, aparecerão aqui automaticamente.</small>
             </div>
           )}
-
-          <div className="guia-actions mt-3 d-flex gap-3">
-            <button 
-              className="btn-guia"
-              onClick={handleImprimirGuiaTratamento}
-              style={{
-                backgroundColor: '#A99C5E',
-                color: 'white',
-                border: 'none',
-                padding: '10px 22px',
-                borderRadius: '8px',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px'
-              }}
-            >
-              <i className="bi bi-printer-fill"></i> Imprimir / Descarregar Guia em PDF
-            </button>
-          </div>
         </div>
       </div>
       
