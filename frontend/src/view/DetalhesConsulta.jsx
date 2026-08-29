@@ -311,275 +311,278 @@ function DetalhesConsulta() {
   }) : 'Data não indicada';
 
   return (
-    <div className="container-fluid py-4" style={{ fontFamily: 'Poppins, sans-serif', maxWidth: '1240px' }}>
-      
-      {/* Top Bar Navigation */}
-      <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-        <button 
-          onClick={() => navigate('/backoffice/paginainicial')} 
-          className="btn btn-outline-secondary d-inline-flex align-items-center shadow-sm"
-          style={{ borderRadius: '10px', padding: '8px 16px', fontWeight: '500' }}
-        >
-          <i className="bi bi-arrow-left me-2"></i> Voltar à Agenda
-        </button>
+    <div className="container-fluid py-4" style={{ fontFamily: 'Poppins, sans-serif', maxWidth: '1100px' }}>
 
+      {/* ── TOP NAV ── */}
+      <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <button
+          onClick={() => navigate('/backoffice/paginainicial')}
+          className="btn d-inline-flex align-items-center gap-2 shadow-sm"
+          style={{ borderRadius: '10px', padding: '8px 18px', fontWeight: '500', border: '1.5px solid #D1C7B7', color: '#2B2519', background: '#fff' }}
+        >
+          <i className="bi bi-arrow-left"></i> Voltar à Agenda
+        </button>
         {paciente && (
-          <Link 
-            to={`/backoffice/perfis/${paciente.idutilizadorprefil}`} 
-            className="btn text-white d-inline-flex align-items-center shadow-sm"
+          <Link
+            to={`/backoffice/perfis/${paciente.idutilizadorprefil}`}
+            className="btn d-inline-flex align-items-center gap-2 shadow-sm text-white"
             style={{ backgroundColor: '#A99C5E', borderRadius: '10px', padding: '8px 18px', fontWeight: '500' }}
           >
-            <i className="bi bi-person-bounding-box me-2"></i> Ver Perfil Completo do Paciente
+            <i className="bi bi-person-bounding-box"></i> Ver Perfil do Paciente
           </Link>
         )}
       </div>
 
-      {/* Hero Header Card */}
-      <div className="card shadow-sm border-0 mb-4 rounded-4" style={{ background: 'linear-gradient(135deg, #FAF8F5 0%, #FFFFFF 100%)', borderLeft: '6px solid #A99C5E' }}>
-        <div className="card-body p-4">
-          <div className="row align-items-center g-3">
-            <div className="col-lg-7">
-              <div className="d-flex align-items-center gap-2 mb-2">
-                <span className="badge" style={{ backgroundColor: '#A99C5E', color: 'white', padding: '6px 12px', borderRadius: '8px', fontSize: '13px' }}>
-                  <i className="bi bi-journal-medical me-1"></i> {consulta?.TipoMarcacaoData?.desling || 'Consulta Dentária'}
-                </span>
-                <span className={`badge px-3 py-2 rounded-3 ${urgencia === 'Muito Urgente' ? 'bg-danger' : urgencia === 'Urgente' ? 'bg-warning text-dark' : 'bg-success'}`}>
-                  <i className="bi bi-exclamation-diamond-fill me-1"></i> {urgencia}
-                </span>
-              </div>
-              <h3 className="fw-bold mb-2" style={{ color: '#2B2519' }}>
-                {paciente?.nome || 'Paciente sem nome'}
-              </h3>
-              <div className="d-flex flex-wrap gap-3 text-secondary" style={{ fontSize: '14px' }}>
-                <span><i className="bi bi-calendar3 me-1 text-warning"></i> {dataFormatada}</span>
-                <span><i className="bi bi-clock me-1 text-warning"></i> {consulta?.hora?.substring(0, 5)} {consulta?.horaFim ? `— ${consulta.horaFim.substring(0, 5)}` : ''}</span>
-                <span><i className="bi bi-person-badge me-1 text-warning"></i> {consulta?.medico || 'Médico Dentista'}</span>
-              </div>
+      {/* ── HERO CARD: IDENTIFICAÇÃO DA CONSULTA ── */}
+      <div className="rounded-4 shadow-sm mb-4 p-4" style={{ background: 'linear-gradient(135deg, #2B2519 0%, #3d3529 100%)', color: '#fff' }}>
+        <div className="d-flex flex-wrap justify-content-between align-items-start gap-3">
+          <div>
+            <div className="d-flex gap-2 mb-2 flex-wrap">
+              <span className="badge px-3 py-2 rounded-3" style={{ backgroundColor: '#A99C5E', fontSize: '13px' }}>
+                <i className="bi bi-journal-medical me-1"></i>
+                {consulta?.TipoMarcacaoData?.desling || 'Consulta Dentária'}
+              </span>
+              <span className={`badge px-3 py-2 rounded-3 ${urgencia === 'Muito Urgente' ? 'bg-danger' : urgencia === 'Urgente' ? 'bg-warning text-dark' : 'bg-success'}`}>
+                <i className="bi bi-exclamation-diamond-fill me-1"></i> {urgencia}
+              </span>
             </div>
+            <h2 className="fw-bold mb-1" style={{ fontSize: '26px' }}>
+              {paciente?.nome || 'Paciente sem nome'}
+            </h2>
+            <div className="d-flex flex-wrap gap-3 opacity-75" style={{ fontSize: '14px' }}>
+              <span><i className="bi bi-calendar3 me-1"></i> {dataFormatada}</span>
+              <span><i className="bi bi-clock me-1"></i> {consulta?.hora?.substring(0, 5)}{consulta?.horaFim ? ` — ${consulta.horaFim.substring(0, 5)}` : ''}</span>
+              <span><i className="bi bi-person-badge me-1"></i> {consulta?.medico || 'Médico Dentista'}</span>
+            </div>
+          </div>
+          <div className="p-3 rounded-3" style={{ background: 'rgba(255,255,255,0.07)', minWidth: '200px', fontSize: '14px' }}>
+            <div className="mb-1"><span className="opacity-60">NIF / SNS:</span> <strong>{paciente?.nif || '—'}</strong></div>
+            <div className="mb-1"><span className="opacity-60">Contacto:</span> <strong>{paciente?.contactoprincipal || '—'}</strong></div>
+            <div><span className="opacity-60">Email:</span> <strong>{paciente?.gmail || '—'}</strong></div>
+          </div>
+        </div>
+      </div>
 
-            <div className="col-lg-5 text-lg-end border-start-lg ps-lg-4">
-              <div className="p-3 bg-white rounded-3 border shadow-none text-start text-lg-end">
-                <div style={{ fontSize: '13px', color: '#666' }}>
-                  <strong>NIF/SNS:</strong> {paciente?.nif || 'Não indicado'}<br/>
-                  <strong>Contacto:</strong> {paciente?.contactoprincipal || 'Sem telefone'}<br/>
-                  <strong>Email:</strong> {paciente?.gmail || 'Sem email'}
-                </div>
-              </div>
+      {/* ── ALERTAS ── */}
+      {sucessoMsg && (
+        <div className="alert alert-success rounded-3 shadow-sm mb-3" role="alert">
+          <i className="bi bi-check-circle-fill me-2"></i> {sucessoMsg}
+        </div>
+      )}
+      {erro && (
+        <div className="alert alert-danger rounded-3 shadow-sm mb-3" role="alert">
+          <i className="bi bi-exclamation-triangle-fill me-2"></i> {erro}
+        </div>
+      )}
+
+      {/* ── SECÇÃO 1: URGÊNCIA + OBSERVAÇÕES ── */}
+      <div className="card border-0 shadow-sm rounded-4 mb-4">
+        <div className="card-header border-0 rounded-top-4 py-3 px-4 d-flex align-items-center justify-content-between"
+          style={{ background: '#FAF8F5', borderBottom: '2px solid #E5DFD5' }}>
+          <div className="d-flex align-items-center gap-2">
+            <i className="bi bi-clipboard-pulse fs-5" style={{ color: '#A99C5E' }}></i>
+            <h5 className="mb-0 fw-bold" style={{ color: '#2B2519' }}>Observações Clínicas</h5>
+          </div>
+          <button
+            onClick={handleGuardarApontamentos}
+            disabled={saving}
+            className="btn text-white shadow-sm d-flex align-items-center gap-2"
+            style={{ backgroundColor: '#A99C5E', borderRadius: '10px', padding: '8px 20px', fontWeight: '600', fontSize: '14px' }}
+          >
+            <i className="bi bi-floppy2-fill"></i>
+            {saving ? 'A guardar...' : 'Guardar Alterações'}
+          </button>
+        </div>
+        <div className="card-body p-4">
+          <div className="row g-4">
+            <div className="col-md-4">
+              <label className="form-label fw-semibold mb-2" style={{ color: '#2B2519', fontSize: '14px' }}>
+                <i className="bi bi-exclamation-diamond me-1" style={{ color: '#A99C5E' }}></i> Nível de Urgência
+              </label>
+              <select
+                className="form-select shadow-none"
+                value={urgencia}
+                onChange={(e) => setUrgencia(e.target.value)}
+                style={{ borderRadius: '10px', border: '1.5px solid #E5DFD5', padding: '10px 14px', fontSize: '14px' }}
+              >
+                <option value="Normal">🟢 Normal (Rotina)</option>
+                <option value="Urgente">🟡 Urgente (Dor moderada)</option>
+                <option value="Muito Urgente">🔴 Muito Urgente (Emergência)</option>
+              </select>
+            </div>
+            <div className="col-md-8">
+              <label className="form-label fw-semibold mb-2" style={{ color: '#2B2519', fontSize: '14px' }}>
+                <i className="bi bi-stethoscope me-1" style={{ color: '#A99C5E' }}></i> Observações Médicas & Sintomas Relatados
+              </label>
+              <textarea
+                className="form-control shadow-none"
+                rows={3}
+                placeholder="Diagnóstico clínico, procedimentos efetuados, dentes intervencionados, sintomas descritos pelo paciente..."
+                value={detalhes}
+                onChange={(e) => setDetalhes(e.target.value)}
+                style={{ borderRadius: '10px', border: '1.5px solid #E5DFD5', padding: '12px', fontSize: '14px', resize: 'vertical' }}
+              />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Alertas */}
-      {sucessoMsg && (
-        <div className="alert alert-success alert-dismissible fade show rounded-3 shadow-sm" role="alert">
-          <i className="bi bi-check-circle-fill me-2 fs-5 align-middle"></i> {sucessoMsg}
-        </div>
-      )}
-      {erro && (
-        <div className="alert alert-danger alert-dismissible fade show rounded-3 shadow-sm" role="alert">
-          <i className="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i> {erro}
-        </div>
-      )}
-
-      {/* Main Grid */}
-      <div className="row g-4">
-        
-        {/* COLUNA ESQUERDA: APONTAMENTOS MÉDICOS E GUIA DE TRATAMENTO */}
-        <div className="col-lg-7">
-          <div className="card shadow-sm border-0 rounded-4 h-100">
-            <div className="card-header bg-white py-3 px-4 border-bottom d-flex align-items-center justify-content-between">
-              <h5 className="fw-bold mb-0" style={{ color: '#2B2519' }}>
-                <i className="bi bi-clipboard-pulse me-2" style={{ color: '#A99C5E' }}></i>
-                Apontamentos & Notas Clínicas
-              </h5>
-              <button 
-                onClick={handleGuardarApontamentos} 
-                disabled={saving}
-                className="btn text-white shadow-sm" 
-                style={{ backgroundColor: '#A99C5E', borderRadius: '10px', padding: '8px 18px', fontSize: '14px', fontWeight: '500' }}
-              >
-                {saving ? 'A guardar...' : <><i className="bi bi-save2 me-1"></i> Guardar Alterações</>}
-              </button>
-            </div>
-            <div className="card-body p-4">
-              
-              <div className="mb-4">
-                <label className="form-label fw-bold" style={{ color: '#2B2519' }}>
-                  Nível de Urgência da Consulta:
-                </label>
-                <select 
-                  className="form-select shadow-none"
-                  value={urgencia}
-                  onChange={(e) => setUrgencia(e.target.value)}
-                  style={{ borderRadius: '10px', border: '1.5px solid #E5DFD5', padding: '10px 14px' }}
-                >
-                  <option value="Normal">🟢 Normal (Rotina / Manutenção)</option>
-                  <option value="Urgente">🟡 Urgente (Dor moderada / Necessidade rápida)</option>
-                  <option value="Muito Urgente">🔴 Muito Urgente (Emergência aguda / Trauma)</option>
-                </select>
-              </div>
-
-              <div className="mb-4">
-                <label className="form-label fw-bold" style={{ color: '#2B2519' }}>
-                  Observações Médicas & Sintomas Relatados:
-                </label>
-                <textarea 
-                  className="form-control shadow-none"
-                  rows={4}
-                  placeholder="Registo dos procedimentos efetuados, diagnóstico clínico, dentes intervencionados ou observações da consulta..."
-                  value={detalhes}
-                  onChange={(e) => setDetalhes(e.target.value)}
-                  style={{ borderRadius: '10px', border: '1.5px solid #E5DFD5', padding: '12px' }}
-                />
-              </div>
-
-              <div className="mb-4 p-3 rounded-3" style={{ backgroundColor: '#FAF8F5', border: '1.5px solid #A99C5E' }}>
-                <label className="form-label fw-bold" style={{ color: '#A99C5E' }}>
-                  <i className="bi bi-journal-check me-2"></i>Guia de Tratamento & Recomendações (Visível ao Paciente):
-                </label>
-                <textarea 
-                  className="form-control shadow-none"
-                  rows={4}
-                  placeholder="Instruções para o paciente, posologia, cuidados de higiene pós-tratamento, próximos passos recomendados..."
-                  value={guiaTratamento}
-                  onChange={(e) => setGuiaTratamento(e.target.value)}
-                  style={{ borderRadius: '10px', border: '1px solid #D1C7B7', backgroundColor: '#FFFFFF', padding: '12px' }}
-                />
-                <small className="text-muted d-block mt-2">
-                  <i className="bi bi-info-circle me-1"></i> Este texto é automaticamente apresentado na Página Inicial do Paciente e no seu histórico.
-                </small>
-              </div>
-
-              <div className="p-3 bg-light rounded-3 border">
-                <label className="form-label fw-bold text-secondary mb-1">
-                  <i className="bi bi-people me-2" style={{ color: '#A99C5E' }}></i>Nome do Acompanhante / Encarregado de Educação:
-                </label>
-                <input 
-                  type="text"
-                  className="form-control shadow-none"
-                  placeholder="Ex: Carlos Alberto Ferreira (Pai / Mãe / Tutor Legal)"
-                  value={acompanhante}
-                  onChange={(e) => setAcompanhante(e.target.value)}
-                  style={{ borderRadius: '10px', border: '1.5px solid #E5DFD5' }}
-                />
-                <small className="text-muted d-block mt-1">
-                  Ao registar o acompanhante, a declaração de presença de acompanhante fica disponível com 1 clique para emissão e download.
-                </small>
-              </div>
-
-            </div>
+      {/* ── SECÇÃO 2: GUIA DE TRATAMENTO ── */}
+      <div className="card border-0 shadow-sm rounded-4 mb-4" style={{ borderLeft: '4px solid #A99C5E' }}>
+        <div className="card-header border-0 rounded-top-4 py-3 px-4"
+          style={{ background: 'linear-gradient(90deg, #FAF8F5, #fff)', borderBottom: '2px solid #F0EBE0' }}>
+          <div className="d-flex align-items-center gap-2">
+            <i className="bi bi-journal-check fs-5" style={{ color: '#A99C5E' }}></i>
+            <h5 className="mb-0 fw-bold" style={{ color: '#A99C5E' }}>Guia de Tratamento & Recomendações</h5>
+            <span className="badge rounded-pill ms-1" style={{ backgroundColor: '#F0EBE0', color: '#7a6d3f', fontSize: '11px' }}>
+              Visível ao Paciente
+            </span>
           </div>
         </div>
+        <div className="card-body p-4">
+          <textarea
+            className="form-control shadow-none"
+            rows={5}
+            placeholder="Instruções para o paciente, posologia, cuidados de higiene oral pós-tratamento, próximos passos recomendados pelo médico..."
+            value={guiaTratamento}
+            onChange={(e) => setGuiaTratamento(e.target.value)}
+            style={{ borderRadius: '10px', border: '1.5px solid #D1C7B7', padding: '14px', fontSize: '14px', resize: 'vertical', lineHeight: '1.7' }}
+          />
+          <div className="mt-2 d-flex align-items-center gap-1" style={{ fontSize: '13px', color: '#888' }}>
+            <i className="bi bi-info-circle"></i>
+            <span>Este texto aparece automaticamente na Página Inicial do Paciente e no seu histórico de consultas.</span>
+          </div>
+        </div>
+      </div>
 
-        {/* COLUNA DIREITA: RECEITAS E COMPROVATIVOS DE PRESENÇA */}
-        <div className="col-lg-5">
-          
-          {/* RECEITA MÉDICA */}
-          <div className="card shadow-sm border-0 rounded-4 mb-4">
-            <div className="card-header bg-white py-3 px-4 border-bottom d-flex align-items-center justify-content-between">
-              <h6 className="fw-bold mb-0" style={{ color: '#2B2519' }}>
-                <i className="bi bi-capsule me-2 text-danger"></i>
-                Receita / Prescrição Médica
-              </h6>
-              <button 
-                onClick={handleImprimirReceita} 
-                className="btn btn-sm btn-outline-danger shadow-sm d-inline-flex align-items-center"
-                style={{ borderRadius: '8px', padding: '6px 14px', fontWeight: '500' }}
-              >
-                <i className="bi bi-printer me-1"></i> Imprimir
-              </button>
-            </div>
-            <div className="card-body p-4">
-              <textarea 
-                className="form-control shadow-none mb-2"
-                rows={4}
-                placeholder="Exemplo:&#10;• Amoxicilina 875mg (1 comp. 12h/12h durante 7 dias)&#10;• Ibuprofeno 600mg (1 comp. 8h/8h em caso de dor)"
-                value={receitaTexto}
-                onChange={(e) => setReceitaTexto(e.target.value)}
-                style={{ borderRadius: '10px', border: '1.5px solid #E5DFD5', fontSize: '13.5px' }}
-              />
-              <small className="text-muted"><i className="bi bi-info-circle me-1"></i> Formata automaticamente em papel timbrado oficial da CliniMolelos.</small>
-            </div>
+      {/* ── SECÇÃO 3: ACOMPANHANTE ── */}
+      <div className="card border-0 shadow-sm rounded-4 mb-4">
+        <div className="card-header border-0 rounded-top-4 py-3 px-4"
+          style={{ background: '#FAF8F5', borderBottom: '2px solid #E5DFD5' }}>
+          <div className="d-flex align-items-center gap-2">
+            <i className="bi bi-people fs-5" style={{ color: '#A99C5E' }}></i>
+            <h5 className="mb-0 fw-bold" style={{ color: '#2B2519' }}>Acompanhante / Encarregado de Educação</h5>
+          </div>
+        </div>
+        <div className="card-body p-4">
+          <input
+            type="text"
+            className="form-control shadow-none"
+            placeholder="Nome completo do acompanhante ou encarregado de educação (Ex: Carlos Alberto Ferreira)"
+            value={acompanhante}
+            onChange={(e) => setAcompanhante(e.target.value)}
+            style={{ borderRadius: '10px', border: '1.5px solid #E5DFD5', padding: '12px 16px', fontSize: '14px', maxWidth: '520px' }}
+          />
+          <div className="mt-2 d-flex align-items-center gap-1" style={{ fontSize: '13px', color: '#888' }}>
+            <i className="bi bi-info-circle"></i>
+            <span>Ao preencher este campo, a declaração de acompanhante fica disponível para emissão com 1 clique.</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── SECÇÃO 4: RECEITA MÉDICA ── */}
+      <div className="card border-0 shadow-sm rounded-4 mb-4">
+        <div className="card-header border-0 rounded-top-4 py-3 px-4 d-flex align-items-center justify-content-between"
+          style={{ background: '#FAF8F5', borderBottom: '2px solid #E5DFD5' }}>
+          <div className="d-flex align-items-center gap-2">
+            <i className="bi bi-capsule fs-5 text-danger"></i>
+            <h5 className="mb-0 fw-bold" style={{ color: '#2B2519' }}>Receita / Prescrição Médica</h5>
+          </div>
+          <button
+            onClick={handleImprimirReceita}
+            className="btn d-flex align-items-center gap-2 shadow-sm"
+            style={{ borderRadius: '10px', padding: '8px 20px', fontWeight: '600', fontSize: '14px', border: '1.5px solid #dc3545', color: '#dc3545', background: '#fff' }}
+          >
+            <i className="bi bi-printer-fill"></i> Imprimir Receita
+          </button>
+        </div>
+        <div className="card-body p-4">
+          <textarea
+            className="form-control shadow-none"
+            rows={4}
+            placeholder={"Exemplo:\n• Amoxicilina 875mg — 1 comp. 12h/12h durante 7 dias\n• Ibuprofeno 600mg — 1 comp. 8h/8h se dor (máx. 5 dias)"}
+            value={receitaTexto}
+            onChange={(e) => setReceitaTexto(e.target.value)}
+            style={{ borderRadius: '10px', border: '1.5px solid #E5DFD5', padding: '14px', fontSize: '14px', resize: 'vertical', lineHeight: '1.7', maxWidth: '640px' }}
+          />
+          <div className="mt-2 d-flex align-items-center gap-1" style={{ fontSize: '13px', color: '#888' }}>
+            <i className="bi bi-info-circle"></i>
+            <span>Gera automaticamente em papel timbrado oficial da CliniMolelos.</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── SECÇÃO 5: DECLARAÇÕES DE PRESENÇA ── */}
+      <div className="card border-0 shadow-sm rounded-4 mb-4">
+        <div className="card-header border-0 rounded-top-4 py-3 px-4"
+          style={{ background: '#FAF8F5', borderBottom: '2px solid #E5DFD5' }}>
+          <div className="d-flex align-items-center gap-2">
+            <i className="bi bi-file-earmark-text fs-5" style={{ color: '#A99C5E' }}></i>
+            <h5 className="mb-0 fw-bold" style={{ color: '#2B2519' }}>Declarações de Presença Oficiais</h5>
+          </div>
+        </div>
+        <div className="card-body p-4">
+          <div className="d-flex flex-wrap gap-3 mb-4">
+            <button
+              onClick={() => handleGerarComprovativo('Declaração de Presença')}
+              disabled={gerandoComprovativo}
+              className="btn text-white shadow-sm d-flex align-items-center gap-2"
+              style={{ backgroundColor: '#A99C5E', borderRadius: '10px', padding: '10px 22px', fontWeight: '600', fontSize: '14px' }}
+            >
+              <i className="bi bi-file-earmark-check-fill"></i>
+              {gerandoComprovativo ? 'A emitir...' : 'Emitir Declaração do Paciente'}
+            </button>
+            <button
+              onClick={() => handleGerarComprovativo('Declaração do Acompanhante')}
+              disabled={gerandoComprovativo}
+              className="btn shadow-sm d-flex align-items-center gap-2"
+              style={{ borderRadius: '10px', padding: '10px 22px', fontWeight: '600', fontSize: '14px', border: '1.5px solid #A99C5E', color: '#A99C5E', background: '#fff' }}
+            >
+              <i className="bi bi-people-fill"></i>
+              {gerandoComprovativo ? 'A emitir...' : 'Emitir Declaração de Acompanhante'}
+            </button>
           </div>
 
-          {/* COMPROVATIVOS DE PRESENÇA */}
-          <div className="card shadow-sm border-0 rounded-4">
-            <div className="card-header bg-white py-3 px-4 border-bottom">
-              <h6 className="fw-bold mb-0" style={{ color: '#2B2519' }}>
-                <i className="bi bi-file-earmark-text me-2" style={{ color: '#A99C5E' }}></i>
-                Declarações de Presença Oficiais
-              </h6>
-            </div>
-            <div className="card-body p-4">
-              
-              <div className="mb-3">
-                <div className="d-grid gap-2">
-                  <button 
-                    onClick={() => handleGerarComprovativo('Declaração de Presença')}
-                    disabled={gerandoComprovativo}
-                    className="btn text-white py-2 shadow-sm d-flex align-items-center justify-content-center gap-2"
-                    style={{ backgroundColor: '#A99C5E', borderRadius: '10px', fontWeight: '500' }}
+          {comprovativos.length > 0 && (
+            <>
+              <p className="fw-semibold mb-3" style={{ fontSize: '14px', color: '#555', borderTop: '1.5px solid #E5DFD5', paddingTop: '16px' }}>
+                <i className="bi bi-archive me-1" style={{ color: '#A99C5E' }}></i> Documentos já emitidos para esta consulta:
+              </p>
+              <div className="d-flex flex-column gap-2">
+                {comprovativos.map((comp) => (
+                  <div
+                    key={comp.idcomprovativo}
+                    className="d-flex align-items-center justify-content-between p-3 rounded-3"
+                    style={{ background: '#FAF8F5', border: '1px solid #E5DFD5', fontSize: '14px' }}
                   >
-                    <i className="bi bi-file-earmark-check-fill"></i>
-                    {gerandoComprovativo ? 'A emitir...' : 'Emitir Declaração do Paciente'}
-                  </button>
-
-                  <button 
-                    onClick={() => handleGerarComprovativo('Declaração do Acompanhante')}
-                    disabled={gerandoComprovativo}
-                    className="btn btn-outline-secondary py-2 shadow-sm d-flex align-items-center justify-content-center gap-2"
-                    style={{ borderRadius: '10px', fontWeight: '500' }}
-                  >
-                    <i className="bi bi-people-fill" style={{ color: '#A99C5E' }}></i>
-                    {gerandoComprovativo ? 'A emitir...' : 'Emitir Declaração de Acompanhante'}
-                  </button>
-                </div>
-              </div>
-
-              <hr className="my-3" />
-
-              <h6 className="fw-bold mb-3 text-secondary" style={{ fontSize: '14px' }}>
-                Documentos Emitidos para esta Consulta:
-              </h6>
-              {comprovativos.length === 0 ? (
-                <div className="text-center py-3 text-muted" style={{ fontSize: '13px' }}>
-                  <i className="bi bi-folder2-open d-block fs-3 mb-1 text-secondary opacity-50"></i>
-                  Nenhuma declaração emitida ainda.
-                </div>
-              ) : (
-                <div className="list-group list-group-flush">
-                  {comprovativos.map((comp) => (
-                    <div 
-                      key={comp.idcomprovativo} 
-                      className="list-group-item px-0 py-2 d-flex justify-content-between align-items-center border-bottom"
-                      style={{ fontSize: '13px' }}
-                    >
-                      <div className="me-2">
-                        <strong className="text-dark d-block">{comp.titulo}</strong>
-                        <span className="text-muted" style={{ fontSize: '11px' }}>
-                          <i className="bi bi-clock-history me-1"></i>
-                          Emitido a {new Date(comp.data_emissao || new Date()).toLocaleDateString('pt-PT')}
-                        </span>
+                    <div>
+                      <strong style={{ color: '#2B2519' }}>{comp.titulo}</strong>
+                      <div style={{ fontSize: '12px', color: '#999', marginTop: '2px' }}>
+                        <i className="bi bi-clock-history me-1"></i>
+                        Emitido a {new Date(comp.data_emissao || new Date()).toLocaleDateString('pt-PT')}
                       </div>
-                      <button 
-                        onClick={() => handleImprimirDocumento(comp)}
-                        className="btn btn-sm btn-outline-secondary"
-                        style={{ borderRadius: '8px' }}
-                        title="Imprimir Declaração"
-                      >
-                        <i className="bi bi-printer"></i>
-                      </button>
                     </div>
-                  ))}
-                </div>
-              )}
+                    <button
+                      onClick={() => handleImprimirDocumento(comp)}
+                      className="btn btn-sm shadow-sm d-flex align-items-center gap-1"
+                      style={{ borderRadius: '8px', border: '1.5px solid #D1C7B7', color: '#2B2519', background: '#fff', fontWeight: '500', whiteSpace: 'nowrap' }}
+                      title="Imprimir / Visualizar Declaração"
+                    >
+                      <i className="bi bi-printer"></i> Imprimir
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
 
+          {comprovativos.length === 0 && (
+            <div className="text-center py-3" style={{ fontSize: '13px', color: '#aaa' }}>
+              <i className="bi bi-folder2-open d-block fs-3 mb-1 opacity-40"></i>
+              Nenhuma declaração emitida ainda para esta consulta.
             </div>
-          </div>
-
+          )}
         </div>
-
       </div>
 
     </div>
