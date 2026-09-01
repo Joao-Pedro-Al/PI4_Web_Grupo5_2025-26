@@ -599,11 +599,12 @@ const VerPerfil = () => {
                                             onChange={(e) => setEditFormData({ ...editFormData, posidutilizador: e.target.value })}
                                         >
                                             <option value="">Nenhum (Perfil Autónomo / Adulto)</option>
-                                            {listaTodosPerfis
+                                            {[...listaTodosPerfis]
                                                 .filter(p => String(p.idutilizadorprefil) !== String(id))
+                                                .sort((a, b) => (a.nome || '').localeCompare(b.nome || '', 'pt', { sensitivity: 'base' }))
                                                 .map(p => (
                                                     <option key={p.idutilizadorprefil} value={p.idutilizadorprefil}>
-                                                        {p.nome} ({p.contactoprincipal || p.gmail || `ID ${p.idutilizadorprefil}`})
+                                                        {p.nome}{p.contactoprincipal ? ` — ${p.contactoprincipal}` : p.gmail ? ` — ${p.gmail}` : ''}
                                                     </option>
                                                 ))
                                             }
