@@ -782,16 +782,17 @@ const PaginaInicial = () => {
                     backgroundColor: showNovoPacienteForm ? '#c0392b' : '#A99C5E',
                     color: '#FFFFFF',
                     border: 'none',
-                    padding: '6px 14px',
-                    borderRadius: '20px',
-                    fontSize: '12px',
+                    padding: '4px 10px',
+                    borderRadius: '16px',
+                    fontSize: '11px',
                     fontWeight: '600',
                     cursor: 'pointer',
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '4px',
-                    boxShadow: '0 2px 6px rgba(169, 156, 94, 0.3)',
-                    transition: 'all 0.2s ease'
+                    boxShadow: '0 2px 5px rgba(169, 156, 94, 0.25)',
+                    transition: 'all 0.2s ease',
+                    lineHeight: '1.2'
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.backgroundColor = showNovoPacienteForm ? '#a93226' : '#8E824B';
@@ -800,7 +801,7 @@ const PaginaInicial = () => {
                     e.currentTarget.style.backgroundColor = showNovoPacienteForm ? '#c0392b' : '#A99C5E';
                   }}
                 >
-                  <i className={showNovoPacienteForm ? "bi bi-x-circle me-1" : "bi bi-person-plus-fill me-1"}></i>
+                  {showNovoPacienteForm && <i className="bi bi-x-circle me-1"></i>}
                   {showNovoPacienteForm ? 'Cancelar Registo' : '+ Registar Novo Paciente'}
                 </button>
               </div>
