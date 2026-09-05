@@ -32,14 +32,27 @@
 }
 
 .install-btn {
-    background: #b8a766;
+    background: #A99C5E;
     color: white;
-    padding: 12px 32px;
+    padding: 12px 36px;
     border: none;
     border-radius: 25px;
-    font-size: 18px;
+    font-size: 17px;
+    font-weight: 600;
     cursor: pointer;
-    margin-bottom: 40px; 
+    margin-bottom: 40px;
+    box-shadow: 0 4px 14px rgba(169, 156, 94, 0.35);
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.install-btn:hover {
+    background: #8E824B;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(169, 156, 94, 0.45);
 }
 
 .info-text {

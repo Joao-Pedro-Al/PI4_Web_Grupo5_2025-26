@@ -35,8 +35,10 @@ const Webpage = () => {
 
         <img src={media} alt="Media" />
 
-        <a href="caminho/para/app.apk" download="app.apk">
-          <button class="install-btn">Instalar</button>
+        <a href="/clinimolelos.apk" download="CliniMolelos.apk" className="text-decoration-none">
+          <button className="install-btn">
+            <i className="bi bi-download me-2"></i> Instalar
+          </button>
         </a>
       </div>
 
@@ -67,10 +69,9 @@ const Webpage = () => {
       <div class="faixa">
         <h2>A sua ficha, o seu histórico e o seu tratamento no seu bolso.</h2>
 
-        <a href="caminho/para/app.apk" download="app.apk">
-          <button class="install-btn">
-
-            Instale Agora
+        <a href="/clinimolelos.apk" download="CliniMolelos.apk" className="text-decoration-none">
+          <button className="install-btn">
+            <i className="bi bi-download me-2"></i> Instale Agora
           </button>
         </a>
       </div>

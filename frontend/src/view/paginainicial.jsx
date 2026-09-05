@@ -777,11 +777,31 @@ const PaginaInicial = () => {
                 </label>
                 <button 
                   type="button"
-                  className="btn btn-link btn-sm p-0 text-decoration-none"
-                  style={{ color: '#A99C5E', fontWeight: 'bold' }}
                   onClick={() => setShowNovoPacienteForm(!showNovoPacienteForm)}
+                  style={{
+                    backgroundColor: showNovoPacienteForm ? '#c0392b' : '#A99C5E',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    padding: '6px 14px',
+                    borderRadius: '20px',
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    boxShadow: '0 2px 6px rgba(169, 156, 94, 0.3)',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = showNovoPacienteForm ? '#a93226' : '#8E824B';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = showNovoPacienteForm ? '#c0392b' : '#A99C5E';
+                  }}
                 >
-                  {showNovoPacienteForm ? '✕ Cancelar Registo' : '+ Registar Novo Paciente'}
+                  <i className={showNovoPacienteForm ? "bi bi-x-circle me-1" : "bi bi-person-plus-fill me-1"}></i>
+                  {showNovoPacienteForm ? 'Cancelar Registo' : '+ Registar Novo Paciente'}
                 </button>
               </div>
 
